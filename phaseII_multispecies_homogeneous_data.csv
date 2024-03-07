@@ -1,0 +1,225 @@
+Phase,species,Competition_treatment,sample_size,trait,RII,RII_se,ITV,ITV_se,Environmental_block
+Phase II: multispecies homogeneous experiment,DO,Competition-free,20,multi-traits,-0.77,0.0002519,1.968939898,0.018835185,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,multi-traits,-0.7,0.000532421,1.328721689,0.013494891,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,multi-traits,-0.68,0.00055716,1.781532068,0.015356357,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,multi-traits,-0.61,0.000615411,2.710085717,0.023433637,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,15,multi-traits,-0.52,0.000931386,1.243467593,0.00954709,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,20,multi-traits,-0.4,0.000318098,1.41232613,0.01345211,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,16,multi-traits,-0.35,0.000756087,0.469905683,0.005967956,1
+Phase II: multispecies homogeneous experiment,DO,Competition,19,multi-traits,-0.77,0.0002519,121.1740748,1.0350472,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,multi-traits,-0.7,0.000532421,425.2132483,4.2930414,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,multi-traits,-0.68,0.00055716,179.3751844,1.618497882,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,multi-traits,-0.61,0.000615411,174.7096878,1.947037469,1
+Phase II: multispecies homogeneous experiment,HA,Competition,16,multi-traits,-0.52,0.000931386,44.53242501,0.427960889,1
+Phase II: multispecies homogeneous experiment,SS,Competition,17,multi-traits,-0.4,0.000318098,31.65157362,0.22788376,1
+Phase II: multispecies homogeneous experiment,QC,Competition,20,multi-traits,-0.35,0.000756087,18.36778463,0.198054905,1
+Phase II: multispecies homogeneous experiment,DO,Competition-free,19,Chl,-0.77,0.020139886,0.839794844,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,Chl,-0.7,1.811708297,0.7410821,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,Chl,-0.68,0.167816463,1.044008485,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,Chl,-0.61,0.347393854,0.625450893,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,16,Chl,-0.4,0.979104001,0.748243502,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,17,Chl,-0.52,0.255865654,1.009885891,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,20,Chl,-0.35,0.269321832,0.837669834,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition-free,19,LTO,-0.77,1.800931061,0.902354204,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,LTO,-0.7,0.017602663,0.661768691,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,LTO,-0.68,0.015905077,0.575717715,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,LTO,-0.61,0.908068156,1.043897401,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,16,LTO,-0.4,0.063235908,0.482748201,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,17,LTO,-0.52,0.35857736,0.293376262,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,20,LTO,-0.35,0.013437576,0.308827956,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition-free,19,LDMC,-0.77,0.009327554,0.233905604,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,LDMC,-0.7,0.044127576,0.293754903,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,LDMC,-0.68,0.020139886,0.537819715,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,LDMC,-0.61,1.811708297,0.456018921,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,16,LDMC,-0.4,0.167816463,0.294436161,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,17,LDMC,-0.52,0.347393854,0.651268899,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,20,LDMC,-0.35,0.979104001,0.29448413,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition-free,19,SSD,-0.77,0.255865654,0.767296891,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,SSD,-0.7,0.269321832,0.544529207,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,SSD,-0.68,1.800931061,0.747326216,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,SSD,-0.61,0.017602663,0.721711874,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,16,SSD,-0.4,0.015905077,0.632692651,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,17,SSD,-0.52,0.908068156,0.536153925,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,20,SSD,-0.35,0.063235908,0.913307699,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition-free,19,SRL,-0.77,0.35857736,0.691987823,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,SRL,-0.7,0.013437576,0.577690649,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,SRL,-0.68,0.009327554,0.500554812,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,SRL,-0.61,0.044127576,0.473724327,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,16,SRL,-0.4,0.020139886,0.610675472,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,17,SRL,-0.52,1.811708297,0.576876707,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,20,SRL,-0.35,0.167816463,0.447845427,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition-free,19,RTD,-0.77,0.347393854,0.820376725,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,RTD,-0.7,0.979104001,0.502237291,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,RTD,-0.68,0.255865654,0.466635593,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,RTD,-0.61,0.269321832,0.695035843,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,16,RTD,-0.4,1.800931061,1.858609012,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,17,RTD,-0.52,0.017602663,0.675369133,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,20,RTD,-0.35,0.015905077,0.567170783,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition-free,19,SRA,-0.77,0.908068156,0.701109962,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition-free,20,SRA,-0.7,0.063235908,1.107203936,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition-free,20,SRA,-0.68,0.35857736,0.818712843,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition-free,20,SRA,-0.61,0.013437576,0.91033277,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition-free,16,SRA,-0.4,0.009327554,0.609871237,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition-free,17,SRA,-0.52,0.044127576,0.695024157,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition-free,20,SRA,-0.35,0.020139886,0.729387925,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition,20,Chl,-0.77,1.811708297,0.91971641,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,Chl,-0.7,0.167816463,1.113069645,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,Chl,-0.68,0.347393854,0.685079293,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,Chl,-0.61,0.979104001,0.824709655,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition,15,Chl,-0.4,0.255865654,1.034075202,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition,20,Chl,-0.52,0.269321832,1.080351341,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition,16,Chl,-0.35,1.800931061,0.839044672,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition,20,LTO,-0.77,0.017602663,0.909659283,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,LTO,-0.7,0.015905077,1.454462777,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,LTO,-0.68,0.908068156,0.583317334,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,LTO,-0.61,0.063235908,0.9780745,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition,15,LTO,-0.4,0.35857736,0.655349505,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition,20,LTO,-0.52,0.013437576,0.206630108,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition,16,LTO,-0.35,0.009327554,0.201129202,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition,20,LDMC,-0.77,0.044127576,0.599261664,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,LDMC,-0.7,0.020139886,0.455470038,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,LDMC,-0.68,1.811708297,0.525890011,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,LDMC,-0.61,0.167816463,0.633728334,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition,15,LDMC,-0.4,0.347393854,0.644860965,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition,20,LDMC,-0.52,0.979104001,0.919288415,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition,16,LDMC,-0.35,0.255865654,0.73475838,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition,20,SSD,-0.77,0.269321832,0.811968093,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,SSD,-0.7,1.800931061,1.174346083,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,SSD,-0.68,0.017602663,1.138665283,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,SSD,-0.61,0.015905077,0.893273199,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition,15,SSD,-0.4,0.908068156,0.974926065,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition,20,SSD,-0.52,0.063235908,0.892066022,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition,16,SSD,-0.35,0.35857736,0.82125134,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition,20,SRL,-0.77,0.013437576,1.823450029,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,SRL,-0.7,0.009327554,2.102551453,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,SRL,-0.68,0.044127576,2.314435084,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,SRL,-0.61,0.020139886,1.477835109,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition,15,SRL,-0.4,1.811708297,0.819456923,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition,20,SRL,-0.52,0.167816463,1.091025619,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition,16,SRL,-0.35,0.347393854,1.275589227,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition,20,RTD,-0.77,0.979104001,2.413517796,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,RTD,-0.7,0.255865654,3.218116217,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,RTD,-0.68,0.269321832,2.775376658,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,RTD,-0.61,1.800931061,2.960954519,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition,15,RTD,-0.4,0.017602663,2.157445095,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition,20,RTD,-0.52,0.015905077,2.643225435,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition,16,RTD,-0.35,0.908068156,2.433185955,NA,1
+Phase II: multispecies homogeneous experiment,DO,Competition,20,SRA,-0.77,0.063235908,1.990220758,NA,1
+Phase II: multispecies homogeneous experiment,LG,Competition,20,SRA,-0.7,0.35857736,1.933585645,NA,1
+Phase II: multispecies homogeneous experiment,CS,Competition,20,SRA,-0.68,0.013437576,2.56362809,NA,1
+Phase II: multispecies homogeneous experiment,CG,Competition,20,SRA,-0.61,0.009327554,2.077289571,NA,1
+Phase II: multispecies homogeneous experiment,SS,Competition,15,SRA,-0.4,0.044127576,1.777502817,NA,1
+Phase II: multispecies homogeneous experiment,HA,Competition,20,SRA,-0.52,0.020139886,2.192379703,NA,1
+Phase II: multispecies homogeneous experiment,QC,Competition,16,SRA,-0.35,1.811708297,1.855953349,NA,1
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,19,multi-traits,-0.836079532,0.000467999,2.68549265,0.008591001,2
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,18,multi-traits,-0.648870591,0,84.27471604,0.031546063,2
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,19,multi-traits,NA,NA,58.43512568,0.000675693,2
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,20,multi-traits,-0.759660963,0.000803913,14.53407088,0.017988418,2
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,18,multi-traits,-0.30827611,0,75.08368746,0.021991529,2
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,18,multi-traits,-0.505485237,0,0.560925902,0.001934876,2
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,20,multi-traits,-0.537910638,0.000404052,0.828469125,0.005481379,2
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,-0.836079532,0.000467999,2948.869786,0.097031226,2
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.648870591,0,2228.212108,0.001179955,2
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,NA,NA,NA,NA,2
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.759660963,0.000803913,2640.763243,0.091241556,2
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.30827611,0,201.3822005,0.001017511,2
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,-0.505485237,0,604.1682687,0.000833157,2
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.537910638,0.000404052,1140.05147,0.02636585,2
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,19,multi-traits,-0.849729008,0.000409492,1.870170764,0.006081265,3
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,20,multi-traits,-0.828713135,0.000389369,11.40517004,0.011367485,3
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,15,multi-traits,-0.709188541,0.000462339,34.20156594,0.000261701,3
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,20,multi-traits,-0.729364798,0.000680377,28.89222884,0.0178868,3
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,20,multi-traits,-0.455161066,0.001051224,10.42810106,0.012018985,3
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,17,multi-traits,-0.606657906,0,1.037503563,0.006548943,3
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,20,multi-traits,-0.410323736,0.000639688,2.58874615,0.010245007,3
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,-0.849729008,0.000409492,821.9649699,0.089484189,3
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.828713135,0.000389369,270.1747211,0.032923716,3
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,-0.709188541,0.000462339,486.3551362,0.054528284,3
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.729364798,0.000680377,54.11719454,0.0224924,3
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.455161066,0.001051224,31.19095432,0.01516608,3
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,-0.606657906,0,93.90349917,0.000375543,3
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.410323736,0.000639688,11.44086635,0.009643798,3
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,19,multi-traits,-0.534553733,0.000981074,27.44567864,0.019322231,4
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,20,multi-traits,-0.329691559,0.00082075,10.42265457,0.012078833,4
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,20,multi-traits,-0.475788004,0.001030831,31.7748569,0.033303291,4
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,20,multi-traits,-0.298254231,0.00079779,20.96195723,0.015935558,4
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,20,multi-traits,-0.63266619,0.000985148,16.05953563,0.013510244,4
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,16,multi-traits,-0.474976654,0.001522513,2.124465822,0.009391047,4
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,18,multi-traits,-0.117758946,0.00075532,1.088647193,0.007329731,4
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,-0.534553733,0.000981074,19.03102486,0.016172568,4
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.329691559,0.00082075,169.089701,0.042919555,4
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,-0.475788004,0.001030831,128.1613639,0.030241261,4
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.298254231,0.00079779,15.64267305,0.013178648,4
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.63266619,0.000985148,86.77380291,0.028277954,4
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,-0.474976654,0.001522513,7.192564005,0.010126,4
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.117758946,0.00075532,1.496731517,0.007514751,4
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,14,multi-traits,-0.366185313,0,26.99724149,0.000360232,5
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,20,multi-traits,-0.336470468,0.001058808,60.01238411,0.024931604,5
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,18,multi-traits,-0.507787806,0,8.362819343,0.009684556,5
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,20,multi-traits,-0.493060379,0.000921089,5.363014276,0.00970087,5
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,16,multi-traits,-0.379002091,0,65.78981635,0.000426819,5
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,16,multi-traits,-0.242423655,0,0.520944676,0.003764697,5
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,16,multi-traits,-0.134950689,0.000401575,0.701694287,0.00472484,5
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,-0.366185313,0,2020.535819,0.001475017,5
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.336470468,0.001058808,316.4766686,0.034601831,5
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,-0.507787806,0,200.2389264,0.000453552,5
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.493060379,0.000921089,118.6269426,0.041190768,5
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.379002091,0,39.47926861,0.000364021,5
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,-0.242423655,0,1.770621051,0.000186334,5
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.134950689,0.000401575,6.088474811,0.004210855,5
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,1,multi-traits,NA,NA,NA,NA,6
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,19,multi-traits,-0.415145373,0.000929146,66.825573,0.023339989,6
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,16,multi-traits,-0.234084193,0,315.9161592,0.000786674,6
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,19,multi-traits,-0.337618524,0.001147589,35.10635046,0.026682977,6
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,14,multi-traits,-0.158820357,0,5.223192573,0.000124899,6
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,16,multi-traits,0.080662805,0.000201049,0.758432622,0.000125107,6
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,12,multi-traits,-0.127747374,0.000801279,0.834645246,0.000147454,6
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,NA,NA,NA,NA,6
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.415145373,0.000929146,339.4588187,0.048316497,6
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,-0.234084193,0,1290.622822,0.001586623,6
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.337618524,0.001147589,164.4051785,0.034309257,6
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.158820357,0,12.02758225,0.000167331,6
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,0.080662805,0.000201049,23.93977991,0.010971927,6
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.127747374,0.000801279,11.49192557,0.008145956,6
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,17,multi-traits,-0.743203886,0.000640113,177.2887692,0.037278385,7
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,20,multi-traits,-0.811747017,0.000504836,11.10967252,0.018940642,7
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,19,multi-traits,-0.692336378,0.000639959,121.8058325,0.032802183,7
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,20,multi-traits,-0.700551282,0.000720136,2.578973557,0.005828009,7
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,18,multi-traits,-0.669099088,0.000638546,2.213032538,0.008187368,7
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,16,multi-traits,-0.647189372,0.000810466,1.264087624,0.003938445,7
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,20,multi-traits,-0.441974826,0.000980535,0.510933805,0.004501979,7
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,-0.743203886,0.000640113,30.49834661,0.021915468,7
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.811747017,0.000504836,91.19176139,0.027950326,7
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,-0.692336378,0.000639959,74.30858964,0.025605664,7
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.700551282,0.000720136,42.7269981,0.0393105,7
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.669099088,0.000638546,14.99211519,0.01404234,7
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,-0.647189372,0.000810466,14.3209919,0.011299123,7
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.441974826,0.000980535,2.473686186,0.008796065,7
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,18,multi-traits,-0.850159028,0.000275712,8.302739926,0.016737489,8
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,19,multi-traits,-0.701764281,0.000544156,5.75347251,0.007563125,8
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,20,multi-traits,-0.752705339,0.000513933,3.601733471,0.008561805,8
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,18,multi-traits,-0.659701236,0.000591344,0.676003376,0.003745171,8
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,18,multi-traits,-0.794293401,0,2.781446193,0.008113352,8
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,17,multi-traits,-0.388836675,0.001579593,0.434588117,0.003765786,8
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,19,multi-traits,-0.370255228,0.00090696,0.669752597,0.005945642,8
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,-0.850159028,0.000275712,34.462259,0.008277297,8
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.701764281,0.000544156,17.36562246,0.019634561,8
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,-0.752705339,0.000513933,13.38678462,0.017150567,8
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.659701236,0.000591344,4.94477531,0.010399763,8
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.794293401,0,11.71570287,0.000343275,8
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,-0.388836675,0.001579593,6.503926208,0.013145891,8
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.370255228,0.00090696,0.678917049,0.004873243,8
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition-free,16,multi-traits,-0.773147563,0.000303015,91.56773851,0.023948014,9
+Phase II: multispecies homogeneous experiment,L. glaber,Competition-free,16,multi-traits,-0.835023835,0.000313237,55.84036616,0.021902475,9
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition-free,16,multi-traits,-0.519867945,0.00042159,0.604512765,6.79E-05,9
+Phase II: multispecies homogeneous experiment,C. glauca,Competition-free,17,multi-traits,-0.492915103,0.000923228,15.12483397,0.015798874,9
+Phase II: multispecies homogeneous experiment,S. superba,Competition-free,16,multi-traits,-0.36604747,0,59.17249639,0.012004105,9
+Phase II: multispecies homogeneous experiment,H. acerba,Competition-free,18,multi-traits,0.035422175,0.000834984,14.71213725,0.000308717,9
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition-free,19,multi-traits,-0.148253612,0.001430562,0.905903711,0.006222656,9
+Phase II: multispecies homogeneous experiment,D. oldhami,Competition,20,multi-traits,-0.773147563,0.000303015,222.8115247,0.02156854,9
+Phase II: multispecies homogeneous experiment,L. glaber,Competition,20,multi-traits,-0.835023835,0.000313237,121.3914161,0.021915156,9
+Phase II: multispecies homogeneous experiment,C. sclerophylla,Competition,20,multi-traits,-0.519867945,0.00042159,112.1054985,0.014243581,9
+Phase II: multispecies homogeneous experiment,C. glauca,Competition,20,multi-traits,-0.492915103,0.000923228,24.9854861,0.015728918,9
+Phase II: multispecies homogeneous experiment,S. superba,Competition,20,multi-traits,-0.36604747,0,1.588132933,0.00015695,9
+Phase II: multispecies homogeneous experiment,H. acerba,Competition,20,multi-traits,0.035422175,0.000834984,18.98884845,0.010960264,9
+Phase II: multispecies homogeneous experiment,Q. chenii,Competition,20,multi-traits,-0.148253612,0.001430562,12.56014461,0.018901811,9
