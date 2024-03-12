@@ -1,257 +1,261 @@
-,Phase,species,Competition_treatment,pair_code,competitive_rank,sample_size,trait,RII,RII_se,ITV,ITV_se
-1,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,multi-traits,-0.221881898,0.167816463,18.59738681,0.300649959
-2,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,44,multi-traits,-0.230406405,0.347393854,18.59738681,0.300649959
-3,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,33,multi-traits,-0.314723657,0.979104001,18.59738681,0.300649959
-4,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,43,multi-traits,-0.258943337,0.255865654,9.408434548,0.118861932
-5,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,53,multi-traits,-0.351265585,0.269321832,9.408434548,0.118861932
-6,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,44,multi-traits,-0.194082405,1.800931061,84.49924937,1.012142431
-7,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,multi-traits,-0.060366823,0.017602663,1.331870124,0.024691766
-8,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,43,multi-traits,-0.058499851,0.015905077,1.331870124,0.024691766
-9,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,44,multi-traits,-0.246226603,0.908068156,72.85017538,0.987051469
-10,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,multi-traits,-0.311960052,0.063235908,5.913001645,0.078433748
-11,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,44,multi-traits,-0.430815486,0.35857736,5.913001645,0.078433748
-12,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,33,multi-traits,0.000180136,0.013437576,0.266706051,0.002892681
-13,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,53,multi-traits,-0.208181055,0.009327554,0.266706051,0.002892681
-14,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,43,multi-traits,-0.32636323,0.044127576,0.266706051,0.002892681
-15,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,44,multi-traits,-0.165065029,0.020139886,0.266706051,0.002892681
-16,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,multi-traits,-0.37506843,1.811708297,30.69904262,0.468783556
-33,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,multi-traits,-0.221881898,0.167816463,12.62099218,0.167816463
-34,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,43,multi-traits,-0.230406405,0.347393854,22.83620184,0.347393854
-35,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,43,multi-traits,-0.314723657,0.979104001,67.36519326,0.979104001
-36,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,46,multi-traits,-0.258943337,0.255865654,16.63764095,0.255865654
-37,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,46,multi-traits,-0.351265585,0.269321832,15.75330472,0.269321832
-38,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,45,multi-traits,-0.194082405,1.800931061,141.4510788,1.800931061
-39,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,multi-traits,-0.060366823,0.017602663,0.949940056,0.017602663
-40,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,45,multi-traits,-0.058499851,0.015905077,1.229206051,0.015905077
-41,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,45,multi-traits,-0.246226603,0.908068156,68.39578527,0.908068156
-42,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,multi-traits,-0.311960052,0.063235908,5.063711363,0.063235908
-43,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,45,multi-traits,-0.430815486,0.35857736,23.9430287,0.35857736
-44,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,45,multi-traits,0.000180136,0.013437576,1.794074167,0.013437576
-45,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,45,multi-traits,-0.208181055,0.009327554,0.535621265,0.009327554
-46,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,45,multi-traits,-0.32636323,0.044127576,3.109803268,0.044127576
-47,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,45,multi-traits,-0.165065029,0.020139886,1.116908698,0.020139886
-48,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,multi-traits,-0.37506843,1.811708297,136.7768271,1.811708297
-65,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,LTh,-0.200047806,0.167816463,0.581013706,NA
-66,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,43,LTh,-0.231217507,0.347393854,0.581013706,NA
-67,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,43,LTh,-0.339370403,0.979104001,0.581013706,NA
-68,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,46,LTh,-0.251780084,0.255865654,0.706101646,NA
-69,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,46,LTh,-0.341382743,0.269321832,0.706101646,NA
-70,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,45,LTh,-0.233111816,1.800931061,0.902810288,NA
-71,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,LTh,-0.086687136,0.017602663,0.51107199,NA
-72,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,45,LTh,-0.103013581,0.015905077,0.51107199,NA
-73,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,45,LTh,-0.217806009,0.908068156,1.152006149,NA
-74,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,LTh,-0.366039615,0.063235908,0.784472142,NA
-75,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,45,LTh,-0.418832206,0.35857736,0.784472142,NA
-76,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,45,LTh,-0.003704505,0.013437576,0.241410045,NA
-77,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,45,LTh,-0.179289997,0.009327554,0.241410045,NA
-78,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,45,LTh,-0.306398352,0.044127576,0.241410045,NA
-79,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,45,LTh,-0.165484192,0.020139886,0.241410045,NA
-80,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,LTh,-0.337906472,1.811708297,0.646428319,NA
-81,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,LDMC,-0.200047806,0.167816463,1.057963979,NA
-82,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,43,LDMC,-0.231217507,0.347393854,1.057963979,NA
-83,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,43,LDMC,-0.339370403,0.979104001,1.057963979,NA
-84,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,46,LDMC,-0.251780084,0.255865654,0.694473825,NA
-85,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,46,LDMC,-0.341382743,0.269321832,0.694473825,NA
-86,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,45,LDMC,-0.233111816,1.800931061,1.510435063,NA
-87,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,LDMC,-0.086687136,0.017602663,0.778491234,NA
-88,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,45,LDMC,-0.103013581,0.015905077,0.778491234,NA
-89,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,45,LDMC,-0.217806009,0.908068156,0.908873418,NA
-90,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,LDMC,-0.366039615,0.063235908,0.648104633,NA
-91,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,45,LDMC,-0.418832206,0.35857736,0.648104633,NA
-92,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,45,LDMC,-0.003704505,0.013437576,0.81229404,NA
-93,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,45,LDMC,-0.179289997,0.009327554,0.81229404,NA
-94,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,45,LDMC,-0.306398352,0.044127576,0.81229404,NA
-95,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,45,LDMC,-0.165484192,0.020139886,0.81229404,NA
-96,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,LDMC,-0.337906472,1.811708297,1.050976623,NA
-97,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,LMA,-0.200047806,0.167816463,1.06739072,NA
-98,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,43,LMA,-0.231217507,0.347393854,1.06739072,NA
-99,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,43,LMA,-0.339370403,0.979104001,1.06739072,NA
-100,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,46,LMA,-0.251780084,0.255865654,0.697677208,NA
-101,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,46,LMA,-0.341382743,0.269321832,0.697677208,NA
-102,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,45,LMA,-0.233111816,1.800931061,1.099467302,NA
-103,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,LMA,-0.086687136,0.017602663,0.446074708,NA
-104,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,45,LMA,-0.103013581,0.015905077,0.446074708,NA
-105,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,45,LMA,-0.217806009,0.908068156,1.100145211,NA
-106,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,LMA,-0.366039615,0.063235908,0.385806762,NA
-107,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,45,LMA,-0.418832206,0.35857736,0.385806762,NA
-108,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,45,LMA,-0.003704505,0.013437576,0.363240285,NA
-109,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,45,LMA,-0.179289997,0.009327554,0.363240285,NA
-110,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,45,LMA,-0.306398352,0.044127576,0.363240285,NA
-111,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,45,LMA,-0.165484192,0.020139886,0.363240285,NA
-112,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,LMA,-0.337906472,1.811708297,0.801283443,NA
-113,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,Chl,-0.200047806,0.167816463,1.268989562,NA
-114,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,43,Chl,-0.231217507,0.347393854,1.268989562,NA
-115,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,43,Chl,-0.339370403,0.979104001,1.268989562,NA
-116,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,46,Chl,-0.251780084,0.255865654,1.269491881,NA
-117,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,46,Chl,-0.341382743,0.269321832,1.269491881,NA
-118,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,45,Chl,-0.233111816,1.800931061,1.269932594,NA
-119,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,Chl,-0.086687136,0.017602663,1.807752612,NA
-120,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,45,Chl,-0.103013581,0.015905077,1.807752612,NA
-121,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,45,Chl,-0.217806009,0.908068156,1.661639647,NA
-122,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,Chl,-0.366039615,0.063235908,0.825810178,NA
-123,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,45,Chl,-0.418832206,0.35857736,0.825810178,NA
-124,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,45,Chl,-0.003704505,0.013437576,1.135516823,NA
-125,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,45,Chl,-0.179289997,0.009327554,1.135516823,NA
-126,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,45,Chl,-0.306398352,0.044127576,1.135516823,NA
-127,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,45,Chl,-0.165484192,0.020139886,1.135516823,NA
-128,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,Chl,-0.337906472,1.811708297,1.864109611,NA
-129,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,LTO,-0.200047806,0.167816463,1.190394277,NA
-130,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,43,LTO,-0.231217507,0.347393854,1.190394277,NA
-131,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,43,LTO,-0.339370403,0.979104001,1.190394277,NA
-132,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,46,LTO,-0.251780084,0.255865654,0.870746655,NA
-133,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,46,LTO,-0.341382743,0.269321832,0.870746655,NA
-134,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,45,LTO,-0.233111816,1.800931061,0.704222156,NA
-135,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,LTO,-0.086687136,0.017602663,0.278411952,NA
-136,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,45,LTO,-0.103013581,0.015905077,0.278411952,NA
-137,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,45,LTO,-0.217806009,0.908068156,1.450753046,NA
-138,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,LTO,-0.366039615,0.063235908,0.567974845,NA
-139,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,45,LTO,-0.418832206,0.35857736,0.567974845,NA
-140,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,45,LTO,-0.003704505,0.013437576,0.340719838,NA
-141,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,45,LTO,-0.179289997,0.009327554,0.340719838,NA
-142,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,45,LTO,-0.306398352,0.044127576,0.340719838,NA
-143,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,45,LTO,-0.165484192,0.020139886,0.340719838,NA
-144,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,LTO,-0.337906472,1.811708297,0.510244425,NA
-145,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,SSD,-0.200047806,0.167816463,1.113549538,NA
-146,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,43,SSD,-0.231217507,0.347393854,1.113549538,NA
-147,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,43,SSD,-0.339370403,0.979104001,1.113549538,NA
-148,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,46,SSD,-0.251780084,0.255865654,1.395874399,NA
-149,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,46,SSD,-0.341382743,0.269321832,1.395874399,NA
-150,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,45,SSD,-0.233111816,1.800931061,2.053536862,NA
-151,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,SSD,-0.086687136,0.017602663,1.165820574,NA
-152,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,45,SSD,-0.103013581,0.015905077,1.165820574,NA
-153,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,45,SSD,-0.217806009,0.908068156,1.505305746,NA
-154,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,SSD,-0.366039615,0.063235908,1.721694299,NA
-155,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,45,SSD,-0.418832206,0.35857736,1.721694299,NA
-156,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,45,SSD,-0.003704505,0.013437576,0.852008976,NA
-157,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,45,SSD,-0.179289997,0.009327554,0.852008976,NA
-158,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,45,SSD,-0.306398352,0.044127576,0.852008976,NA
-159,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,45,SSD,-0.165484192,0.020139886,0.852008976,NA
-160,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,SSD,-0.337906472,1.811708297,1.33243797,NA
-161,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. myrsinifolia,Superior,43,SMC,-0.200047806,0.167816463,0.856836752,NA
-162,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-C. sclerophylla,Superior,43,SMC,-0.231217507,0.347393854,0.856836752,NA
-163,Phase I: pairwise homogeneous experiment,C. glauca,Competition-free,C. glauca-Q. chenii,Inferior,43,SMC,-0.339370403,0.979104001,0.856836752,NA
-164,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-C. glauca,Inferior,46,SMC,-0.251780084,0.255865654,0.944483469,NA
-165,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition-free,C. myrsinifolia-Q. chenii,Inferior,46,SMC,-0.341382743,0.269321832,0.944483469,NA
-166,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition-free,C. sclerophylla-C. glauca,Inferior,45,SMC,-0.233111816,1.800931061,1.338470484,NA
-167,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-P. sheareri,Superior,45,SMC,-0.086687136,0.017602663,0.705892607,NA
-168,Phase I: pairwise homogeneous experiment,H. acerba,Competition-free,H. acerba-Q. chenii,Superior,45,SMC,-0.103013581,0.015905077,0.705892607,NA
-169,Phase I: pairwise homogeneous experiment,L. harlandii,Competition-free,L. harlandii-S. superba,Superior,45,SMC,-0.217806009,0.908068156,0.838218386,NA
-170,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-H. acerba,Inferior,45,SMC,-0.366039615,0.063235908,1.767340424,NA
-171,Phase I: pairwise homogeneous experiment,P. sheareri,Competition-free,P. sheareri-Q. chenii,Inferior,45,SMC,-0.418832206,0.35857736,1.767340424,NA
-172,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. glauca,Superior,45,SMC,-0.003704505,0.013437576,0.525666285,NA
-173,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-C. myrsinifolia,Superior,45,SMC,-0.179289997,0.009327554,0.525666285,NA
-174,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-H. acerba,Inferior,45,SMC,-0.306398352,0.044127576,0.525666285,NA
-175,Phase I: pairwise homogeneous experiment,Q. chenii,Competition-free,Q. chenii-P. sheareri,Superior,45,SMC,-0.165484192,0.020139886,0.525666285,NA
-176,Phase I: pairwise homogeneous experiment,S. superba,Competition-free,S. superba-L. harlandii,Inferior,44,SMC,-0.337906472,1.811708297,2.267300062,NA
-177,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,LTh,-0.200047806,1.0350472,0.539751904,NA
-178,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,44,LTh,-0.231217507,4.2930414,0.611232171,NA
-179,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,33,LTh,-0.339370403,1.618497882,1.086365681,NA
-180,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,43,LTh,-0.251780084,1.947037469,0.701798288,NA
-181,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,53,LTh,-0.341382743,0.427960889,0.584396408,NA
-182,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,44,LTh,-0.233111816,0.22788376,0.721466712,NA
-183,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,LTh,-0.086687136,0.198054905,0.397435108,NA
-184,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,43,LTh,-0.103013581,1.0350472,0.428564877,NA
-185,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,44,LTh,-0.217806009,4.2930414,0.980871554,NA
-186,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,LTh,-0.366039615,1.618497882,0.583036065,NA
-187,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,44,LTh,-0.418832206,1.947037469,0.680115668,NA
-188,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,33,LTh,-0.003704505,0.427960889,0.250312246,NA
-189,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,53,LTh,-0.179289997,0.22788376,0.214378414,NA
-190,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,43,LTh,-0.306398352,0.198054905,0.396337251,NA
-191,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,44,LTh,-0.165484192,1.0350472,0.244935332,NA
-192,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,LTh,-0.337906472,4.2930414,1.047649724,NA
-193,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,LDMC,-0.200047806,1.618497882,0.797193105,NA
-194,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,44,LDMC,-0.231217507,1.947037469,0.796564254,NA
-195,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,33,LDMC,-0.339370403,0.427960889,1.151405527,NA
-196,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,43,LDMC,-0.251780084,0.22788376,0.835328864,NA
-197,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,53,LDMC,-0.341382743,0.198054905,0.96939327,NA
-198,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,44,LDMC,-0.233111816,1.0350472,1.382771247,NA
-199,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,LDMC,-0.086687136,4.2930414,1.08914251,NA
-200,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,43,LDMC,-0.103013581,1.618497882,0.895676319,NA
-201,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,44,LDMC,-0.217806009,1.947037469,0.981931236,NA
-202,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,LDMC,-0.366039615,0.427960889,0.589744153,NA
-203,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,44,LDMC,-0.418832206,0.22788376,1.02859357,NA
-204,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,33,LDMC,-0.003704505,0.198054905,1.137142304,NA
-205,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,53,LDMC,-0.179289997,1.0350472,0.98768308,NA
-206,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,43,LDMC,-0.306398352,4.2930414,1.389949544,NA
-207,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,44,LDMC,-0.165484192,1.618497882,0.900492233,NA
-208,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,LDMC,-0.337906472,1.947037469,1.290099547,NA
-209,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,LMA,-0.200047806,0.427960889,0.657936039,NA
-210,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,44,LMA,-0.231217507,0.22788376,0.892916372,NA
-211,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,33,LMA,-0.339370403,0.198054905,1.024370747,NA
-212,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,43,LMA,-0.251780084,1.0350472,0.837660319,NA
-213,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,53,LMA,-0.341382743,4.2930414,0.670360007,NA
-214,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,44,LMA,-0.233111816,1.618497882,1.117904011,NA
-215,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,LMA,-0.086687136,1.947037469,0.360247287,NA
-216,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,43,LMA,-0.103013581,0.427960889,0.343448816,NA
-217,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,44,LMA,-0.217806009,0.22788376,1.089995413,NA
-218,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,LMA,-0.366039615,0.198054905,0.359880555,NA
-219,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,44,LMA,-0.418832206,1.0350472,0.512061697,NA
-220,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,33,LMA,-0.003704505,4.2930414,0.366972722,NA
-221,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,53,LMA,-0.179289997,1.618497882,0.344210541,NA
-222,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,43,LMA,-0.306398352,1.947037469,0.623054211,NA
-223,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,44,LMA,-0.165484192,0.427960889,0.3056674,NA
-224,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,LMA,-0.337906472,0.22788376,1.033124963,NA
-225,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,Chl,-0.200047806,0.198054905,1.168876552,NA
-226,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,44,Chl,-0.231217507,48.44954055,1.379397687,NA
-227,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,33,Chl,-0.339370403,25.24258765,1.502629051,NA
-228,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,43,Chl,-0.251780084,17.52397422,1.170550354,NA
-229,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,53,Chl,-0.341382743,20.05844323,1.198377067,NA
-230,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,44,Chl,-0.233111816,15.98500614,1.42276367,NA
-231,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,Chl,-0.086687136,6.448736985,1.987088639,NA
-232,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,43,Chl,-0.103013581,4.262650181,2.086228958,NA
-233,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,44,Chl,-0.217806009,48.44954055,1.529837692,NA
-234,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,Chl,-0.366039615,25.24258765,1.400504794,NA
-235,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,44,Chl,-0.418832206,17.52397422,1.594537902,NA
-236,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,33,Chl,-0.003704505,20.05844323,1.152743151,NA
-237,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,53,Chl,-0.179289997,15.98500614,0.953661239,NA
-238,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,43,Chl,-0.306398352,6.448736985,1.333893772,NA
-239,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,44,Chl,-0.165484192,4.262650181,1.415546315,NA
-240,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,Chl,-0.337906472,48.44954055,1.665736176,NA
-241,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,LTO,-0.200047806,25.24258765,0.848752791,NA
-242,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,44,LTO,-0.231217507,17.52397422,0.963836078,NA
-243,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,33,LTO,-0.339370403,20.05844323,0.689589216,NA
-244,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,43,LTO,-0.251780084,15.98500614,0.761651127,NA
-245,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,53,LTO,-0.341382743,6.448736985,0.756215241,NA
-246,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,44,LTO,-0.233111816,4.262650181,0.902178351,NA
-247,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,LTO,-0.086687136,48.44954055,0.237245971,NA
-248,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,43,LTO,-0.103013581,25.24258765,0.232103574,NA
-249,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,44,LTO,-0.217806009,17.52397422,1.652717832,NA
-250,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,LTO,-0.366039615,20.05844323,0.471062224,NA
-251,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,44,LTO,-0.418832206,15.98500614,0.458448084,NA
-252,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,33,LTO,-0.003704505,6.448736985,0.369935123,NA
-253,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,53,LTO,-0.179289997,4.262650181,0.322109019,NA
-254,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,43,LTO,-0.306398352,48.44954055,0.372020463,NA
-255,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,44,LTO,-0.165484192,25.24258765,0.307305406,NA
-256,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,LTO,-0.337906472,17.52397422,0.601470214,NA
-257,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,SSD,-0.200047806,20.05844323,1.278045068,NA
-258,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,44,SSD,-0.231217507,15.98500614,1.314532091,NA
-259,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,33,SSD,-0.339370403,6.448736985,1.4669127,NA
-260,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,43,SSD,-0.251780084,4.262650181,1.306671027,NA
-261,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,53,SSD,-0.341382743,48.44954055,1.539783367,NA
-262,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,44,SSD,-0.233111816,25.24258765,2.447881681,NA
-263,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,SSD,-0.086687136,17.52397422,1.036014392,NA
-264,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,43,SSD,-0.103013581,20.05844323,1.350399165,NA
-265,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,44,SSD,-0.217806009,15.98500614,1.328987703,NA
-266,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,SSD,-0.366039615,6.448736985,1.465493472,NA
-267,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,44,SSD,-0.418832206,4.262650181,2.253498286,NA
-268,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,33,SSD,-0.003704505,48.44954055,3.433290734,NA
-269,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,53,SSD,-0.179289997,25.24258765,1.269170299,NA
-270,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,43,SSD,-0.306398352,17.52397422,1.340344554,NA
-271,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,44,SSD,-0.165484192,20.05844323,1.703532327,NA
-272,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,SSD,-0.337906472,15.98500614,1.938164122,NA
-273,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. myrsinifolia,Superior,43,SMC,-0.200047806,6.448736985,1.570689354,NA
-274,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-C. sclerophylla,Superior,44,SMC,-0.231217507,4.262650181,1.554311865,NA
-275,Phase I: pairwise homogeneous experiment,C. glauca,Competition,C. glauca-Q. chenii,Inferior,33,SMC,-0.339370403,0.167816463,1.398529922,NA
-276,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-C. glauca,Inferior,43,SMC,-0.251780084,0.347393854,1.251192286,NA
-277,Phase I: pairwise homogeneous experiment,C. myrsinifolia,Competition,C. myrsinifolia-Q. chenii,Inferior,53,SMC,-0.341382743,0.979104001,1.260733772,NA
-278,Phase I: pairwise homogeneous experiment,C. sclerophylla,Competition,C. sclerophylla-C. glauca,Inferior,44,SMC,-0.233111816,0.255865654,1.930446993,NA
-279,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-P. sheareri,Superior,45,SMC,-0.086687136,0.269321832,0.659174872,NA
-280,Phase I: pairwise homogeneous experiment,H. acerba,Competition,H. acerba-Q. chenii,Superior,43,SMC,-0.103013581,1.800931061,0.776839467,NA
-281,Phase I: pairwise homogeneous experiment,L. harlandii,Competition,L. harlandii-S. superba,Superior,44,SMC,-0.217806009,0.017602663,1.2408,NA
-282,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-H. acerba,Inferior,45,SMC,-0.366039615,0.015905077,1.833932656,NA
-283,Phase I: pairwise homogeneous experiment,P. sheareri,Competition,P. sheareri-Q. chenii,Inferior,44,SMC,-0.418832206,0.908068156,1.844572378,NA
-284,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. glauca,Superior,33,SMC,-0.003704505,0.063235908,0.572770425,NA
-285,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-C. myrsinifolia,Superior,53,SMC,-0.179289997,0.35857736,0.938982692,NA
-286,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-H. acerba,Inferior,43,SMC,-0.306398352,0.013437576,0.780732158,NA
-287,Phase I: pairwise homogeneous experiment,Q. chenii,Competition,Q. chenii-P. sheareri,Superior,44,SMC,-0.165484192,0.009327554,1.099443043,NA
-288,Phase I: pairwise homogeneous experiment,S. superba,Competition,S. superba-L. harlandii,Inferior,44,SMC,-0.337906472,0.044127576,2.524789357,NA
+"","Phase","species","Competition_treatment","pair_code","competitive_rank","sample_size","trait","RII","RII_se","ITV","ITV_se"
+"1","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C. glauca-C. myrsinifolia","Superior",39,"multi-traits",-0.221881897522223,0.16781646263067,18.5973868100414,0.300649958808623
+"2","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C. glauca-C. sclerophylla","Superior",44,"multi-traits",-0.230406404698181,0.347393854155474,18.5973868100414,0.300649958808623
+"3","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C. glauca-Q. chenii","Inferior",31,"multi-traits",-0.314723656921956,0.979104000661536,18.5973868100414,0.300649958808623
+"4","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C. myrsinifolia-C. glauca","Inferior",41,"multi-traits",-0.258943336925752,0.255865653840506,9.40843454847362,0.118861932100739
+"5","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C. myrsinifolia-Q. chenii","Inferior",49,"multi-traits",-0.351265584590523,0.269321832401235,9.40843454847362,0.118861932100739
+"6","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C. sclerophylla-C. glauca","Inferior",40,"multi-traits",-0.194082404969194,1.80093106072393,84.4992493716625,1.01214243093205
+"7","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H. acerba-P. sheareri","Superior",45,"multi-traits",-0.060366822675796,0.0176026628977019,1.33187012379213,0.0246917655686608
+"8","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H. acerba-Q. chenii","Superior",41,"multi-traits",-0.0584998514601088,0.0159050770561524,1.33187012379213,0.0246917655686608
+"9","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L. harlandii-S. superba","Superior",44,"multi-traits",-0.246226603276061,0.908068155612861,72.8501753842238,0.987051468701824
+"10","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P. sheareri-H. acerba","Inferior",42,"multi-traits",-0.311960051911158,0.0632359079681482,5.91300164507762,0.0784337483579661
+"11","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P. sheareri-Q. chenii","Inferior",44,"multi-traits",-0.430815486140811,0.358577359984925,5.91300164507762,0.0784337483579661
+"12","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q. chenii-C. glauca","Superior",27,"multi-traits",0.000180135948856328,0.0134375762621625,0.266706050805314,0.00289268064148789
+"13","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q. chenii-C. myrsinifolia","Superior",52,"multi-traits",-0.20818105528762,0.00932755375192629,0.266706050805314,0.00289268064148789
+"14","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q. chenii-H. acerba","Inferior",42,"multi-traits",-0.326363229947188,0.0441275758983597,0.266706050805314,0.00289268064148789
+"15","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q. chenii-P. sheareri","Superior",43,"multi-traits",-0.165065028724463,0.0201398862159319,0.266706050805314,0.00289268064148789
+"16","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S. superba-L. harlandii","Inferior",37,"multi-traits",-0.375068429858871,1.81170829742371,30.6990426172341,0.468783555744176
+"17","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","all","Inferior",NA,"multi-traits",-0.351265584590523,0.514706928254868,20.5881571546057,0.388767276060886
+"18","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","all","Superior",NA,"multi-traits",-0.20818105528762,0.41607350518686,14.1886009255383,0.462958644734157
+"33","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",43,"multi-traits",-0.221881897522223,0.16781646263067,12.6209921806626,0.16781646263067
+"34","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",43,"multi-traits",-0.230406404698181,0.347393854155474,22.8362018417882,0.347393854155474
+"35","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",43,"multi-traits",-0.314723656921956,0.979104000661536,67.3651932598051,0.979104000661536
+"36","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",44,"multi-traits",-0.258943336925752,0.255865653840506,16.6376409544604,0.255865653840506
+"37","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",44,"multi-traits",-0.351265584590523,0.269321832401235,15.7533047170106,0.269321832401235
+"38","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",43,"multi-traits",-0.194082404969194,1.80093106072393,141.451078781095,1.80093106072393
+"39","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",44,"multi-traits",-0.060366822675796,0.0176026628977019,0.949940055673476,0.0176026628977019
+"40","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",44,"multi-traits",-0.0584998514601088,0.0159050770561524,1.22920605086893,0.0159050770561524
+"41","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",41,"multi-traits",-0.246226603276061,0.908068155612861,68.3957852653985,0.908068155612861
+"42","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"multi-traits",-0.311960051911158,0.0632359079681482,5.06371136321669,0.0632359079681482
+"43","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",42,"multi-traits",-0.430815486140811,0.358577359984925,23.9430286979361,0.358577359984925
+"44","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",45,"multi-traits",0.000180135948856328,0.0134375762621625,1.79407416659232,0.0134375762621625
+"45","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",45,"multi-traits",-0.20818105528762,0.00932755375192629,0.535621264889093,0.00932755375192629
+"46","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",45,"multi-traits",-0.326363229947188,0.0441275758983597,3.10980326845041,0.0441275758983597
+"47","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",45,"multi-traits",-0.165065028724463,0.0201398862159319,1.11690869829231,0.0201398862159319
+"48","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",43,"multi-traits",-0.375068429858871,1.81170829742371,136.776827122277,1.81170829742371
+"49","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","all","Inferior",NA,"multi-traits",-0.351265584590523,0.514706928254868,51.2625735205314,0.514706928254868
+"50","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","all","Superior",NA,"multi-traits",-0.20818105528762,0.41607350518686,13.6848411905207,0.41607350518686
+"65","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca","Superior",43,"Chl",-0.20061820287413,0.16781646263067,0.116174175918661,NA
+"66","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.1","Superior",43,"Chl",-0.231588784981267,0.347393854155474,0.116174175918661,NA
+"67","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.2","Inferior",43,"Chl",-0.340228733806371,0.979104000661536,0.116174175918661,NA
+"68","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia","Inferior",44,"Chl",-0.252084663493536,0.255865653840506,0.113985223079147,NA
+"69","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia.1","Inferior",44,"Chl",-0.340023730506761,0.269321832401235,0.113985223079147,NA
+"70","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C..sclerophylla","Inferior",43,"Chl",-0.235505239615598,1.80093106072393,0.150257884906649,NA
+"71","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba","Superior",44,"Chl",-0.0881310486499513,0.0176026628977019,0.240571835296552,NA
+"72","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba.1","Superior",44,"Chl",-0.10146734967176,0.0159050770561524,0.240571835296552,NA
+"73","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L..harlandii","Superior",41,"Chl",-0.210393280708171,0.908068155612861,0.148906030341453,NA
+"74","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri","Inferior",42,"Chl",-0.357118072953801,0.0632359079681482,0.111011240466635,NA
+"75","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri.1","Inferior",42,"Chl",-0.404847094317761,0.358577359984925,0.111011240466635,NA
+"76","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii","Superior",45,"Chl",-0.00356829219354806,0.0134375762621625,0.159616128870268,NA
+"77","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.1","Superior",45,"Chl",-0.178300675004185,0.00932755375192629,0.159616128870268,NA
+"78","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.2","Inferior",45,"Chl",-0.306634081097522,0.0441275758983597,0.159616128870268,NA
+"79","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.3","Superior",45,"Chl",-0.165569106808909,0.0201398862159319,0.159616128870268,NA
+"80","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S..superba","Inferior",43,"Chl",-0.330327767442783,1.81170829742371,0.248182692252192,NA
+"81","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca","Superior",43,"LDMC",-0.20061820287413,0.16781646263067,0.122839173927615,NA
+"82","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.1","Superior",43,"LDMC",-0.231588784981267,0.347393854155474,0.122839173927615,NA
+"83","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.2","Inferior",43,"LDMC",-0.340228733806371,0.979104000661536,0.122839173927615,NA
+"84","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia","Inferior",44,"LDMC",-0.252084663493536,0.255865653840506,0.0865623536531654,NA
+"85","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia.1","Inferior",44,"LDMC",-0.340023730506761,0.269321832401235,0.0865623536531654,NA
+"86","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C..sclerophylla","Inferior",43,"LDMC",-0.235505239615598,1.80093106072393,0.174846973318578,NA
+"87","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba","Superior",44,"LDMC",-0.0881310486499513,0.0176026628977019,0.253322492031998,NA
+"88","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba.1","Superior",44,"LDMC",-0.10146734967176,0.0159050770561524,0.253322492031998,NA
+"89","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L..harlandii","Superior",41,"LDMC",-0.210393280708171,0.908068155612861,0.12452628475814,NA
+"90","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri","Inferior",42,"LDMC",-0.357118072953801,0.0632359079681482,0.095834921463169,NA
+"91","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri.1","Inferior",42,"LDMC",-0.404847094317761,0.358577359984925,0.095834921463169,NA
+"92","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii","Superior",45,"LDMC",-0.00356829219354806,0.0134375762621625,0.0868734217828884,NA
+"93","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.1","Superior",45,"LDMC",-0.178300675004185,0.00932755375192629,0.0868734217828884,NA
+"94","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.2","Inferior",45,"LDMC",-0.306634081097522,0.0441275758983597,0.0868734217828884,NA
+"95","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.3","Superior",45,"LDMC",-0.165569106808909,0.0201398862159319,0.0868734217828884,NA
+"96","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S..superba","Inferior",43,"LDMC",-0.330327767442783,1.81170829742371,0.187640986458495,NA
+"97","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca","Superior",43,"LMA",-0.20061820287413,0.16781646263067,0.126090452454893,NA
+"98","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.1","Superior",43,"LMA",-0.231588784981267,0.347393854155474,0.126090452454893,NA
+"99","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.2","Inferior",43,"LMA",-0.340228733806371,0.979104000661536,0.126090452454893,NA
+"100","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia","Inferior",44,"LMA",-0.252084663493536,0.255865653840506,0.0836108706272236,NA
+"101","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia.1","Inferior",44,"LMA",-0.340023730506761,0.269321832401235,0.0836108706272236,NA
+"102","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C..sclerophylla","Inferior",43,"LMA",-0.235505239615598,1.80093106072393,0.169334662096846,NA
+"103","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba","Superior",44,"LMA",-0.0881310486499513,0.0176026628977019,0.204578674016341,NA
+"104","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba.1","Superior",44,"LMA",-0.10146734967176,0.0159050770561524,0.204578674016341,NA
+"105","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L..harlandii","Superior",41,"LMA",-0.210393280708171,0.908068155612861,0.126594818119552,NA
+"106","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri","Inferior",42,"LMA",-0.357118072953801,0.0632359079681482,0.0775429387540803,NA
+"107","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri.1","Inferior",42,"LMA",-0.404847094317761,0.358577359984925,0.0775429387540803,NA
+"108","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii","Superior",45,"LMA",-0.00356829219354806,0.0134375762621625,0.0914093844176083,NA
+"109","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.1","Superior",45,"LMA",-0.178300675004185,0.00932755375192629,0.0914093844176083,NA
+"110","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.2","Inferior",45,"LMA",-0.306634081097522,0.0441275758983597,0.0914093844176083,NA
+"111","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.3","Superior",45,"LMA",-0.165569106808909,0.0201398862159319,0.0914093844176083,NA
+"112","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S..superba","Inferior",43,"LMA",-0.330327767442783,1.81170829742371,0.14604470691887,NA
+"113","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca","Superior",43,"LTh",-0.20061820287413,0.16781646263067,0.0811288718150877,NA
+"114","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.1","Superior",43,"LTh",-0.231588784981267,0.347393854155474,0.0811288718150877,NA
+"115","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.2","Inferior",43,"LTh",-0.340228733806371,0.979104000661536,0.0811288718150877,NA
+"116","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia","Inferior",44,"LTh",-0.252084663493536,0.255865653840506,0.0963607457340833,NA
+"117","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia.1","Inferior",44,"LTh",-0.340023730506761,0.269321832401235,0.0963607457340833,NA
+"118","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C..sclerophylla","Inferior",43,"LTh",-0.235505239615598,1.80093106072393,0.20278871189913,NA
+"119","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba","Superior",44,"LTh",-0.0881310486499513,0.0176026628977019,0.333863698314458,NA
+"120","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba.1","Superior",44,"LTh",-0.10146734967176,0.0159050770561524,0.333863698314458,NA
+"121","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L..harlandii","Superior",41,"LTh",-0.210393280708171,0.908068155612861,0.124499569818523,NA
+"122","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri","Inferior",42,"LTh",-0.357118072953801,0.0632359079681482,0.183271138337375,NA
+"123","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri.1","Inferior",42,"LTh",-0.404847094317761,0.358577359984925,0.183271138337375,NA
+"124","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii","Superior",45,"LTh",-0.00356829219354806,0.0134375762621625,0.112313603430209,NA
+"125","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.1","Superior",45,"LTh",-0.178300675004185,0.00932755375192629,0.112313603430209,NA
+"126","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.2","Inferior",45,"LTh",-0.306634081097522,0.0441275758983597,0.112313603430209,NA
+"127","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.3","Superior",45,"LTh",-0.165569106808909,0.0201398862159319,0.112313603430209,NA
+"128","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S..superba","Inferior",43,"LTh",-0.330327767442783,1.81170829742371,0.111958531246599,NA
+"129","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca","Superior",43,"LTO",-0.20061820287413,0.16781646263067,0.209602191242608,NA
+"130","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.1","Superior",43,"LTO",-0.231588784981267,0.347393854155474,0.209602191242608,NA
+"131","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.2","Inferior",43,"LTO",-0.340228733806371,0.979104000661536,0.209602191242608,NA
+"132","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia","Inferior",44,"LTO",-0.252084663493536,0.255865653840506,0.166896814241293,NA
+"133","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia.1","Inferior",44,"LTO",-0.340023730506761,0.269321832401235,0.166896814241293,NA
+"134","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C..sclerophylla","Inferior",43,"LTO",-0.235505239615598,1.80093106072393,0.192758465999731,NA
+"135","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba","Superior",44,"LTO",-0.0881310486499513,0.0176026628977019,0.456336634381452,NA
+"136","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba.1","Superior",44,"LTO",-0.10146734967176,0.0159050770561524,0.456336634381452,NA
+"137","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L..harlandii","Superior",41,"LTO",-0.210393280708171,0.908068155612861,0.155481502848486,NA
+"138","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri","Inferior",42,"LTO",-0.357118072953801,0.0632359079681482,0.183767787219568,NA
+"139","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri.1","Inferior",42,"LTO",-0.404847094317761,0.358577359984925,0.183767787219568,NA
+"140","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii","Superior",45,"LTO",-0.00356829219354806,0.0134375762621625,0.207772361591789,NA
+"141","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.1","Superior",45,"LTO",-0.178300675004185,0.00932755375192629,0.207772361591789,NA
+"142","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.2","Inferior",45,"LTO",-0.306634081097522,0.0441275758983597,0.207772361591789,NA
+"143","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.3","Superior",45,"LTO",-0.165569106808909,0.0201398862159319,0.207772361591789,NA
+"144","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S..superba","Inferior",43,"LTO",-0.330327767442783,1.81170829742371,0.145489761884459,NA
+"145","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca","Superior",43,"SSD",-0.20061820287413,0.16781646263067,0.166944125793547,NA
+"146","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.1","Superior",43,"SSD",-0.231588784981267,0.347393854155474,0.166944125793547,NA
+"147","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.2","Inferior",43,"SSD",-0.340228733806371,0.979104000661536,0.166944125793547,NA
+"148","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia","Inferior",44,"SSD",-0.252084663493536,0.255865653840506,0.225366041624216,NA
+"149","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia.1","Inferior",44,"SSD",-0.340023730506761,0.269321832401235,0.225366041624216,NA
+"150","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C..sclerophylla","Inferior",43,"SSD",-0.235505239615598,1.80093106072393,0.252504120308092,NA
+"151","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba","Superior",44,"SSD",-0.0881310486499513,0.0176026628977019,0.131157618508266,NA
+"152","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba.1","Superior",44,"SSD",-0.10146734967176,0.0159050770561524,0.131157618508266,NA
+"153","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L..harlandii","Superior",41,"SSD",-0.210393280708171,0.908068155612861,0.226587452131793,NA
+"154","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri","Inferior",42,"SSD",-0.357118072953801,0.0632359079681482,0.418954274744104,NA
+"155","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri.1","Inferior",42,"SSD",-0.404847094317761,0.358577359984925,0.418954274744104,NA
+"156","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii","Superior",45,"SSD",-0.00356829219354806,0.0134375762621625,0.104860120243906,NA
+"157","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.1","Superior",45,"SSD",-0.178300675004185,0.00932755375192629,0.104860120243906,NA
+"158","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.2","Inferior",45,"SSD",-0.306634081097522,0.0441275758983597,0.104860120243906,NA
+"159","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.3","Superior",45,"SSD",-0.165569106808909,0.0201398862159319,0.104860120243906,NA
+"160","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S..superba","Inferior",43,"SSD",-0.330327767442783,1.81170829742371,0.317102633682401,NA
+"161","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca","Superior",43,"SMC",-0.20061820287413,0.16781646263067,0.181108230964215,NA
+"162","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.1","Superior",43,"SMC",-0.231588784981267,0.347393854155474,0.181108230964215,NA
+"163","Phase I: pairwise homogeneous experiment","C. glauca","Competition-free","C..glauca.2","Inferior",43,"SMC",-0.340228733806371,0.979104000661536,0.181108230964215,NA
+"164","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia","Inferior",44,"SMC",-0.252084663493536,0.255865653840506,0.194993110203971,NA
+"165","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition-free","C..myrsinifolia.1","Inferior",44,"SMC",-0.340023730506761,0.269321832401235,0.194993110203971,NA
+"166","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition-free","C..sclerophylla","Inferior",43,"SMC",-0.235505239615598,1.80093106072393,0.330397183191453,NA
+"167","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba","Superior",44,"SMC",-0.0881310486499513,0.0176026628977019,0.330659075505113,NA
+"168","Phase I: pairwise homogeneous experiment","H. acerba","Competition-free","H..acerba.1","Superior",44,"SMC",-0.10146734967176,0.0159050770561524,0.330659075505113,NA
+"169","Phase I: pairwise homogeneous experiment","L. harlandii","Competition-free","L..harlandii","Superior",41,"SMC",-0.210393280708171,0.908068155612861,0.198745264255803,NA
+"170","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri","Inferior",42,"SMC",-0.357118072953801,0.0632359079681482,0.214214462426836,NA
+"171","Phase I: pairwise homogeneous experiment","P. sheareri","Competition-free","P..sheareri.1","Inferior",42,"SMC",-0.404847094317761,0.358577359984925,0.214214462426836,NA
+"172","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii","Superior",45,"SMC",-0.00356829219354806,0.0134375762621625,0.152363934691787,NA
+"173","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.1","Superior",45,"SMC",-0.178300675004185,0.00932755375192629,0.152363934691787,NA
+"174","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.2","Inferior",45,"SMC",-0.306634081097522,0.0441275758983597,0.152363934691787,NA
+"175","Phase I: pairwise homogeneous experiment","Q. chenii","Competition-free","Q..chenii.3","Superior",45,"SMC",-0.165569106808909,0.0201398862159319,0.152363934691787,NA
+"176","Phase I: pairwise homogeneous experiment","S. superba","Competition-free","S..superba","Inferior",43,"SMC",-0.330327767442783,1.81170829742371,0.28325507605546,NA
+"177","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",39,"Chl",-0.20061820287413,1.03504719963866,0.113312086937504,NA
+"178","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",44,"Chl",-0.231588784981267,4.29304140047585,0.128419961728114,NA
+"179","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",31,"Chl",-0.340228733806371,1.61849788211075,0.14259541252971,NA
+"180","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",41,"Chl",-0.252084663493536,1.94703746872138,0.118614157980921,NA
+"181","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",49,"Chl",-0.340023730506761,0.427960889080374,0.12666277115553,NA
+"182","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",40,"Chl",-0.235505239615598,0.227883760265433,0.168418984620786,NA
+"183","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",45,"Chl",-0.0881310486499513,0.198054904857014,0.408143336217204,NA
+"184","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",41,"Chl",-0.10146734967176,1.03504719963866,0.48894790837421,NA
+"185","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",44,"Chl",-0.210393280708171,4.29304140047585,0.158068513161332,NA
+"186","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"Chl",-0.357118072953801,1.61849788211075,0.266504223556275,NA
+"187","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",44,"Chl",-0.404847094317761,1.94703746872138,0.230880349979262,NA
+"188","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",27,"Chl",-0.00356829219354806,0.427960889080374,0.216343806037899,NA
+"189","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",52,"Chl",-0.178300675004185,0.227883760265433,0.144876807882122,NA
+"190","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",42,"Chl",-0.306634081097522,0.198054904857014,0.198719586620914,NA
+"191","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",43,"Chl",-0.165569106808909,1.03504719963866,0.217801099958251,NA
+"192","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",37,"Chl",-0.330327767442783,4.29304140047585,0.264763511526564,NA
+"193","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",39,"LDMC",-0.20061820287413,1.61849788211075,0.0931843412147781,NA
+"194","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",44,"LDMC",-0.231588784981267,1.94703746872138,0.0907031565859514,NA
+"195","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",31,"LDMC",-0.340228733806371,0.427960889080374,0.123641689904742,NA
+"196","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",41,"LDMC",-0.252084663493536,0.227883760265433,0.113378566946581,NA
+"197","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",49,"LDMC",-0.340023730506761,0.198054904857014,0.112907175753236,NA
+"198","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",40,"LDMC",-0.235505239615598,1.03504719963866,0.157926526529752,NA
+"199","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",45,"LDMC",-0.0881310486499513,4.29304140047585,0.400385030411366,NA
+"200","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",41,"LDMC",-0.10146734967176,1.61849788211075,0.30137780316282,NA
+"201","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",44,"LDMC",-0.210393280708171,1.94703746872138,0.11849599898325,NA
+"202","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"LDMC",-0.357118072953801,0.427960889080374,0.0838538871730829,NA
+"203","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",44,"LDMC",-0.404847094317761,0.227883760265433,0.16168554937731,NA
+"204","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",27,"LDMC",-0.00356829219354806,0.198054904857014,0.111101818653904,NA
+"205","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",52,"LDMC",-0.178300675004185,1.03504719963866,0.103044069112302,NA
+"206","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",42,"LDMC",-0.306634081097522,4.29304140047585,0.152383842133693,NA
+"207","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",43,"LDMC",-0.165569106808909,1.61849788211075,0.091179629074637,NA
+"208","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",37,"LDMC",-0.330327767442783,1.94703746872138,0.228128909228925,NA
+"209","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",39,"LMA",-0.20061820287413,0.427960889080374,0.0907678416575543,NA
+"210","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",44,"LMA",-0.231588784981267,0.227883760265433,0.116908990645705,NA
+"211","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",31,"LMA",-0.340228733806371,0.198054904857014,0.138186622544771,NA
+"212","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",41,"LMA",-0.252084663493536,1.03504719963866,0.122286830003085,NA
+"213","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",49,"LMA",-0.340023730506761,4.29304140047585,0.0881806264298106,NA
+"214","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",40,"LMA",-0.235505239615598,1.61849788211075,0.189049082818231,NA
+"215","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",45,"LMA",-0.0881310486499513,1.94703746872138,0.190743342415408,NA
+"216","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",41,"LMA",-0.10146734967176,0.427960889080374,0.172112578024769,NA
+"217","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",44,"LMA",-0.210393280708171,0.227883760265433,0.117732172204762,NA
+"218","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"LMA",-0.357118072953801,0.198054904857014,0.0781171804271772,NA
+"219","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",44,"LMA",-0.404847094317761,1.03504719963866,0.115942584297491,NA
+"220","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",27,"LMA",-0.00356829219354806,4.29304140047585,0.0908173908437417,NA
+"221","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",52,"LMA",-0.178300675004185,1.61849788211075,0.0908154501051372,NA
+"222","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",42,"LMA",-0.306634081097522,1.94703746872138,0.171335665712661,NA
+"223","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",43,"LMA",-0.165569106808909,0.427960889080374,0.073807011830109,NA
+"224","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",37,"LMA",-0.330327767442783,0.227883760265433,0.206642363802505,NA
+"225","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",39,"LTh",-0.20061820287413,0.198054904857014,0.0860386510121331,NA
+"226","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",44,"LTh",-0.231588784981267,48.4495405496432,0.105615203586568,NA
+"227","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",31,"LTh",-0.340228733806371,25.2425876459393,0.195080271521915,NA
+"228","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",41,"LTh",-0.252084663493536,17.5239742150468,0.10484784804104,NA
+"229","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",49,"LTh",-0.340023730506761,20.0584432307953,0.0906150160979825,NA
+"230","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",40,"LTh",-0.235505239615598,15.9850061385344,0.168575103188955,NA
+"231","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",45,"LTh",-0.0881310486499513,6.44873698450337,0.23063083839439,NA
+"232","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",41,"LTh",-0.10146734967176,4.26265018135502,0.270308035378609,NA
+"233","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",44,"LTh",-0.210393280708171,48.4495405496432,0.106750155787102,NA
+"234","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"LTh",-0.357118072953801,25.2425876459393,0.157521390824634,NA
+"235","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",44,"LTh",-0.404847094317761,17.5239742150468,0.190004194992959,NA
+"236","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",27,"LTh",-0.00356829219354806,20.0584432307953,0.124434027966519,NA
+"237","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",52,"LTh",-0.178300675004185,15.9850061385344,0.0994584908176695,NA
+"238","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",42,"LTh",-0.306634081097522,6.44873698450337,0.187425866324618,NA
+"239","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",43,"LTh",-0.165569106808909,4.26265018135502,0.102440534426053,NA
+"240","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",37,"LTh",-0.330327767442783,48.4495405496432,0.214798182466722,NA
+"241","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",39,"LTO",-0.20061820287413,25.2425876459393,0.148803092284484,NA
+"242","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",44,"LTO",-0.231588784981267,17.5239742150468,0.171387410189091,NA
+"243","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",31,"LTO",-0.340228733806371,20.0584432307953,0.139032342429584,NA
+"244","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",41,"LTO",-0.252084663493536,15.9850061385344,0.163257711491348,NA
+"245","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",49,"LTO",-0.340023730506761,6.44873698450337,0.153515101726605,NA
+"246","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",40,"LTO",-0.235505239615598,4.26265018135502,0.242486972919819,NA
+"247","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",45,"LTO",-0.0881310486499513,48.4495405496432,0.554933007043579,NA
+"248","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",41,"LTO",-0.10146734967176,25.2425876459393,0.454369107445335,NA
+"249","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",44,"LTO",-0.210393280708171,17.5239742150468,0.176166289898138,NA
+"250","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"LTO",-0.357118072953801,20.0584432307953,0.177782887031999,NA
+"251","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",44,"LTO",-0.404847094317761,15.9850061385344,0.185502717856074,NA
+"252","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",27,"LTO",-0.00356829219354806,6.44873698450337,0.244242696724428,NA
+"253","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",52,"LTO",-0.178300675004185,4.26265018135502,0.200654955186744,NA
+"254","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",42,"LTO",-0.306634081097522,48.4495405496432,0.226039910818345,NA
+"255","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",43,"LTO",-0.165569106808909,25.2425876459393,0.185975417466763,NA
+"256","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",37,"LTO",-0.330327767442783,17.5239742150468,0.15949960110826,NA
+"257","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",39,"SSD",-0.20061820287413,20.0584432307953,0.249550113345246,NA
+"258","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",44,"SSD",-0.231588784981267,15.9850061385344,0.228277363466333,NA
+"259","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",31,"SSD",-0.340228733806371,6.44873698450337,0.199485416565816,NA
+"260","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",41,"SSD",-0.252084663493536,4.26265018135502,0.232256036540576,NA
+"261","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",49,"SSD",-0.340023730506761,48.4495405496432,0.220203383098892,NA
+"262","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",40,"SSD",-0.235505239615598,25.2425876459393,0.281252070029316,NA
+"263","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",45,"SSD",-0.0881310486499513,17.5239742150468,0.129701192066129,NA
+"264","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",41,"SSD",-0.10146734967176,20.0584432307953,0.164849119948762,NA
+"265","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",44,"SSD",-0.210393280708171,15.9850061385344,0.188235384651261,NA
+"266","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"SSD",-0.357118072953801,6.44873698450337,0.360100917132697,NA
+"267","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",44,"SSD",-0.404847094317761,4.26265018135502,0.316028111125827,NA
+"268","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",27,"SSD",-0.00356829219354806,48.4495405496432,0.381107471812257,NA
+"269","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",52,"SSD",-0.178300675004185,25.2425876459393,0.151523428842704,NA
+"270","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",42,"SSD",-0.306634081097522,17.5239742150468,0.147156027802699,NA
+"271","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",43,"SSD",-0.165569106808909,20.0584432307953,0.179945718416316,NA
+"272","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",37,"SSD",-0.330327767442783,15.9850061385344,0.531923207704824,NA
+"273","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. myrsinifolia","Superior",39,"SMC",-0.20061820287413,6.44873698450337,0.257637350165352,NA
+"274","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-C. sclerophylla","Superior",44,"SMC",-0.231588784981267,4.26265018135502,0.248356633732165,NA
+"275","Phase I: pairwise homogeneous experiment","C. glauca","Competition","C. glauca-Q. chenii","Inferior",31,"SMC",-0.340228733806371,0.16781646263067,0.31757654827979,NA
+"276","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-C. glauca","Inferior",41,"SMC",-0.252084663493536,0.347393854155474,0.2158889608988,NA
+"277","Phase I: pairwise homogeneous experiment","C. myrsinifolia","Competition","C. myrsinifolia-Q. chenii","Inferior",49,"SMC",-0.340023730506761,0.979104000661536,0.300904823032814,NA
+"278","Phase I: pairwise homogeneous experiment","C. sclerophylla","Competition","C. sclerophylla-C. glauca","Inferior",40,"SMC",-0.235505239615598,0.255865653840506,0.334390051708103,NA
+"279","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-P. sheareri","Superior",45,"SMC",-0.0881310486499513,0.269321832401235,0.219527490848245,NA
+"280","Phase I: pairwise homogeneous experiment","H. acerba","Competition","H. acerba-Q. chenii","Superior",41,"SMC",-0.10146734967176,1.80093106072393,0.310653258548263,NA
+"281","Phase I: pairwise homogeneous experiment","L. harlandii","Competition","L. harlandii-S. superba","Superior",44,"SMC",-0.210393280708171,0.0176026628977019,0.245311450676606,NA
+"282","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-H. acerba","Inferior",42,"SMC",-0.357118072953801,0.0159050770561524,0.214266615616462,NA
+"283","Phase I: pairwise homogeneous experiment","P. sheareri","Competition","P. sheareri-Q. chenii","Inferior",44,"SMC",-0.404847094317761,0.908068155612861,0.313357271677268,NA
+"284","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. glauca","Superior",27,"SMC",-0.00356829219354806,0.0632359079681482,0.250933386700597,NA
+"285","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-C. myrsinifolia","Superior",52,"SMC",-0.178300675004185,0.358577359984925,0.299475696624912,NA
+"286","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-H. acerba","Inferior",42,"SMC",-0.306634081097522,0.0134375762621625,0.230691535687209,NA
+"287","Phase I: pairwise homogeneous experiment","Q. chenii","Competition","Q. chenii-P. sheareri","Superior",43,"SMC",-0.165569106808909,0.00932755375192629,0.442602716047523,NA
+"288","Phase I: pairwise homogeneous experiment","S. superba","Competition","S. superba-L. harlandii","Inferior",37,"SMC",-0.330327767442783,0.0441275758983597,0.256700674593331,NA

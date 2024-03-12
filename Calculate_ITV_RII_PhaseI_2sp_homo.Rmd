@@ -1,0 +1,677 @@
+---
+title: "Calculation of RII and ITV in Pairwise Competition within a Homogeneous Environment"
+author:
+  - Jing Yang
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+
+\pagebreak 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, eval = F)
+# two function
+se <- function(x){
+  se=sd(x,na.rm=T)/sqrt(length(x[!is.na(x)]))
+  return(se)
+}
+
+# Function: add star
+Wilcox_Star <- function(data) {
+  data$star <- ""
+  for (i in 1:length(data[, 1])) {
+    if (data$p.value[i] < 0.001) {
+      data$star[i] <- "***"
+    } else if (data$p.value[i] < 0.05) {
+      data$star[i] <- "**"
+    } else if (data$p.value[i] < 0.01) {
+      data$star[i] <- "*"
+    } else if (data$p.value[i] < 0.1) {
+      data$star[i] <- "."
+    }
+  }
+  return(data)
+}
+# Function: cube root of data
+cube.root <- function(data) {
+  cube.data <- (abs(data))^(1/3) * sign(data)
+  return(cube.data)
+}
+
+```
+
+# Library Packages
+```{r, warning=FALSE, message=FALSE, result = 'hide', tidy=TRUE, echo=T}
+# library packages
+library(ggplot2)
+library(patchwork)
+library(knitr)
+library(kableExtra)
+library(hypervolume)
+library(snow)
+library(parallel)
+library(ggsignif)
+library(alphahull)
+library(RColorBrewer)
+library(formatR)
+#library(devtools)
+#install_github("guochunshen/CV") 
+#library(CV)
+
+library(gridExtra)
+library(ggpubr)
+library(fmsb)
+```
+
+# load data
+```{r, tidy=TRUE, echo=T, warning=FALSE, message=FALSE}
+# Read the data
+data <- read.csv("01_raw_data/phaseI_pairwise_homogeneous_raw_data.csv")
+
+# Extract variable names
+species <- sort(unique(data$sp))  # Sort and get unique species names
+pdname <- sort(unique(data[data$comp_type == "inter", "pdname"]))  # Sort and get unique PD names
+trait <- sort(c("SSD", "LTO", "LDMC", "LMA", "LTh", "Chl", "SMC"))  # Sort trait names
+
+# Phylogenetic distance (PD) data
+pd.data <- data.frame(
+  X = 1:16,
+  sp_focal = c("C. myrsinifolia", "C. myrsinifolia", "C. sclerophylla", "H. acerba", 
+               "H. acerba", "L. harlandii", "P. sheareri", "P. sheareri", "Q. chenii", 
+               "Q. chenii", "Q. chenii", "Q. chenii", "C. glauca", "C. glauca", 
+               "C. glauca", "S. superba"),
+  sp_target = c("Q. chenii", "C. glauca", "C. glauca", "P. sheareri", "Q. chenii", 
+                 "S. superba", "H. acerba", "Q. chenii", "C. myrsinifolia", 
+                 "H. acerba", "P. sheareri", "C. glauca", "C. myrsinifolia", 
+                 "C. sclerophylla", "Q. chenii", "L. harlandii"),
+  PD_name = c("C. myrsinifolia-Q. chenii", "C. myrsinifolia-C. glauca", 
+              "C. sclerophylla-C. glauca", "H. acerba-P. sheareri", 
+              "H. acerba-Q. chenii", "L. harlandii-S. superba", 
+              "P. sheareri-H. acerba", "P. sheareri-Q. chenii", 
+              "Q. chenii-C. myrsinifolia", "Q. chenii-H. acerba", 
+              "Q. chenii-P. sheareri", "Q. chenii-C. glauca", 
+              "C. glauca-C. myrsinifolia", "C. glauca-C. sclerophylla", 
+              "C. glauca-Q. chenii", "S. superba-L. harlandii"),
+  pair_num = c(1, 2, 3, 4, 5, 6, 4, 7, 1, 5, 7, 8, 2, 3, 8, 6),
+  PD = c(177, 89, 177, 585, 354, 471, 585, 585, 177, 354, 585, 177, 89, 177, 177, 471),
+  Group = c("GD", "G", "G", "GD", "D", "G", "GD", "GD", "GD", "D", "GD", "GD", "G", "G", "GD", "G")
+)
+
+# Species serial numbers and paired species in the treatment group
+inter.sp.order <- c(1, 1, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8)
+inter.pairsp.order <- c(2, 3, 7, 1, 7, 1, 6, 7, 8, 4, 7, 1, 2, 4, 6, 5)
+sppairs <- data.frame(pair_num = 1:8,
+                      sp1 = species[c(2, 2, 3, 6, 4, 8, 6, 1)],
+                      sp2 = species[c(7, 1, 1, 4, 7, 5, 7, 7)],
+                      intra_sp1 = c(2, 2, 3, 6, 4, 8, 6, 1),
+                      intra_sp2 = c(7, 1, 1, 4, 7, 5, 7, 7),
+                      inter_sp1 = c(5, 4, 6, 10, 8, 16, 11, 3),
+                      inter_sp2 = c(13, 1, 2, 7, 14, 9, 15, 12))
+
+pair_code <- c("MC", "MG", "SG", "SA", "CA", "SH", "SC", "GC")  # Pair code
+
+# File name
+dir.name <- paste0("02_output_results/Exp1_2sp_homo/")
+dir.create(dir.name)  # Create directory
+write.table(trait, file = paste0(dir.name, "/trait.name.txt"))  # Write trait names to file
+
+```
+
+# Data analyses  
+## Estimating competition intensity  
+We calculated Relative Interaction Intensity (RII) by $RII={(BM_{alone}-BM_{pair})\over(BM_{alone}+BM_{pair})}$ (Cristina, 2004) based on individual biomass for each tree and each species and divided the two species planted in pairs into superior and inferior species.
+```{r, tidy=TRUE, warning=FALSE, echo=T}
+# Calculate relative interspecies intensity (RII) for each seedling
+result <- data.frame()
+
+# Loop through each species
+for (i in 1:length(species)) {
+  spi <- data[data$sp == species[i], ]  # Subset data for the current species
+  spi$RII <- 0
+  spi$lnRR <- 0
+  spi$NIntC <- 0
+  spi.alone <- spi[spi$comp_type == "alone", ]  # Subset for seedlings grown alone
+  spi.inter <- spi[spi$comp_type == "inter", ]  # Subset for seedlings in interspecies competition
+
+  alone.biomass <- mean(spi.alone$BM, na.rm = TRUE)  # Calculate mean biomass for seedlings grown alone
+
+  # Calculate RII, lnRR, and NIntC for seedlings in interspecies competition
+  spi.inter$RII <- (spi.inter$BM - alone.biomass) / (spi.inter$BM + alone.biomass)
+  spi.inter$lnRR <- log(alone.biomass / spi.inter$BM)
+  spi.inter$NIntC <- 2 * (spi.inter$BM - alone.biomass) / ((spi.inter$BM + alone.biomass) + abs(spi.inter$BM - alone.biomass))
+
+  # Combine results for seedlings grown alone and in interspecies competition
+  result <- rbind(result, spi.alone, spi.inter)
+}
+
+# Assign the calculated results back to the original data
+data <- result
+
+# Subset data for interspecies competition
+inter.rdata <- data[data$comp_type == "inter", ]
+
+# Calculate mean RII
+inter.mean.rii <- tapply(inter.rdata$RII, list(inter.rdata$pdname), mean, na.rm = TRUE)
+inter.mean.se <- tapply(inter.rdata$RII, list(inter.rdata$pdname), sd) / sqrt(tapply(inter.rdata$RII, list(inter.rdata$pdname), length))
+inter.sample.size <- tapply(inter.rdata$RII, list(inter.rdata$pdname), length)
+
+# Perform Wilcoxon signed-rank test and extract p-values
+rii.test <- tapply(inter.rdata$RII, list(inter.rdata$pdname), wilcox.test)
+p.value <- sapply(rii.test, function(x) x$p.value)
+
+# Summary
+rii.result <- data.frame(species = species[inter.sp.order],
+                         pair_sp = species[inter.pairsp.order],
+                         comp_type = rep("inter", 2 * length(species)),
+                         mean_rii = as.numeric(inter.mean.rii),
+                         mean_se = as.numeric(inter.mean.se),
+                         sample_size = as.numeric(inter.sample.size),
+                         p.value = p.value)
+rii.result <- Wilcox_Star(rii.result)
+rii.result$pdname <- paste0(rii.result$species, "-", rii.result$pair_sp)
+
+rii.result$pair_num <- NA
+rii.result$sp_rank <- NA
+
+# Add serial number of species pairs
+for (i in 1:nrow(rii.result)) {
+  rii.result$pair_num[i] <- pd.data[pd.data$PD_name == rii.result$pdname[i], "pair_num"]
+}
+
+# Determine competitive inferior and superior species based on mean RII
+for (i in 1:8) {
+  inferior_rii <- min(rii.result[rii.result$pair_num == i, "mean_rii"], na.rm = TRUE)
+  rii.result[rii.result$pair_num == i & rii.result$mean_rii == inferior_rii, "sp_rank"] <- "Inferior"
+  rii.result[rii.result$pair_num == i & !rii.result$mean_rii == inferior_rii, "sp_rank"] <- "Superior"
+}
+
+# Extract indices of inferior and superior species
+inferior.num <- as.numeric(rownames(rii.result[rii.result$sp_rank == "Inferior", ]))
+superior.num <- as.numeric(rownames(rii.result[rii.result$sp_rank == "Superior", ]))
+inter.rii.result <- rii.result
+
+# Split inferior and superior species pairs
+rii.result.order <- rii.result[order(rii.result$pair_num), ]
+inferior.rii.result <- rii.result.order[rii.result.order$sp_rank == "Inferior", ]
+superior.rii.result <- rii.result.order[rii.result.order$sp_rank == "Superior", ]
+inter.sp.rank <- data.frame(type = "Low interspecific competition",
+                            pair_num = rep(1:8, each = 1),
+                            inferior = inferior.rii.result$species,
+                            superior = superior.rii.result$species,
+                            inferior_rii = round(inferior.rii.result$mean_rii, 2),
+                            superior_rii = round(superior.rii.result$mean_rii, 2),
+                            inferior_se = round(inferior.rii.result$mean_se, 2),
+                            superior_se = round(superior.rii.result$mean_se, 2),
+                            inferior_num = round(inferior.rii.result$sample_size, 2),
+                            superior_num = round(superior.rii.result$sample_size, 2),
+                            p_value = p.value)
+inter.rii <- inter.sp.rank
+inter.rii$inferior_rii <- paste0(round(inter.rii$inferior_rii, 3), inter.rii$inferior_star)
+inter.rii$superior_rii <- paste0(round(inter.rii$superior_rii, 3), inter.rii$superior_star)
+inter.rii <- inter.rii[, 1:10]
+inter.rii$inf_sup_diff <- NA
+
+# Test for significant difference in competition intensity between inferior and superior species
+for (i in 1:8) {
+  sp1 <- paste0(sppairs$sp1[i], "-", sppairs$sp2[i])
+  sp2 <- paste0(sppairs$sp2[i], "-", sppairs$sp1[i])
+  sp1.rii <- inter.rdata[inter.rdata$pdname == sp1, "RII"]
+  sp2.rii <- inter.rdata[inter.rdata$pdname == sp2, "RII"]
+  wt <- wilcox.test(sp1.rii, sp2.rii)
+  inter.rii$inf_sup_diff[i] <- round(wt$p.value, 3)
+}
+
+# Write results to a CSV file
+write.csv(inter.rii, file = paste0(dir.name, "/Table1. inter_RII_2sp.csv"))
+kableExtra::kable(inter.rii[, -1], caption = "RII of competing species in a two-species competition experiment")
+inter.riit <- inter.rii
+
+```
+
+## Trait data transformation
+```{r, tidy=TRUE, warning=FALSE, echo=T}
+# Scaling and centering raw trait data (Z-scores) for calculating hypervolume
+for(i in 1:length(trait)){
+  t <- data[,colnames(data)==trait[i]]  # Extract the trait column
+  m <- mean(t, na.rm = TRUE)  # Calculate mean
+  s <- sd(t, na.rm = TRUE)  # Calculate standard deviation
+  t[t > (m + 4 * s) | t < (m - 4 * s)] <- NA  # Replace extreme values with NA
+  data[,colnames(data)==trait[i]] <- t  # Assign modified column back to data
+}
+
+# Remove an outlier (1.47) in the 'SSD' column for the CM-CG pair, which is greater than three times the standard deviation
+out_wd <- max(data[data$pdname == "C. glauca-C. myrsinifolia" & data$comp_type == "inter", ]$SSD, na.rm = TRUE)
+data_subset <- subset(data, pdname == "C. glauca-C. myrsinifolia" & comp_type == "inter" & SSD == out_wd)
+data_subset$SSD <- NA
+
+# Remove rows with missing values
+data <- na.omit(data)
+
+# Scale data for hypervolume calculation
+hv.data <- data
+hv.data[, colnames(hv.data) %in% trait] <- scale(hv.data[, colnames(hv.data) %in% trait])
+
+# Data under different treatments
+alone.hdata <- hv.data[hv.data$comp_type == "alone", ]
+alone.hdata$pair_num <- NA
+inter.hdata <- hv.data[hv.data$comp_type == "inter", ]
+
+# Scale data for treatments
+t.data <- data
+for (i in 1:length(trait)) {
+    traiti <- data[, colnames(data) == trait[i]]
+    t.data[, colnames(t.data) == trait[i]] <- (traiti - min(traiti, na.rm = TRUE)) / (max(traiti, na.rm = TRUE) - min(traiti, na.rm = TRUE))
+}
+```
+
+## Calculating intraspecific trait variability (ITV)
+### Hypervolume based on all seven traits
+```{r, tidy=TRUE, warning=FALSE, echo=T}
+# Core function only returns hypervolume value and mean RII for each sampling
+Hypervolume_value <- function(ni, data, trait, sample_size, quantile) {
+  if (length(ni) > 2) {  # Check if the number of individuals is greater than 2
+    data <- data[ni, ]  # Subset data for selected individuals
+    if (sample_size == "all") {
+      sample_data <- data[, colnames(data) %in% trait]  # Use all individuals
+    } else {
+      ind_num <- length(data[, 1])  # Total number of individuals
+      sample_num <- sample(1:ind_num, sample_size)  # Randomly select sample_size individuals
+      sample_data <- data[sample_num, colnames(data) %in% trait]  # Subset data for selected individuals
+      sample_rii <- mean(data[sample_num, ]$RII, na.rm = TRUE)  # Calculate mean RII for selected individuals
+    }
+    bandwidth <- estimate_bandwidth(data = sample_data)  # Estimate bandwidth for hypervolume calculation
+    hypervolume <- hypervolume_gaussian(data = sample_data, name = unique(sample_data$pdname),
+                                        kde.bandwidth = bandwidth, quantile.requested = quantile)  # Calculate hypervolume
+    hv <- hypervolume@Volume  # Extract hypervolume value
+  } else {
+    hv <- NA  # If the number of individuals is less than or equal to 2, assign NA to hypervolume
+    sample_rii <- NA  # Assign NA to mean RII
+  }
+  return(c(hv = hv, rii = sample_rii))  # Return a vector containing hypervolume value and mean RII
+}
+
+# Function to simulate hypervolume
+Sim_Hypervolume <- function(n, data, trait, sample_size, quantile, Hypervolume_value) {
+  library(hypervolume)
+  # Apply Hypervolume_value function to each replicate and return hypervolume and RII values
+  hvs <- tapply(1:nrow(data), list(data$pdname), Hypervolume_value, data, trait, sample_size, quantile)
+  return(hvs)
+}
+
+# Set parameters
+quantile <- 0.95  # Quantile value for hypervolume calculation
+sample_size <- 20  # Sample size
+Nrep <- 999  # Number of replications
+clnum <- detectCores() - 1  # Number of CPU cores to be used
+cl <- makeCluster(getOption("cl.cores", 60))  # Initialize cluster
+
+# Load saved data if exists
+if (file.exists(file = paste0(dir.name, "/HV_RII.RData"))) {
+  load(paste0(dir.name, "/HV_RII.RData"))  # Load previously saved data
+} else {
+  # Perform simulations and save data
+  set.seed(rnorm(1))  # Set random seed
+  Sys.time()  # Current system time
+  # Calculate hypervolume and RII for alone and interspecies conditions using parallel processing
+  alone.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, alone.hdata, trait, sample_size, quantile, Hypervolume_value)
+  inter.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, inter.hdata, trait, sample_size, quantile, Hypervolume_value)
+  # Save calculated data
+  save(trait, alone.hv, inter.hv, file = paste0(dir.name, "/HV_RII.RData"))
+}
+
+# Organize hypervolume and RII data
+alone.hvrii <- matrix(unlist(alone.hv), nrow = length(species) * 2, dimnames = list(rep(species, each = 2), 1:Nrep))
+inter.hvrii <- matrix(unlist(inter.hv), nrow = length(species) * 2 * 2, dimnames = list(rep(pdname, each = 2), 1:Nrep))
+
+# Extract hypervolume and RII separately for alone treatments
+alone.hv <- alone.hvrii[seq(1, 16, 2), ]
+alone.rii <- alone.hvrii[seq(2, 16, 2), ]
+# Repeat the hypervolume and RII data for each pairwise comparison in inter treatments
+alone.hv <- matrix(rep(unlist(alone.hv), rep(table(inter.sp.order), Nrep)), nrow = length(pdname), 
+                   dimnames = list(species[inter.sp.order], 1:Nrep))
+alone.rii <- matrix(rep(unlist(alone.rii), rep(table(inter.sp.order), Nrep)), nrow = length(pdname), 
+                    dimnames = list(species[inter.sp.order], 1:Nrep))
+
+# Extract hypervolume and RII separately for inter treatments
+inter.hv <- inter.hvrii[seq(1, 32, 2), ]
+inter.rii <- inter.hvrii[seq(2, 32, 2), ]
+
+# Organize data for HV and ContrHV
+hv.box.data <- data.frame(
+  Nrep = rep(1:Nrep, each = 16),  # Replicate number
+  pdname = rep(pdname, Nrep),  # Pairwise comparison name
+  sp = rep(species[inter.sp.order], Nrep),  # Species name
+  sp_group = rep(inter.rii.result$sp_rank, Nrep),  # Species group based on RII
+  pair_code = rep(c("MG", "SG", "GC", "MG", "MC", "SG", "SA", "CA", "SH", "SA", "SC", "GC", "MC", "CA", "SC", "SH"), Nrep),  # Pair code
+  alone_hv = as.numeric(alone.hv),  # Hypervolume for alone treatment
+  inter_hv = as.numeric(inter.hv),  # Hypervolume for interspecies treatment
+  alone_rii = as.numeric(alone.rii),  # RII for alone treatment
+  inter_rii = as.numeric(inter.rii)  # RII for interspecies treatment
+)
+
+# Convert 'pair_code' to factor with specified levels
+hv.box.data$pair_code <- factor(hv.box.data$pair_code, levels = pair_code)
+# Convert 'sp_group' to character
+hv.box.data$sp_group <- as.character(hv.box.data$sp_group)
+
+# HV change
+## Calculate the change in MTS based on the mean of 9 random trials
+mean.alone.hv <- apply(alone.hv, 1, mean)  # Calculate mean hypervolume for alone treatment
+inter.hvchange <- (as.numeric(inter.hv) - rep(mean.alone.hv, Nrep))  # Calculate hypervolume change for interspecies treatment
+# Create a data frame for hypervolume change
+hvchange.box.data <- data.frame(
+  pdname = rep(pdname, Nrep),  # Pairwise comparison name
+  sp = rep(species[inter.sp.order], Nrep),  # Species name
+  sp_group = rep(rii.result$sp_rank, Nrep),  # Species group based on RII
+  pair_code = rep(c("MG", "SG", "GC", "MG", "MC", "SG", "SA", "CA", "SH", "SA", "SC", "GC", "MC", "CA", "SC", "SH"), Nrep),  # Pair code
+  inter_hvchange = inter.hvchange,  # Hypervolume change for interspecies treatment
+  inter_mean_rii = as.numeric(inter.rii),  # Mean RII for interspecies treatment
+  rii = rep(rii.result$mean_rii, Nrep)  # Mean RII for all pairwise comparisons
+)
+# Convert 'pair_code' to factor with specified levels
+hvchange.box.data$pair_code <- factor(hvchange.box.data$pair_code, levels = pair_code)
+hvchange.box.data$sp_group <- as.character(hvchange.box.data$sp_group)  # Convert 'sp_group' to character
+
+## Convert pair_code information to numbers for ease of adding significance comparison results
+new_pair_code <- 1:8  # New numeric levels for pair code
+# Convert 'pair_code' to numeric with specified levels
+hv.box.data1 <- hv.box.data
+hv.box.data <- data.frame()
+for (i in 1:8) {
+  pairi <- hv.box.data1[hv.box.data1$pair_code == pair_code[i], ]
+  pairi$pair_code <- new_pair_code[i]
+  hv.box.data <- rbind(hv.box.data, pairi)
+}
+hv.box.data$pair_code <- factor(hv.box.data$pair_code, levels = new_pair_code)  # Convert 'pair_code' to factor with numeric levels
+
+# Convert pair code information to numbers for ease of adding significance comparison results
+new_pair_code <- 1:8  # New numeric levels for pair code
+hvchange.box.data1 <- hvchange.box.data
+hvchange.box.data <- data.frame()
+for (i in 1:8) {
+  pairi <- hvchange.box.data1[hvchange.box.data1$pair_code == pair_code[i], ]
+  pairi$pair_code <- new_pair_code[i]
+  hvchange.box.data <- rbind(hvchange.box.data, pairi)
+}
+hv.box.data$pair_code <- factor(hv.box.data$pair_code, levels = new_pair_code)  # Convert 'pair_code' to factor with numeric levels
+```
+
+### Hypervolume Visualisation based on PC1-PC3
+```{r, tidy=TRUE, warning=FALSE, echo=T}
+# Principal component analysis
+# Extract trait data from hv.data based on provided traits
+trait.data <- hv.data[, colnames(hv.data) %in% trait, ]
+# Perform principal component analysis (PCA) on the trait data with correlation matrix
+trait.stand.pr <- princomp(trait.data, cor = TRUE)
+# Summarize PCA results including loadings
+pr <- summary(trait.stand.pr, loadings = TRUE)
+
+# Store PC scores in the dataset
+hv.data$PC1 <- pr$scores[, 1]
+hv.data$PC2 <- pr$scores[, 2]
+hv.data$PC3 <- pr$scores[, 3]
+trait1 <- c("PC1", "PC2", "PC3")  # Names of PC traits
+
+# If PCA results are used, visualize them with a plot for better interpretation
+alone.hdata <- hv.data[hv.data$comp_type == "alone", ]  # Subset for alone condition
+inter.hdata <- hv.data[hv.data$comp_type == "inter", ]  # Subset for interspecies condition
+
+# Function to calculate hypervolume for all individuals to create a scatter plot (gaussian)
+Hyperv <- function(ni, data, trait, quantile) {
+  data <- data[ni, ]
+  sample_data <- data[, colnames(data) %in% trait]
+  bandwidth <- estimate_bandwidth(data = sample_data)
+  hv <- hypervolume_gaussian(data = sample_data, name = unique(sample_data$sp),
+                             kde.bandwidth = bandwidth, quantile.requested = quantile)
+  return(hv)
+}
+trait1 <- c("PC1", "PC2", "PC3")  # Names of PC traits
+
+# Check if the hypervolume data has already been saved, otherwise calculate and save it
+if (file.exists(file = paste0(dir.name, "/hv_pointsplot_pc13.RData"))) {
+  load(paste0(dir.name, "/hv_pointsplot_pc13.RData"))  # Load previously saved data
+} else {
+  alone.hvp <- tapply(1:nrow(alone.hdata), list(alone.hdata$sp), Hyperv, alone.hdata, trait1, 0.95)
+  inter.hvp <- tapply(1:nrow(inter.hdata), list(inter.hdata$pdname), Hyperv, inter.hdata, trait1, 0.95)
+  save(alone.hvp, inter.hvp, file = paste0(dir.name, "/hv_pointsplot_pc13.RData"))  # Save calculated data
+}
+
+```
+
+### ITV based on individual trait
+```{r, tidy=TRUE, warning=FALSE, echo=T}
+#### CV4 based on a single trait
+# Core function to calculate CV4(Bao's CV)
+CV4 <- function(trait_sample) {
+  trait_sample <- trait_sample[!is.na(trait_sample)]  # Remove NA values
+  if (length(trait_sample) > 1) {  # Ensure there are more than 1 data point
+    N <- length(trait_sample)
+    # calculate CV^2
+    y_bar <- mean(trait_sample)  # Mean of trait values
+    s2_hat <- var(trait_sample)  # Sample variance
+    cv_2 <- s2_hat / y_bar^2  # Coefficient of variation squared
+    cv_1 <- sqrt(cv_2)  # Coefficient of variation
+    gamma_1 <- sum(((trait_sample - y_bar) / s2_hat^0.5)^3) / N  # Skewness
+    gamma_2 <- sum(((trait_sample - y_bar) / s2_hat^0.5)^4) / N  # Kurtosis
+    bias2 <- cv_1^3 / N - cv_1 / 4 / N - cv_1^2 * gamma_1 / 2 / N - cv_1 * gamma_2 / 8 / N  # Bias correction
+    cv4 <- cv_1 - bias2  # Corrected coefficient of variation
+  } else {
+    cv4 <- NA  # If there's only one data point, return NA
+  }
+  return(cv4)
+}
+
+# Function to calculate mean of ITV for a given sample size(N) based on trait data
+Sample_CV <- function(data, N) {
+  if (N == "all") {
+    cv4.mean <- CV4(data)  # Calculate CV4 for entire dataset
+  } else {
+    cv <- replicate(5, CV4(sample(data, N)))  # Calculate CV4 for multiple samples and replicate 5 times
+    cv4.mean <- mean(cv)  # Calculate mean of replicated CV4 values
+  }
+  return(cv4.mean)
+}
+
+nrep <- 999  # Number of replications
+sample_size <- 15  # Sample size
+t.data$sp <- factor(t.data$sp, levels = species)  # Convert species column to factor with specified levels
+t.data$comp_type <- factor(t.data$comp_type, levels = c("alone", "inter"))  # Convert comp_type column to factor with specified levels
+
+# Check if CV4 results are already saved, otherwise calculate them
+if (file.exists(file = paste0(dir.name, "/CV4.RData"))) {
+  load(paste0(dir.name, "/CV4.RData"))  # Load previously saved CV4 results
+} else {
+  alone.cv <- matrix(NA, ncol = 7, nrow = 8, dimnames = list(species, trait))  # Initialize matrix to store CV4 results for alone condition
+  alone.cdata <- t.data[t.data$comp_type == "alone", ]  # Subset data for alone condition
+  for (t in 1:length(trait)) {
+    c <- replicate(nrep, tapply(alone.cdata[, trait[t]], list(alone.cdata$sp), Sample_CV, sample_size))  # Calculate CV4 for each species
+    alone.cv[, t] <- apply(c, 1, mean, na.rm = TRUE)  # Calculate mean CV4 across replications for each species
+  }
+
+  inter.cv <- matrix(NA, ncol = 7, nrow = 16, dimnames = list(pdname, trait))  # Initialize matrix to store CV4 results for interspecies condition
+  inter.cdata <- t.data[t.data$comp_type == "inter", ]  # Subset data for interspecies condition
+  for (t in 1:length(trait)) {
+    c <- replicate(nrep, tapply(inter.cdata[, trait[t]], list(inter.cdata$pdname), Sample_CV, sample_size))  # Calculate CV4 for each species pair
+    inter.cv[, t] <- apply(c, 1, mean, na.rm = TRUE)  # Calculate mean CV4 across replications for each species pair
+  }
+
+  save(alone.cv, inter.cv, file = paste0(dir.name, "/CV4.RData"))  # Save calculated CV4 results
+}
+
+alone.cv1 <- as.data.frame(alone.cv[inter.sp.order, ])  # Reorder alone CV4 results based on interspecies order
+alone.cv1$sp_group <- inter.rii.result$sp_rank  # Add species group information based on interspecies competition
+inter.cv1 <- as.data.frame(inter.cv)  # Convert interspecies CV4 results to data frame
+inter.cv1$sp_group <- inter.rii.result$sp_rank  # Add species group information based on interspecies competition
+
+inf_alone_varimp <- alone.cv1[alone.cv1$sp_group == "Inferior", ][, -8]  # Subset CV4 results for inferior species in alone condition
+sup_alone_varimp <- alone.cv1[alone.cv1$sp_group == "Superior", ][, -8]  # Subset CV4 results for superior species in alone condition
+inf_inter_varimp <- inter.cv1[inter.cv1$sp_group == "Inferior", ][, -8]  # Subset CV4 results for inferior species in interspecies condition
+sup_inter_varimp <- inter.cv1[inter.cv1$sp_group == "Superior", ][, -8]  # Subset CV4 results for superior species in interspecies condition
+
+alone.varimp <- alone.cv1[, -8]  # Exclude species group column from alone CV4 results
+inter.varimp <- inter.cv1[, -8]  # Exclude species group column from interspecies CV4 results
+colnames(alone.varimp)[6:7] <- c("SSD", "SMC")  # Rename columns for ease of interpretation
+colnames(inter.varimp)[6:7] <- c("SSD", "SMC")  # Rename columns for ease of interpretation
+
+colnames(inf_alone_varimp)[6:7] <- c("SSD", "SMC")  # Rename columns for ease of interpretation
+colnames(sup_alone_varimp)[6:7] <- c("SSD", "SMC")  # Rename columns for ease of interpretation
+colnames(inf_inter_varimp)[6:7] <- c("SSD", "SMC")  # Rename columns for ease of interpretation
+colnames(sup_inter_varimp)[6:7] <- c("SSD", "SMC")  # Rename columns for ease of interpretation
+
+##### Calculate mean varimp
+inf_alone_varimp[9, ] <- apply(inf_alone_varimp, 2, mean)  # Calculate mean CV4 for inferior species in alone condition
+sup_alone_varimp[9, ] <- apply(sup_alone_varimp, 2, mean)  # Calculate mean CV4 for superior species in alone condition
+inf_inter_varimp[9, ] <- apply(inf_inter_varimp, 2, mean)  # Calculate mean CV4 for inferior species in interspecies condition
+sup_inter_varimp[9, ] <- apply(sup_inter_varimp, 2, mean)  # Calculate mean CV4 for superior species in interspecies condition
+```
+
+# save results for 7-dimensional hypervolume (ITV) and RII
+```{r, tidy=T, echo=T}
+# Save the following objects to a .RData file for future use
+save(species, pdname, pd.data, trait, sppairs, rii.result, inter.riit,
+  hv.box.data, hvchange.box.data, alone.hvp, inter.hvp,
+  alone.varimp, inter.varimp, inf_alone_varimp, sup_alone_varimp,
+  inf_inter_varimp, sup_inter_varimp, se, cube.root, Wilcox_Star,
+  scale_fill_Publication, scale_colour_Publication,
+  f.dir.name, dir.name,
+  file = "02_output_results/output_allresults_2sp_homo.RData"
+)
+
+trait.2sp <- trait
+species.2sp <- species
+
+hv.box.data.2sp <- hv.box.data
+hvchange.box.data.2sp <- hv.box.data
+
+alone.hvp.2sp <- alone.hvp
+inter.hvp.2sp <- inter.hvp
+
+alone.varimp.2sp <- alone.varimp
+inter.varimp.2sp <- inter.varimp
+
+scale_fill_Publication.2sp <- scale_fill_Publication
+scale_colour_Publication.2sp <- scale_colour_Publication
+dir.name.2sp <- dir.name
+```
+
+# Calculating hypervolume based on reduced-dimensional hypervolume (PC1, PC2, PC3)
+```{r, tidy=TRUE, warning=FALSE, echo=T}
+trait1 <- c("PC1", "PC2", "PC3") # reduced traits
+
+# Set parameters
+quantile <- 0.95  # Quantile value for hypervolume calculation
+sample_size <- 20  # Sample size
+Nrep <- 999  # Number of replications
+clnum <- detectCores() - 1  # Number of CPU cores to be used
+cl <- makeCluster(getOption("cl.cores", 60))  # Initialize cluster
+
+# Load saved data if exists
+if (file.exists(file = paste0(dir.name, "/HV_RII_PCA3.RData"))) {
+  load(paste0(dir.name, "/HV_RII_PCA3.RData"))  # Load previously saved data
+} else {
+  # Perform simulations and save data
+  set.seed(rnorm(1))  # Set random seed
+  Sys.time()  # Current system time
+  # Calculate hypervolume and RII for alone and interspecies conditions using parallel processing
+  alone.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, alone.hdata, trait1, sample_size, quantile, Hypervolume_value)
+  inter.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, inter.hdata, trait1, sample_size, quantile, Hypervolume_value)
+  # Save calculated data
+  save(trait, alone.hv, inter.hv, file = paste0(dir.name, "/HV_RII_PCA3.RData"))
+}
+
+# Organize hypervolume and RII data
+alone.hvrii <- matrix(unlist(alone.hv), nrow = length(species) * 2, dimnames = list(rep(species, each = 2), 1:Nrep))
+inter.hvrii <- matrix(unlist(inter.hv), nrow = length(species) * 2 * 2, dimnames = list(rep(pdname, each = 2), 1:Nrep))
+
+# Extract hypervolume and RII separately for alone treatments
+alone.hv <- alone.hvrii[seq(1, 16, 2), ]
+alone.rii <- alone.hvrii[seq(2, 16, 2), ]
+# Repeat the hypervolume and RII data for each pairwise comparison in inter treatments
+alone.hv <- matrix(rep(unlist(alone.hv), rep(table(inter.sp.order), Nrep)), nrow = length(pdname), 
+                   dimnames = list(species[inter.sp.order], 1:Nrep))
+alone.rii <- matrix(rep(unlist(alone.rii), rep(table(inter.sp.order), Nrep)), nrow = length(pdname), 
+                    dimnames = list(species[inter.sp.order], 1:Nrep))
+
+# Extract hypervolume and RII separately for inter treatments
+inter.hv <- inter.hvrii[seq(1, 32, 2), ]
+inter.rii <- inter.hvrii[seq(2, 32, 2), ]
+
+# Organize data for HV and ContrHV
+hv.box.data <- data.frame(
+  Nrep = rep(1:Nrep, each = 16),  # Replicate number
+  pdname = rep(pdname, Nrep),  # Pairwise comparison name
+  sp = rep(species[inter.sp.order], Nrep),  # Species name
+  sp_group = rep(inter.rii.result$sp_rank, Nrep),  # Species group based on RII
+  pair_code = rep(c("MG", "SG", "GC", "MG", "MC", "SG", "SA", "CA", "SH", "SA", "SC", "GC", "MC", "CA", "SC", "SH"), Nrep),  # Pair code
+  alone_hv = as.numeric(alone.hv),  # Hypervolume for alone treatment
+  inter_hv = as.numeric(inter.hv),  # Hypervolume for interspecies treatment
+  alone_rii = as.numeric(alone.rii),  # RII for alone treatment
+  inter_rii = as.numeric(inter.rii)  # RII for interspecies treatment
+)
+
+# Convert 'pair_code' to factor with specified levels
+hv.box.data$pair_code <- factor(hv.box.data$pair_code, levels = pair_code)
+# Convert 'sp_group' to character
+hv.box.data$sp_group <- as.character(hv.box.data$sp_group)
+
+# HV change
+## Calculate the change in MTS based on the mean of 9 random trials
+mean.alone.hv <- apply(alone.hv, 1, mean)  # Calculate mean hypervolume for alone treatment
+inter.hvchange <- (as.numeric(inter.hv) - rep(mean.alone.hv, Nrep))  # Calculate hypervolume change for interspecies treatment
+# Create a data frame for hypervolume change
+hvchange.box.data <- data.frame(
+  pdname = rep(pdname, Nrep),  # Pairwise comparison name
+  sp = rep(species[inter.sp.order], Nrep),  # Species name
+  sp_group = rep(rii.result$sp_rank, Nrep),  # Species group based on RII
+  pair_code = rep(c("MG", "SG", "GC", "MG", "MC", "SG", "SA", "CA", "SH", "SA", "SC", "GC", "MC", "CA", "SC", "SH"), Nrep),  # Pair code
+  inter_hvchange = inter.hvchange,  # Hypervolume change for interspecies treatment
+  inter_mean_rii = as.numeric(inter.rii),  # Mean RII for interspecies treatment
+  rii = rep(rii.result$mean_rii, Nrep)  # Mean RII for all pairwise comparisons
+)
+# Convert 'pair_code' to factor with specified levels
+hvchange.box.data$pair_code <- factor(hvchange.box.data$pair_code, levels = pair_code)
+hvchange.box.data$sp_group <- as.character(hvchange.box.data$sp_group)  # Convert 'sp_group' to character
+
+## Convert pair_code information to numbers for ease of adding significance comparison results
+new_pair_code <- 1:8  # New numeric levels for pair code
+# Convert 'pair_code' to numeric with specified levels
+hv.box.data1 <- hv.box.data
+hv.box.data <- data.frame()
+for (i in 1:8) {
+  pairi <- hv.box.data1[hv.box.data1$pair_code == pair_code[i], ]
+  pairi$pair_code <- new_pair_code[i]
+  hv.box.data <- rbind(hv.box.data, pairi)
+}
+hv.box.data$pair_code <- factor(hv.box.data$pair_code, levels = new_pair_code)  # Convert 'pair_code' to factor with numeric levels
+
+# Convert pair code information to numbers for ease of adding significance comparison results
+new_pair_code <- 1:8  # New numeric levels for pair code
+hvchange.box.data1 <- hvchange.box.data
+hvchange.box.data <- data.frame()
+for (i in 1:8) {
+  pairi <- hvchange.box.data1[hvchange.box.data1$pair_code == pair_code[i], ]
+  pairi$pair_code <- new_pair_code[i]
+  hvchange.box.data <- rbind(hvchange.box.data, pairi)
+}
+hv.box.data$pair_code <- factor(hv.box.data$pair_code, levels = new_pair_code)  # Convert 'pair_code' to factor with numeric levels
+```
+
+# save results for reduced-dimensional hypervolume (ITV) and RII
+```{r, tidy=T, echo=T}
+# Save the following objects to a .RData file for future use
+save(species, pdname, pd.data, trait, sppairs, rii.result, inter.riit,
+  hv.box.data, hvchange.box.data, alone.hvp, inter.hvp,
+  alone.varimp, inter.varimp, inf_alone_varimp, sup_alone_varimp,
+  inf_inter_varimp, sup_inter_varimp, se, cube.root, Wilcox_Star,
+  scale_fill_Publication, scale_colour_Publication,
+  f.dir.name, dir.name,
+  file = "02_output_results/output_allresults_2sp_homo_PCA3.RData"
+)
+```
+

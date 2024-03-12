@@ -1,0 +1,1904 @@
+---
+title: "all tables and figures based on 7-dimentional hypervolume for yang et al. 2024"
+author:
+  - Jing Yang
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+---
+
+```{r}
+knitr::opts_chunk$set(message = F,warning = F,tidy=T)
+dir.create('fig', showWarnings = F)
+dir.create('table', showWarnings = F)
+```
+
+# Load results
+```{r}
+# Load necessary libraries
+library(ggplot2)  # Plotting library
+library(patchwork)  # Combine plots
+library(knitr)  # Table formatting
+library(kableExtra)  # Table formatting
+library(hypervolume)  # Hypervolume computation
+library(snow)  # Parallel computing
+library(parallel)  # Parallel computing
+library(ggsignif)  # Add significance bars to plots
+library(alphahull)  # Alpha shape for convex hulls
+library(RColorBrewer)  # Color palettes
+library(formatR)  # Format R code
+library(gridExtra)  # Arrange plots
+library(ggpubr)  # Combine ggplot2 plots
+library(fmsb)  # Spider plots
+library(ggsci)  # Color palettes
+library(tidyverse)  # Data manipulation
+
+# Load custom theme for publication-ready plots
+source("theme_Publication.R")
+
+# Define color palettes for plotting
+myfamily <- "sans"
+cols2 <- c("#EE7785", "#76B7B2")  # Color palette with 2 colors
+cols3 <- c("#F68657", "#6F80BE", "#CC99CC")  # Color palette with 3 colors
+cols7 <- c("#EE7785", "#eb9f9f", "#fec8c9", "#F0E5DE", "#D8E6E7", "#9DC3C1", "#76B7B2")  # Color palette with 7 colors
+
+# Function to define fill scale for plots
+scale_fill_Publication <- function(...) {
+    library(scales)
+    discrete_scale("fill", "Publication", manual_pal(values = c(cols7, "#386cb0", "#fdb462", "#7fc97f",
+                                                               "#ef3b2c", "#a6cee3", "#fb9a99", "#984ea3", "#ffff33")), ...)
+}
+
+# Function to define color scale for plots
+scale_colour_Publication <- function(...) {
+    library(scales)
+    discrete_scale("colour", "Publication", manual_pal(values = c(cols7, "#386cb0", "#fdb462", "#7fc97f",
+                                                                "#ef3b2c", "#a6cee3", "#fb9a99", "#984ea3", "#ffff33")), ...)
+}
+
+# Load data for 2 species homogeneous competition
+load(file = "02_output_results/output_allresults_2sp_homo.RData")
+trait.2sp <- colnames(inf_alone_varimp)
+species.2sp <- species
+scale_fill_Publication.2sp <- scale_fill_Publication
+scale_colour_Publication.2sp <- scale_colour_Publication
+f.dir.name.2sp <- f.dir.name
+dir.name.2sp <- dir.name
+inter.rii.2sp <- inter.riit
+tda.2sp.homo <- data
+hv.box.data.2sp <- hv.box.data
+hvchange.box.data.2sp <- hvchange.box.data
+alone.hvp.2sp <- alone.hvp
+inter.hvp.2sp <- inter.hvp
+alone.varimp.2sp <- alone.varimp
+inter.varimp.2sp <- inter.varimp
+
+
+# Load data for 7 species homogeneous competition
+load(file = "02_output_results/output_allresults_7sp_homo.RData")
+trait.7sp.homo <- trait
+scale_fill_Publication.7sp.homo <- scale_fill_Publication
+scale_colour_Publication.7sp.homo <- scale_colour_Publication
+f.dir.name.7sp.homo <- f.dir.name
+dir.name.7sp.homo <- dir.name
+rii.env.7sp.homo <- rii.env1
+hv.box.data.7sp.homo <- hv.box.data
+hv_riis.7sp.homo <- hv_riis1
+alone.hvp.7sp.homo <- alone.hvp1
+inter.hvp.7sp.homo <- inter.hvp1
+alone.varimp.7sp.homo <- alone.varimp1
+inter.varimp.7sp.homo <- inter.varimp1
+
+# Load data for 7 species heterogeneous competition
+load(file = "02_output_results/output_allresults_7sp_heter.RData")
+trait.7sp.heter <- trait
+scale_fill_Publication.7sp.heter <- scale_fill_Publication
+scale_colour_Publication.7sp.heter <- scale_colour_Publication
+f.dir.name.7sp.heter <- f.dir.name
+dir.name.7sp.heter <- dir.name
+rii.env.7sp.heter <- rii.env1
+inter.riida.7sp.heter <- inter.riida1
+hv.box.data.7sp.heter <- hv.box.data
+hv_riis.7sp.heter <- hv_riis
+alone.hvp.7sp.heter <- alone.hvp
+inter.hvp.7sp.heter <- inter.hvp
+alone.varimp.7sp.heter <- alone.varimp1
+inter.varimp.7sp.heter <- inter.varimp1
+
+# Create directories for saving figures and tables
+dir.name <- paste0("03_final_figures_tables_pca_final_nc")
+dir.create(dir.name)
+f.dir.name <- paste0("03_final_figures_tables_pca_final_nc/Figures")
+dir.create(f.dir.name)
+
+############################################################################################
+### Calculating the mean ITV based on the species level
+### Phase I: Pair_homogeneous
+
+# Filtering data for single repetitions
+mean.hv.box.data.2sp <- hv.box.data.2sp[hv.box.data.2sp$Nrep == 1,]
+
+# Sorting data by species name
+mean.hv.box.data.2sp <- mean.hv.box.data.2sp[order(mean.hv.box.data.2sp$pdname),]
+
+# Calculating mean alone and interaction home values per species
+mean.hv.box.data.2sp$alone_hv <- tapply(hv.box.data.2sp$alone_hv, list(hv.box.data.2sp$pdname), mean)
+mean.hv.box.data.2sp$inter_hv <- tapply(hv.box.data.2sp$inter_hv, list(hv.box.data.2sp$pdname), mean)
+
+# Calculating standard error for mean alone and interaction home values per species
+mean.hv.box.data.2sp$alone_hv_se <- tapply(hv.box.data.2sp$alone_hv, list(hv.box.data.2sp$pdname), se)
+mean.hv.box.data.2sp$inter_hv_se <- tapply(hv.box.data.2sp$inter_hv, list(hv.box.data.2sp$pdname), se)
+
+# Converting pair code to character type
+mean.hv.box.data.2sp$pair_code <- as.character(mean.hv.box.data.2sp$pair_code)
+
+# Calculating total mean values for all pairs
+mean.hv.2sp <- mean.hv.box.data.2sp[mean.hv.box.data.2sp$pair_code == 1,]
+mean.hv.2sp$pdname <- "all"
+mean.hv.2sp$pair_code <- "all"
+mean.hv.2sp$alone_hv <- as.numeric(tapply(mean.hv.box.data.2sp$alone_hv, list(mean.hv.box.data.2sp$sp_group), mean))
+mean.hv.2sp$inter_hv <- as.numeric(tapply(mean.hv.box.data.2sp$inter_hv, list(mean.hv.box.data.2sp$sp_group), mean))
+mean.hv.2sp$alone_hv_se <- as.numeric(tapply(cube.root(mean.hv.box.data.2sp$alone_hv), list(mean.hv.box.data.2sp$sp_group), se))
+mean.hv.2sp$inter_hv_se <- as.numeric(tapply(cube.root(mean.hv.box.data.2sp$inter_hv), list(mean.hv.box.data.2sp$sp_group), se))
+mean.hv.box.data.2sp1 <- rbind(mean.hv.box.data.2sp, mean.hv.2sp)
+
+### Phase II: Mutli_homogeneous
+
+# Selecting relevant data for homogeneous multi-species analysis
+mean.hv.7sp.homo <- hv.box.data.7sp.homo[c(1:4,6,5,7),]
+
+# Calculating mean alone and interaction home values per species
+mean.hv.7sp.homo$alone_hv <- tapply(hv.box.data.7sp.homo$alone_hv, list(hv.box.data.7sp.homo$sp), mean)
+mean.hv.7sp.homo$inter_hv <- tapply(hv.box.data.7sp.homo$inter_hv, list(hv.box.data.7sp.homo$sp), mean)
+
+# Extracting environmental RII values
+mean.hv.7sp.homo$inter_rii <- rii.env.7sp.homo$RII[c(1:4,6,5,7)]
+
+# Calculating standard error for mean alone and interaction home values per species
+mean.hv.7sp.homo$alone_hv_se <- tapply(hv.box.data.7sp.homo$alone_hv, list(hv.box.data.7sp.homo$sp), se)
+mean.hv.7sp.homo$inter_hv_se <- tapply(hv.box.data.7sp.homo$inter_hv, list(hv.box.data.7sp.homo$sp), se)
+mean.hv.7sp.homo$inter_rii_se <- tapply(hv.box.data.7sp.homo$inter_rii, list(hv.box.data.7sp.homo$sp), se)
+
+# Setting species as factor with specified levels
+mean.hv.7sp.homo$sp <- factor(mean.hv.7sp.homo$sp, levels = c("DO","LG","CS","CG","HA","SS","QC"))
+
+### Phase II: Mutli_heterogeneous
+
+# Selecting relevant data for heterogeneous multi-species analysis
+mean.hv.7sp.heter <- hv.box.data.7sp.heter[1:7,]
+
+# Calculating mean alone and interaction home values per species
+mean.hv.7sp.heter$alone_hv <- tapply(hv.box.data.7sp.heter$alone_hv, list(hv.box.data.7sp.heter$sp), mean)
+mean.hv.7sp.heter$inter_hv <- tapply(hv.box.data.7sp.heter$inter_hv, list(hv.box.data.7sp.heter$sp), mean)
+
+# Extracting environmental RII values
+mean.hv.7sp.heter$inter_rii <- rii.env.7sp.heter$RII
+
+# Calculating standard error for mean alone and interaction home values per species
+mean.hv.7sp.heter$alone_hv_se <- tapply(hv.box.data.7sp.heter$alone_hv, list(hv.box.data.7sp.heter$sp), se)
+mean.hv.7sp.heter$inter_hv_se <- tapply(hv.box.data.7sp.heter$inter_hv, list(hv.box.data.7sp.heter$sp), se)
+mean.hv.7sp.heter$inter_rii_se <- tapply(hv.box.data.7sp.heter$inter_rii, list(hv.box.data.7sp.heter$sp), se)
+
+# Setting species as factor with specified levels
+mean.hv.7sp.heter$sp <- factor(mean.hv.7sp.heter$sp, levels = c("DO","LG","CS","CG","SS","HA","QC"))
+
+### Long data to wide data for legend in figure 2
+
+# Copying data for homogeneous pair analysis
+mean.hv.2sp.homo <- mean.hv.7sp.homo
+mean.hv.2sp.homo$group <- "Phase I: Pair_homogeneous"
+
+# Adding group labels for multi-species analyses
+mean.hv.7sp.homo$group <- "Phase II: Mutli_homogeneous"
+mean.hv.7sp.heter$group <- "Phase II: Mutli_heterogeneous"
+
+# Combining all data into a single dataframe
+mean.hv <- rbind(mean.hv.2sp.homo, mean.hv.7sp.homo, mean.hv.7sp.heter)
+
+# Renaming columns for better clarity
+colnames(mean.hv)[2:3] <- c("Competition-free","Competition")
+
+# Converting data from wide to long format
+mean.hv.long <- gather(mean.hv, Comp, HV, c("Competition-free","Competition"))
+mean.hv.long1 <- gather(mean.hv, Comp, SE, c("alone_hv_se","inter_hv_se"))
+mean.hv.long$SE <- mean.hv.long1$SE
+
+# Setting factors with specified levels
+mean.hv.long$group <- factor(mean.hv.long$group, level=c("Phase I: Pair_homogeneous","Phase II: Mutli_homogeneous","Phase II: Mutli_heterogeneous"))
+mean.hv.long$Comp <- factor(mean.hv.long$Comp, level=c("Competition-free","Competition"))
+
+#### Relative Change
+sp2 <- (mean.hv.box.data.2sp$inter_hv - mean.hv.box.data.2sp$alone_hv) / mean.hv.box.data.2sp$alone_hv
+sp7 <- (mean.hv.7sp.homo$inter_hv - mean.hv.7sp.homo$alone_hv) / mean.hv.7sp.homo$alone_hv
+sp7_2 <- (mean.hv.7sp.heter$inter_hv - mean.hv.7sp.heter$alone_hv) / mean.hv.7sp.heter$alone_hv
+#############################################################################################################
+######### ITVchange from alone to inter
+### Phase I: Pair_homogeneous
+
+# Selecting relevant data for ITV change analysis
+hvchange_rii.2sp.homo <- hvchange.box.data.2sp[,c("pdname","inter_hvchange","inter_mean_rii")]
+
+# Renaming columns
+colnames(hvchange_rii.2sp.homo)[c(1,3)] <- c("sp", "inter_rii")
+
+# Sorting species names
+pdname <- sort(unique(hvchange_rii.2sp.homo$sp))
+
+# Calculating mean ITV change and RII per species
+mean_hvchange_rii.2sp.homo <- data.frame(group="Pair_homogeneous",
+                                    sp=pdname,
+                                    hvchange=tapply(hvchange_rii.2sp.homo$inter_hvchange,list(hvchange_rii.2sp.homo$sp),mean),
+                                    se=tapply(hvchange_rii.2sp.homo$inter_hvchange,list(hvchange_rii.2sp.homo$sp),se),
+                                    rii=tapply(hvchange_rii.2sp.homo$inter_rii,list(hvchange_rii.2sp.homo$sp),mean),
+                                    rii_se=tapply(cube.root(hvchange_rii.2sp.homo$inter_rii),list(hvchange_rii.2sp.homo$sp),se))
+
+# Sorting and categorizing species groups
+mean_hvchange_rii.2sp.homo1 <- mean_hvchange_rii.2sp.homo
+mean_hvchange_rii.2sp.homo1$sp_group <- rii.result$sp_rank
+mean_hvchange_rii.2sp.homo1$pair_num <- rii.result$pair_num
+mean_hvchange_rii.2sp.homo1 <- mean_hvchange_rii.2sp.homo1[order(mean_hvchange_rii.2sp.homo1$pair_num),]
+inf_hvchange2 <- mean_hvchange_rii.2sp.homo1 [mean_hvchange_rii.2sp.homo1 $sp_group=="Inferior",]
+sup_hvchange2 <- mean_hvchange_rii.2sp.homo1 [mean_hvchange_rii.2sp.homo1 $sp_group=="Superior",]
+
+# Performing Wilcoxon signed-rank test
+v <- c()
+p <- c()
+
+# Looping over pairs for Wilcoxon test
+for(i in 1:8){
+  inf <- hvchange.box.data.2sp[hvchange.box.data.2sp$pair_code==i & hvchange.box.data.2sp$sp_group=="Inferior",]$inter_hvchange
+  sup <- hvchange.box.data.2sp[hvchange.box.data.2sp$pair_code==i & hvchange.box.data.2sp$sp_group=="Superior",]$inter_hvchange
+  t <- wilcox.test(inf,sup)
+  v <- c(v, t$statistic)
+  p <- c(p, t$p.value)
+}
+
+# Creating summary table
+tableS5_1 <- data.frame(pair_num=c("all",inf_hvchange2$pair_num),
+                        inf_hvchange=paste0(round(c(mean(inf_hvchange2$hvchange),inf_hvchange2$hvchange),2),"±",round(c(se(hvchange.box.data.2sp[hvchange.box.data.2sp$sp_group=="Inferior",]$inter_hvchange),inf_hvchange2$se),2)),
+                        sup_hvchange=paste0(round(c(mean(sup_hvchange2$hvchange),sup_hvchange2$hvchange),2),"±",round(c(se(hvchange.box.data.2sp[hvchange.box.data.2sp$sp_group=="Superior",]$inter_hvchange),sup_hvchange2$se),2)),
+                        V=c(57,v),P=c(0.007,p))
+
+write.csv(tableS5_1, file = paste0(f.dir.name, "/tableS5_1.csv"))
+
+### Phase II: Mutli_homogeneous
+
+# Selecting relevant data for ITV change analysis
+hvchange_rii.7sp.homo <- hv_riis.7sp.homo[,c("sp","inter_hvchange","inter_rii")]
+
+# Creating dataframe for mean ITV change and RII
+mean_hvchange_rii.7sp.homo <- data.frame(group="Mutli_homogeneous",
+                                    sp=sp_abbr,
+                                    hvchange=tapply(hvchange_rii.7sp.homo$inter_hvchange,list(hvchange_rii.7sp.homo$sp),mean),
+                                    se=tapply(hvchange_rii.7sp.homo$inter_hvchange,list(hvchange_rii.7sp.homo$sp),se),
+                                    rii=tapply(hvchange_rii.7sp.homo$inter_rii,list(hvchange_rii.7sp.homo$sp),mean),
+                                    rii_se=tapply(cube.root(hvchange_rii.7sp.homo$inter_rii),list(hvchange_rii.7sp.homo$sp),se))
+
+### Phase II: Mutli_heterogeneous
+
+# Selecting relevant data for ITV change analysis
+hvchange_rii.7sp.heter <- hv_riis.7sp.heter[,c("sp","inter_hvchange","inter_rii")]
+
+# Creating dataframe for mean ITV change and RII
+mean_hvchange_rii.7sp.heter <- data.frame(group="Mutli_heterogeneous",
+                                     sp=sp_abbr,
+                                    hvchange=tapply(hvchange_rii.7sp.heter$inter_hvchange,list(hvchange_rii.7sp.heter$sp),mean),
+                                    se=tapply(hvchange_rii.7sp.heter$inter_hvchange,list(hvchange_rii.7sp.heter$sp),se),
+                                    rii=tapply(hvchange_rii.7sp.heter$inter_rii,list(hvchange_rii.7sp.heter$sp),mean),
+                                    rii_se=tapply(cube.root(hvchange_rii.7sp.heter$inter_rii),list(hvchange_rii.7sp.heter$sp),se))
+
+# Combining all mean ITV change and RII data
+mean_total_hvchange_rii <- rbind(mean_hvchange_rii.2sp.homo, mean_hvchange_rii.7sp.homo, mean_hvchange_rii.7sp.heter)
+mean_total_hvchange_rii$group <- factor(mean_total_hvchange_rii$group, levels=c("Pair_homogeneous","Mutli_homogeneous","Mutli_heterogeneous"))
+
+############ ITV change from home to heter 
+
+# Extracting relevant data for ITV change analysis
+hvchange_homo_heter <- hv.box.data.7sp.heter
+hvchange_homo_heter$hvchange_env <- hv.box.data.7sp.heter$alone_hv - rep(mean.hv.7sp.homo$alone_hv, 999)
+hvchange_homo_heter$hvchange_both <- hv.box.data.7sp.heter$inter_hv - rep(mean.hv.7sp.homo$alone_hv, 999)
+
+# Creating dataframe for mean ITV change and RII
+mean_hvchange_env <- data.frame(group="Mutli_heterogeneous", sp=sp_abbr,
+                                hvchange_env=tapply(hvchange_homo_heter$hvchange_env, list(hvchange_homo_heter$sp), mean),
+                                hvchange_both=tapply(hvchange_homo_heter$hvchange_both, list(hvchange_homo_heter$sp), mean),
+                                se_env=tapply(hvchange_homo_heter$hvchange_env, list(hvchange_homo_heter$sp), se),
+                                se_both=tapply(hvchange_homo_heter$hvchange_both, list(hvchange_homo_heter$sp), se),
+                                rii=tapply(hvchange_rii.7sp.heter$inter_rii, list(hvchange_rii.7sp.heter$sp), mean),
+                                rii_se=tapply(cube.root(hvchange_rii.7sp.heter$inter_rii), list(hvchange_rii.7sp.heter$sp), se))
+
+
+#############################################################################################################
+############################# Varimp
+### Phase I: Pair_homogeneous
+hand.var.2sp <- data.frame(matrix(c(rep(4,length(trait.2sp)), rep(0,length(trait.2sp))),byrow =T,nrow=2, dimnames=list(c(1:2),colnames(inf_alone_varimp))))
+clabels <- seq(0,4,1)
+alone.varimp.data.2sp.homo <- rbind(hand.var.2sp,inf_alone_varimp[9,],sup_alone_varimp[9,])
+inter.varimp.data.2sp.homo <- rbind(hand.var.2sp,inf_inter_varimp[9,],sup_inter_varimp[9,])
+### Phase II: Mutli_homogeneous
+hand.var.7sp <- rbind(rep(4,length(trait.7sp.homo)),  rep(0,length(trait.7sp.homo)))
+alone.varimp.data.7sp.homo <- data.frame(rbind(hand.var.7sp,alone.varimp.7sp.homo))
+alone.varimp.data.7sp.homo <- alone.varimp.data.7sp.homo[c(1:6,8,7,9),]
+inter.varimp.data.7sp.homo <- data.frame(rbind(hand.var.7sp,inter.varimp.7sp.homo))
+inter.varimp.data.7sp.homo <- inter.varimp.data.7sp.homo[c(1:6,8,7,9),]
+sps_new <- sp_abbr[c(1:4,6,5,7)]
+### Phase II: Mutli_heterogeneous
+alone.varimp.data.7sp.heter <- data.frame(rbind(hand.var.7sp,alone.varimp.7sp.heter))
+inter.varimp.data.7sp.heter <- data.frame(rbind(hand.var.7sp,inter.varimp.7sp.heter))
+### Reversed order for species
+alone.varimp.data.2sp.homo[3:4,] <- alone.varimp.data.2sp.homo[c(4,3),]
+inter.varimp.data.2sp.homo[3:4,] <- inter.varimp.data.2sp.homo[c(4,3),]
+alone.varimp.data.7sp.homo[3:9,] <- alone.varimp.data.7sp.homo[c(9,8,7,6,5,4,3),]
+inter.varimp.data.7sp.homo[3:9,] <- inter.varimp.data.7sp.homo[c(9,8,7,6,5,4,3),]
+alone.varimp.data.7sp.heter[3:9,] <- alone.varimp.data.7sp.heter[c(9,8,7,6,5,4,3),]
+inter.varimp.data.7sp.heter[3:9,] <- inter.varimp.data.7sp.heter[c(9,8,7,6,5,4,3),]
+
+############################# Mean varimp for each trait
+### Phase I: Pair_homogeneous
+inter.sp.order <- c(1, 1, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8)
+inter.varimp.2sp1 <- as.matrix(inter.varimp.2sp)
+alone.varimp.2sp1 <- as.matrix(alone.varimp.2sp)
+#sps_2sp <- c("CG", "CM", "CS","HA","LH","PS","QC","SS")
+
+alone_varimp_data_2sp_homo <- data.frame(comp="Competition-free",
+                                         group="sp2_homogeneous",
+                                         sp=rep(rownames(alone.varimp.2sp),7),
+                                         trait=rep(colnames(alone.varimp.2sp1),each=16),
+                                         varimp=as.numeric(alone.varimp.2sp1),
+                                         rii=mean_hvchange_rii.2sp.homo$rii)
+inter_varimp_data_2sp_homo <- data.frame(comp="Competition",
+                                         group="sp2_homogeneous",
+                                         sp=rep(rownames(inter.varimp.2sp),7),
+                                         trait=rep(colnames(inter.varimp.2sp1),each=16),
+                                         varimp=as.numeric(inter.varimp.2sp1),
+                                         rii=mean_hvchange_rii.2sp.homo$rii)
+
+
+#### 7sp
+inter.varimp.7sp <- rbind(inter.varimp.7sp.homo, inter.varimp.7sp.heter)
+alone.varimp.7sp <- rbind(alone.varimp.7sp.homo, alone.varimp.7sp.heter)
+
+
+trait_sp7 <- colnames(inter.varimp.7sp.homo)
+sp <- c("DO","LG","CS","CG","SS","HA","QC")
+alone_varimp_data_7sp_homo <- data.frame(comp="Competition-free",
+                                         group="sp7_homogeneous",
+                                         sp=rep(sp,length(trait.7sp.homo)),
+                                         trait=rep(trait_sp7,each=7),
+                                         varimp=as.numeric(alone.varimp.7sp.homo),
+                                         rii=rii.env.7sp.homo$RII)
+inter_varimp_data_7sp_homo <- data.frame(comp="Competition",
+                                         group="sp7_homogeneous",
+                                         sp=rep(sp,length(trait.7sp.homo)),
+                                         trait=rep(trait_sp7,each=7),
+                                         varimp=as.numeric(inter.varimp.7sp.homo),
+                                         rii=rii.env.7sp.homo$RII)
+
+alone_varimp_data_7sp_heter <- data.frame(comp="Competition-free",
+                                          group="sp7_heterogeneous",
+                                         sp=rep(sp,length(trait.7sp.homo)),
+                                         trait=rep(trait_sp7,each=7),
+                                         varimp=as.numeric(alone.varimp.7sp.heter),
+                                         rii=rii.env.7sp.heter$RII)
+inter_varimp_data_7sp_heter <- data.frame(comp="Competition",
+                                          group="sp7_heterogeneous",
+                                         sp=rep(sp,length(trait.7sp.homo)),
+                                         trait=rep(trait_sp7,each=7),
+                                         varimp=as.numeric(inter.varimp.7sp.heter),
+                                         rii=rii.env.7sp.heter$RII)
+
+varimp_data_7sp <- rbind(alone_varimp_data_7sp_homo,inter_varimp_data_7sp_homo,alone_varimp_data_7sp_heter,inter_varimp_data_7sp_heter)
+varimp_data_7sp$comp <- factor(varimp_data_7sp$comp,levels = c("Competition-free","Competition"))
+varimp_data_7sp$group <- factor(varimp_data_7sp$group,levels = c("sp7_homogeneous","sp7_heterogeneous"))
+
+varimp_data <- rbind(alone_varimp_data_2sp_homo,inter_varimp_data_2sp_homo,
+                     alone_varimp_data_7sp_homo,inter_varimp_data_7sp_homo,
+                     alone_varimp_data_7sp_heter,inter_varimp_data_7sp_heter)
+varimp_data$comp <- factor(varimp_data$comp,levels = c("Competition-free","Competition"))
+varimp_data$group <- factor(varimp_data$group,levels = c("sp2_homogeneous","sp7_homogeneous","sp7_heterogeneous"))
+traits <- c("Chl","LMA","LDMC","LTO","LTh","SSD","SMC","SRL","SRA","RTD")
+varimp_data$trait <- factor(varimp_data$trait, levels=traits)
+
+#### varimp_change
+inter_varimp_data <- varimp_data[varimp_data$comp=="Competition",]
+inter_varimp_data$alone_varimp <- varimp_data[varimp_data$comp=="Competition-free",]$varimp
+inter_varimp_data$varimp_change <- inter_varimp_data$varimp-inter_varimp_data$alone_varimp
+inter_varimp_data$varimp_rechange <- (inter_varimp_data$varimp_change)/inter_varimp_data$alone_varimp
+wilcox.list <- tapply(inter_varimp_data$varimp_change,list(inter_varimp_data$trait),wilcox.test)
+wilcox.v<-c()
+wilcox.p<-c()
+for(i in 1:length(traits)){
+  wilcox.p <- round(c(wilcox.p,wilcox.list[[i]]$p.value),3)
+  wilcox.v <- round(c(wilcox.v,wilcox.list[[i]]$statistic),0)
+}
+mean.varimpchanges.pdata <- data.frame(trait=traits,
+                                       change=tapply(inter_varimp_data$varimp_change,list(inter_varimp_data$trait),mean),
+                                       change_se=tapply(inter_varimp_data$varimp_change,list(inter_varimp_data$trait),se),
+                                       rechange=tapply(inter_varimp_data$varimp_rechange,list(inter_varimp_data$trait),mean),
+                                       p=wilcox.p)
+mean.varimpchanges.pdata$star <- c("**","","**","*","","***","***","***","***","***")
+mean.varimpchanges.pdata$trait <- factor(mean.varimpchanges.pdata$trait,levels = traits)
+
+rechange_t <- paste0(round(mean.varimpchanges.pdata$rechange*100,2),"%  ", mean.varimpchanges.pdata$star)
+rechange_t1 <- paste0(mean.varimpchanges.pdata$star)
+
+############################# Radar map for figure S6
+### Phase I: Pair_homogeneous
+
+# Creating a matrix for hand varimp data
+hand.var.2sp <- data.frame(matrix(c(rep(4, length(trait.2sp)), rep(0, length(trait.2sp))), byrow = TRUE, nrow = 2, dimnames = list(c(1:2), colnames(inf_alone_varimp))))
+clabels <- seq(0, 4, 1)
+
+# Combining hand varimp data with alone and inter varimp data for 2 species
+alone.varimp.data.2sp.homo <- rbind(hand.var.2sp, inf_alone_varimp[9, ], sup_alone_varimp[9, ])
+inter.varimp.data.2sp.homo <- rbind(hand.var.2sp, inf_inter_varimp[9, ], sup_inter_varimp[9, ])
+
+### Phase II: Mutli_homogeneous
+
+# Creating a matrix for hand varimp data for 7 species
+hand.var.7sp <- rbind(rep(4, length(trait.7sp.homo)), rep(0, length(trait.7sp.homo)))
+
+# Combining hand varimp data with alone and inter varimp data for 7 species
+alone.varimp.data.7sp.homo <- data.frame(rbind(hand.var.7sp, alone.varimp.7sp.homo))
+alone.varimp.data.7sp.homo <- alone.varimp.data.7sp.homo[c(1:6, 8, 7, 9), ]
+inter.varimp.data.7sp.homo <- data.frame(rbind(hand.var.7sp, inter.varimp.7sp.homo))
+inter.varimp.data.7sp.homo <- inter.varimp.data.7sp.homo[c(1:6, 8, 7, 9), ]
+sps_new <- sp_abbr[c(1:4, 6, 5, 7)]
+
+### Phase II: Mutli_heterogeneous
+
+# Combining hand varimp data with alone and inter varimp data for 7 species (heterogeneous)
+alone.varimp.data.7sp.heter <- data.frame(rbind(hand.var.7sp, alone.varimp.7sp.heter))
+inter.varimp.data.7sp.heter <- data.frame(rbind(hand.var.7sp, inter.varimp.7sp.heter))
+
+### Reversed order for species
+alone.varimp.data.2sp.homo[3:4, ] <- alone.varimp.data.2sp.homo[c(4, 3), ]
+inter.varimp.data.2sp.homo[3:4, ] <- inter.varimp.data.2sp.homo[c(4, 3), ]
+alone.varimp.data.7sp.homo[3:9, ] <- alone.varimp.data.7sp.homo[c(9, 8, 7, 6, 5, 4, 3), ]
+inter.varimp.data.7sp.homo[3:9, ] <- inter.varimp.data.7sp.homo[c(9, 8, 7, 6, 5, 4, 3), ]
+alone.varimp.data.7sp.heter[3:9, ] <- alone.varimp.data.7sp.heter[c(9, 8, 7, 6, 5, 4, 3), ]
+inter.varimp.data.7sp.heter[3:9, ] <- inter.varimp.data.7sp.heter[c(9, 8, 7, 6, 5, 4, 3), ]
+
+############################# Mean varimp for each trait
+### Phase I: Pair_homogeneous
+
+# Defining the order of species for the interaction varimp data
+inter.sp.order <- c(1, 1, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8)
+inter.varimp.2sp1 <- as.matrix(inter.varimp.2sp)
+alone.varimp.2sp1 <- as.matrix(alone.varimp.2sp)
+
+# Creating dataframes for mean varimp and RII for 2 species homogeneous
+alone_varimp_data_2sp_homo <- data.frame(comp = "Competition-free",
+                                         group = "sp2_homogeneous",
+                                         sp = rep(rownames(alone.varimp.2sp), 7),
+                                         trait = rep(colnames(alone.varimp.2sp1), each = 16),
+                                         varimp = as.numeric(alone.varimp.2sp1),
+                                         rii = mean_hvchange_rii.2sp.homo$rii)
+inter_varimp_data_2sp_homo <- data.frame(comp = "Competition",
+                                         group = "sp2_homogeneous",
+                                         sp = rep(rownames(inter.varimp.2sp), 7),
+                                         trait = rep(colnames(inter.varimp.2sp1), each = 16),
+                                         varimp = as.numeric(inter.varimp.2sp1),
+                                         rii = mean_hvchange_rii.2sp.homo$rii)
+
+### 7sp
+
+# Combining interaction varimp data for 7 species
+inter.varimp.7sp <- rbind(inter.varimp.7sp.homo, inter.varimp.7sp.heter)
+alone.varimp.7sp <- rbind(alone.varimp.7sp.homo, alone.varimp.7sp.heter)
+
+# Creating dataframes for mean varimp and RII for 7 species
+trait_sp7 <- colnames(inter.varimp.7sp.homo)
+sp <- c("DO", "LG", "CS", "CG", "SS", "HA", "QC")
+alone_varimp_data_7sp_homo <- data.frame(comp = "Competition-free",
+                                         group = "sp7_homogeneous",
+                                         sp = rep(sp, length(trait.7sp.homo)),
+                                         trait = rep(trait_sp7, each = 7),
+                                         varimp = as.numeric(alone.varimp.7sp.homo),
+                                         rii = rii.env.7sp.homo$RII)
+inter_varimp_data_7sp_homo <- data.frame(comp = "Competition",
+                                         group = "sp7_homogeneous",
+                                         sp = rep(sp, length(trait.7sp.homo)),
+                                         trait = rep(trait_sp7, each = 7),
+                                         varimp = as.numeric(inter.varimp.7sp.homo),
+                                         rii = rii.env.7sp.homo$RII)
+
+alone_varimp_data_7sp_heter <- data.frame(comp = "Competition-free",
+                                          group = "sp7_heterogeneous",
+                                          sp = rep(sp, length(trait.7sp.homo)),
+                                          trait = rep(trait_sp7, each = 7),
+                                          varimp = as.numeric(alone.varimp.7sp.heter),
+                                          rii = rii.env.7sp.heter$RII)
+inter_varimp_data_7sp_heter <- data.frame(comp = "Competition",
+                                          group = "sp7_heterogeneous",
+                                          sp = rep(sp, length(trait.7sp.homo)),
+                                          trait = rep(trait_sp7, each = 7),
+                                          varimp = as.numeric(inter.varimp.7sp.heter),
+                                          rii = rii.env.7sp.heter$RII)
+
+# Combining varimp data for all cases (2 species homogeneous, 7 species homogeneous, 7 species heterogeneous)
+varimp_data_7sp <- rbind(alone_varimp_data_7sp_homo, inter_varimp_data_7sp_homo, alone_varimp_data_7sp_heter, inter_varimp_data_7sp_heter)
+varimp_data_7sp$comp <- factor(varimp_data_7sp$comp, levels = c("Competition-free", "Competition"))
+varimp_data_7sp$group <- factor(varimp_data_7sp$group, levels = c("sp7_homogeneous", "sp7_heterogeneous"))
+
+varimp_data <- rbind(alone_varimp_data_2sp_homo, inter_varimp_data_2sp_homo,
+                     alone_varimp_data_7sp_homo, inter_varimp_data_7sp_homo,
+                     alone_varimp_data_7sp_heter, inter_varimp_data_7sp_heter)
+varimp_data$comp <- factor(varimp_data$comp, levels = c("Competition-free", "Competition"))
+varimp_data$group <- factor(varimp_data$group, levels = c("sp2_homogeneous", "sp7_homogeneous", "sp7_heterogeneous"))
+traits <- c("Chl", "LMA", "LDMC", "LTO", "LTh", "SSD", "SMC", "SRL", "SRA", "RTD")
+varimp_data$trait <- factor(varimp_data$trait, levels = traits)
+
+### mean varimp for three parts
+# Calculate Wilcoxon test statistics and p-values for varimp changes
+wilcox.list2 <- tapply(inter_varimp_data$varimp_change, list(inter_varimp_data$trait, inter_varimp_data$group), wilcox.test)
+wilcox.v2 <- c()
+wilcox.p2 <- c()
+for (i in 1:(length(traits) * 3)) {
+  wilcox.p2 <- c(wilcox.p2, wilcox.list2[[i]]$p.value)
+  wilcox.v2 <- round(c(wilcox.v2, wilcox.list2[[i]]$statistic), 0)
+}
+
+# Create dataframes for table S8
+tableS5_total <- data.frame(Phase="Total",
+                             trait=traits,
+                             mean_change=round(mean.varimpchanges.pdata$change, 2),
+                             se=round(mean.varimpchanges.pdata$change_se, 2),
+                             N=30,
+                             V=wilcox.v,
+                             Pvalue=wilcox.p)
+tableS5_1 <- data.frame(Phase=rep(c("Pair_homogeneous", "Mutli_homogeneous", "Mutli_heterogeneous"), each=10),
+                       trait=rep(traits, 3),
+                       mean_change=round(as.numeric(tapply(inter_varimp_data$varimp_change,list(inter_varimp_data$trait,inter_varimp_data$group),mean)), 2),
+                       se=round(as.numeric(tapply(inter_varimp_data$varimp_change,list(inter_varimp_data$trait,inter_varimp_data$group),se)), 2),
+                       N=rep(c(16,7,7),each=10))
+tableS5_1 <- na.omit(tableS5_1)
+tableS5_1$V <- wilcox.v2
+tableS5_1$Pvalue <- wilcox.p2
+tableS5 <- rbind(tableS5_total,tableS5_1)
+tableS5$mean_change <- paste0(tableS5$mean_change,"±",tableS5$se)
+
+########################### varimp and RII
+alone_varimp_lm <- data.frame()
+inter_varimp_lm <- data.frame()
+inter_varimp_change_lm <- data.frame()
+for(i in 1:length(traits)){
+  # Linear regression for varimp and RII (Competition-free)
+  lm_t <- summary(lm((varimp)~rii,varimp_data[varimp_data$comp=="Competition-free"& varimp_data$trait==traits[i],]))
+  p <- lm_t$coefficients[2,4]
+  if(p<0.1){
+    linetype="solid"
+  }else{ linetype=NA}
+  tmp <- data.frame(trait=traits[i],
+                    slope=round(lm_t$coefficients[2,1],2),
+                    R2=round(lm_t$adj.r.squared,2),
+                    pvalue=round(lm_t$coefficients[2,4],2),
+                    linetype=linetype)
+  alone_varimp_lm <- rbind(alone_varimp_lm, tmp)
+  
+  # Linear regression for varimp and RII (Competition)
+  lm_t1 <- summary(lm((varimp)~rii,varimp_data[varimp_data$comp=="Competition"& varimp_data$trait==traits[i],]))
+  p1 <- lm_t1$coefficients[2,4]
+  if(p1<0.1){
+    linetype1="solid"
+  }else{ linetype1=NA}
+  tmp1 <- data.frame(trait=traits[i],
+                    slope=round(lm_t1$coefficients[2,1],2),
+                    R2=round(lm_t1$adj.r.squared,2),
+                    pvalue=round(lm_t1$coefficients[2,4],2),
+                    linetype=linetype1)
+  inter_varimp_lm <- rbind(inter_varimp_lm, tmp1)
+  
+  # Linear regression for varimp change and RII
+  lm_t3 <- summary(lm((varimp_change)~rii,inter_varimp_data[inter_varimp_data$trait==traits[i],]))
+  p3 <- lm_t3$coefficients[2,4]
+  if(p3<0.1){
+    linetype3="solid"
+  }else{ linetype3=NA}
+  tmp3 <- data.frame(trait=traits[i],
+                    slope=round(lm_t3$coefficients[2,1],2),
+                    R2=round(lm_t3$adj.r.squared,2),
+                    pvalue=round(lm_t3$coefficients[2,4],2),
+                    linetype=linetype3)
+  inter_varimp_change_lm <- rbind(inter_varimp_change_lm, tmp3)
+}
+
+
+#### mean varimpchange for heter_env
+heter_varimpchange <- alone_varimp_data_7sp_heter
+heter_varimpchange$varimpchange <- alone_varimp_data_7sp_heter$varimp - alone_varimp_data_7sp_homo$varimp
+heter_varimpchange$varimprechange <- (alone_varimp_data_7sp_heter$varimp - alone_varimp_data_7sp_homo$varimp)/alone_varimp_data_7sp_homo$varimp
+```
+
+
+# Tables
+## Table 1. Species list
+```{r}
+kableExtra::kable(splist_table1, caption="Species list")%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+```
+
+## Table 2. RII in two-phase experiment
+```{r}
+kableExtra::kable(inter.rii.2sp[,2:6], caption="RII of competing species in a 2-species pairwise competition experiment")%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+
+kableExtra::kable(rii.env.7sp.homo[,2:5], caption="RII of competing species in a mutli-species competition experiment in homogeneous environment")%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+
+kableExtra::kable(rii.env.7sp.heter[,1:4], caption="RII of competing species in a two-species competition experiment in a mutli-species competition experiment in heterogeneous environment")%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+```
+
+# Figures
+
+## Figure 1. Schematic depiction of the two-phase experimental design.
+
+\pagebreak 
+ 
+## Figure 2. Relationships between intraspecific trait variability (ITV) and competitiveness of species in the competition-free (a-c) and competition (d-f) treatments under three different competitive scenarios.
+```{r,fig.height=6, fig.width=9}
+inf_hv <-mean.hv.box.data.2sp[mean.hv.box.data.2sp$sp_group=="Inferior",]
+inf_hv <- inf_hv[order(inf_hv$pair_code),]
+sup_hv <- mean.hv.box.data.2sp[mean.hv.box.data.2sp$sp_group=="Superior",]
+sup_hv <- sup_hv[order(sup_hv$pair_code),]
+
+wilcox.test((inf_hv[inf_hv$sp_group=="Inferior",]$alone_hv),(sup_hv[sup_hv$sp_group=="Superior",]$alone_hv), paired = T, alternative = "greater")
+wilcox.test((inf_hv[inf_hv$sp_group=="Inferior",]$inter_hv),(sup_hv[sup_hv$sp_group=="Superior",]$inter_hv), paired = T, alternative = "greater")
+
+
+lm3 <- summary(lm(cube.root(mean.hv.7sp.homo$alone_hv)~mean.hv.7sp.homo$inter_rii))
+lm4 <- summary(lm(cube.root(mean.hv.7sp.homo$inter_hv)~mean.hv.7sp.homo$inter_rii))
+lm5 <- summary(lm(cube.root(mean.hv.7sp.heter$alone_hv)~mean.hv.7sp.heter$inter_rii))
+lm6 <- summary(lm(cube.root(mean.hv.7sp.heter$inter_hv)~mean.hv.7sp.heter$inter_rii))
+
+fig2_1 <-ggplot(mean.hv.box.data.2sp,aes(x=sp_group,y=cube.root(alone_hv)))+
+  geom_line(aes(group=pair_code), color="grey",alpha=0.7) +
+  geom_point(colour="grey",shape=1,size = 3) + 
+  geom_segment(data=mean.hv.2sp,aes(x=1,xend=2,y=cube.root(alone_hv[1]),yend=cube.root(alone_hv[2])),
+               color=cols3[1],size=1,linetype="dashed")+
+  geom_point(data=mean.hv.2sp,aes(x=sp_group,y=cube.root(alone_hv)),col=cols3[1],shape=1,size = 3.5,alpha=0.7) + 
+  geom_errorbar(data=mean.hv.2sp,aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                                     x = sp_group, group=sp_group), col=cols3[1], width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7)  + 
+  xlab("") + ylab("Intraspecific trait variability (Cube-root)")+
+  geom_signif(y_position = 6.2, xmin = 1, xmax = 2, annotations = "NS", tip_length = 0.12)+
+  scale_fill_Publication.2sp()+  
+  scale_colour_Publication.2sp()+
+  theme_Publication(base_size=12)+
+  geom_text(y=18,x = 1,label=expression(~italic(P)~"= 0.273"))+
+  theme(legend.position = "none",legend.title = element_blank())+
+  ylim(c(0,20))
+
+fig2_2 <- ggplot(mean.hv.box.data.2sp, aes(x=sp_group,y=cube.root(inter_hv), fill=sp_group))+
+  geom_line(aes(group=pair_code), color="grey") +
+  geom_point(colour="grey",size = 3,alpha=0.7,shape=16) + 
+  geom_segment(data=mean.hv.2sp,aes(x=1,xend=2,y=cube.root(inter_hv[1]),yend=cube.root(inter_hv[2])), color=cols3[1],size=1)+
+  geom_point(data=mean.hv.2sp,aes(x=sp_group,y=cube.root(inter_hv)),col=cols3[1],size = 3.5,alpha=0.7) + 
+  geom_errorbar(data=mean.hv.2sp,aes(ymin = cube.root((inter_hv))-cube.root(inter_hv_se), ymax = cube.root((inter_hv))+cube.root(inter_hv_se), 
+                                     x = sp_group, group=sp_group), col=cols3[1],width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7)  + 
+  xlab("Species competitiveness") + ylab("Intraspecific trait variability (Cube-root)")+
+  geom_signif(y_position = 6.5, xmin = 1, xmax = 2, annotations = "***", tip_length = 0.1)+
+  scale_fill_Publication.2sp()+  
+  scale_colour_Publication.2sp()+
+  theme_Publication(base_size=12)+
+  geom_text(y=18,x = 1,label=expression(~italic(P)~"= 0.004"))+
+  theme(legend.position = "none",legend.title = element_blank())+
+  ylim(c(0,20))
+
+fig2_3 <- ggplot(mean.hv.7sp.homo,aes(x = inter_rii, y = cube.root(alone_hv))) + 
+  geom_point(size = 3,shape=1,col="#6F80BE",alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE, alpha=0.7, col="#6F80BE") + 
+  geom_smooth(method="lm",col="#6F80BE",fill="#6F80BE",size=1,linetype="dashed",alpha=0.3) +  
+  geom_text(y=20,x = -0.5,label=paste0("Slope = ",round(lm3$coefficients[2,1],2)))+
+  geom_text(y=18,x = -0.5,label=expression(~italic(R^2)~"= 0.34,"~italic(P)~"= 0.100"))+
+  labs(x ="", y ="" )+
+  theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+  ylim(c(0,20))
+
+fig2_4 <- ggplot(mean.hv.7sp.homo,aes(x = inter_rii, y = cube.root(inter_hv))) + 
+  geom_point(size = 3,col="#6F80BE",shape=16,alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(inter_hv)-cube.root(inter_hv_se), ymax = cube.root(inter_hv)+cube.root(inter_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#6F80BE") + 
+  geom_smooth(method="lm",col="#6F80BE",fill="#6F80BE",size=1, alpha=0.3)  +  
+  geom_text(y=20,x = -0.5,label=paste0("Slope = ",round(lm4$coefficients[2,1],2)))+
+  geom_text(y=18,x = -0.5,label=expression(~italic(R^2)~"= 0.60,"~italic(P)~"=0.025"))+
+  labs(x ="Species competitiveness", y ="" )+theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+  ylim(c(0,20))
+
+fig2_5 <- ggplot(mean.hv.7sp.heter,aes(x = inter_rii, y = cube.root(alone_hv))) + 
+   geom_point(size = 3,shape=1,col="#CC99CC",alpha=0.7)+ 
+   geom_errorbar(aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), 
+                     ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                     x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#CC99CC")  + 
+   geom_smooth(method="lm",col="#CC99CC",fill="#CC99CC",size=1,alpha=0.3) +  
+   geom_text(y=20,x = -0.41,label=paste0("Slope = ",round(lm5$coefficients[2,1],2)))+
+   geom_text(y=18,x = -0.41,label=expression(~italic(R^2)~"= 0.65,"~italic(P)~"= 0.017"))+
+   labs(x ="", y ="" )+theme_Publication(base_size=12)+
+   theme(legend.position = "none")+
+   ylim(c(0,20))
+
+fig2_6 <- ggplot(mean.hv.7sp.heter,aes(x = inter_rii, y = cube.root(inter_hv))) +
+  geom_point(size = 3,col="#CC99CC",shape=16,alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(inter_hv)-cube.root(inter_hv_se), 
+                    ymax = cube.root(inter_hv)+cube.root(inter_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#CC99CC") + 
+  geom_smooth(method="lm",col="#CC99CC",fill="#CC99CC",size=1,alpha=0.3) +  
+  geom_text(y=20,x = -0.41,label=paste0("Slope = ",round(lm6$coefficients[2,1],2)))+
+  geom_text(y=18,x = -0.41,label=expression(~italic(R^2)~"= 0.85,"~italic(P)~"= 0.002"))+
+  labs(x ="Species competitiveness", y ="" )+theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+  ylim(c(0,20))
+
+
+ggarrange(fig2_1,fig2_3,fig2_5,fig2_2,fig2_4,fig2_6, ncol = 3, nrow=2,labels=c("(a) ","(b) ","(c) ","(d)","(e)","(f)"),font.label = list(size = 13, color = "black", face = "bold",family="sans"))
+
+
+#### Table S11
+tableS11<- data.frame(lm=c("Mul_homo","Mul_homo","Mul_hete","Mul_hete"),
+                     slope=round(c(lm3$coefficients[2,1],lm4$coefficients[2,1],
+                             lm5$coefficients[2,1],lm6$coefficients[2,1]),2),
+                     SE=round(c(lm3$coefficients[2,2],lm4$coefficients[2,2],
+                             lm5$coefficients[2,2],lm6$coefficients[2,2]),2),
+                     Tvalue=round(c(lm3$coefficients[2,3],lm4$coefficients[2,3],
+                             lm5$coefficients[2,3],lm6$coefficients[2,3]),2),
+                     Pvalue=round(c(lm3$coefficients[2,4],lm4$coefficients[2,4],
+                             lm5$coefficients[2,4],lm6$coefficients[2,4]),2),
+                     Adjusted_R2=round(c(lm3$adj.r.squared,lm4$adj.r.squared,
+                             lm5$adj.r.squared,lm6$adj.r.squared),2))
+
+
+## Mixed Effects Model for Table S1
+# Load necessary libraries
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+
+# Subset data for homogeneous environment
+mean.hv.7sp.homo.alone <- mean.hv.7sp.homo[, c(1, 2, 4)]
+mean.hv.7sp.homo.inter <- mean.hv.7sp.homo[, c(1, 3, 4)]
+mean.hv.7sp.homo.alone$comp_type <- FALSE
+mean.hv.7sp.homo.inter$comp_type <- TRUE
+colnames(mean.hv.7sp.homo.alone)[c(2, 3)] <- c("ITV", "RII")
+colnames(mean.hv.7sp.homo.inter)[c(2, 3)] <- c("ITV", "RII")
+mean.7sp.homo <- rbind(mean.hv.7sp.homo.alone, mean.hv.7sp.homo.inter)
+mean.7sp.homo$ITV <- cube.root(mean.7sp.homo$ITV)
+
+# Subset data for heterogeneous environment
+mean.hv.7sp.heter.alone <- mean.hv.7sp.heter[, c(1, 2, 4)]
+mean.hv.7sp.heter.inter <- mean.hv.7sp.heter[, c(1, 3, 4)]
+mean.hv.7sp.heter.alone$comp_type <- FALSE
+mean.hv.7sp.heter.inter$comp_type <- TRUE
+colnames(mean.hv.7sp.heter.alone)[c(2, 3)] <- c("ITV", "RII")
+colnames(mean.hv.7sp.heter.inter)[c(2, 3)] <- c("ITV", "RII")
+mean.7sp.heter <- rbind(mean.hv.7sp.heter.alone, mean.hv.7sp.heter.inter)
+mean.7sp.heter$ITV <- cube.root(mean.7sp.heter$ITV)
+
+# Fit mixed effects model for heterogeneous environment
+fit.5 <- lmer(ITV ~ comp_type * RII - 1 + (1|sp), data = mean.7sp.heter)
+summary(fit.5)
+tab_model(fit.5)
+
+# Fit mixed effects model for homogeneous environment
+fit.6 <- lmer(ITV ~ comp_type * RII - 1 + (1|sp), data = mean.7sp.homo)
+summary(fit.6)
+tab_model(fit.6)
+
+```
+
+## Figure 3. Relationships between mean changes in intraspecific trait variability (ITV) and competitiveness of species.
+```{r, fig.height=4, fig.width=7}
+lm7 <- summary(lm(cube.root(mean_total_hvchange_rii$hvchange)~mean_total_hvchange_rii$rii))
+lm8 <- summary(lm(cube.root(mean_hvchange_rii.2sp.homo$hvchange)~mean_hvchange_rii.2sp.homo$rii))
+lm9 <- summary(lm(cube.root(hvchange)~rii,data=mean_hvchange_rii.7sp.homo))
+lm10 <- summary(lm(cube.root(hvchange)~rii,data=mean_hvchange_rii.7sp.heter))
+
+####Table S4
+tableS4<- data.frame(lm=c("Total","Pair_homo","Mul_homo","Mul_hete"),
+                     slope=round(c(lm7$coefficients[2,1],lm8$coefficients[2,1],
+                             lm9$coefficients[2,1],lm10$coefficients[2,1]),2),
+                     SE=round(c(lm7$coefficients[2,2],lm8$coefficients[2,2],
+                             lm9$coefficients[2,2],lm10$coefficients[2,2]),2),
+                     Tvalue=round(c(lm7$coefficients[2,3],lm8$coefficients[2,3],
+                             lm9$coefficients[2,3],lm10$coefficients[2,3]),2),
+                     N=c(30,16,7,7),
+                     Pvalue=round(c(lm7$coefficients[2,4],lm8$coefficients[2,4],
+                             lm9$coefficients[2,4],lm10$coefficients[2,4]),2),
+                     Adjusted_R2=round(c(lm7$adj.r.squared,lm8$adj.r.squared,
+                             lm9$adj.r.squared,lm10$adj.r.squared),2))
+
+
+cols3 <- c("#F68657","#6F80BE","#CC99CC")
+fig3 <- ggplot(mean_total_hvchange_rii,aes(x=rii,y=cube.root(hvchange))) + 
+  geom_point(aes(group=group,shape=group,col=group),size=2, alpha=0.6)+
+  geom_errorbar(aes(ymin = cube.root(hvchange) - cube.root(se), ymax = cube.root(hvchange) + cube.root(se), x = rii,col=group), 
+                width = 0,  size = 0.5, inherit.aes = FALSE, alpha=0.6) + 
+  geom_smooth(mean_total_hvchange_rii,mapping=aes(x=rii,y=cube.root(hvchange)),method="lm",colour="grey", size=0.5,alpha=0.2) +  
+  ylab("Changes of intraspecific trait variability (Cube-root)")+xlab("Species competitiveness")+ 
+  geom_text(y=17,x = -0.5,label=paste0("Slope = ",round(lm7$coefficients[2,1],2)))+
+  geom_text(y=15,x = -0.5,label=expression(~italic(R^2)~"= 0.87,"~italic(P)~"< 0.05"))+
+  scale_colour_manual(values=cols3) + 
+  theme_Publication(base_size=12)+
+  scale_linetype_manual(values = c("dashed","solid","solid")) +
+  scale_shape_manual(values = c(16,15,17))+ylim(c(-3,20))+theme(legend.position = "top")
+
+
+lm11 <- summary(lm(cube.root(mean_hvchange_env$hvchange_env)~mean_hvchange_env$rii))
+lm11$coefficients[2,1];lm11$coefficients[2,4];lm11$adj.r.squared;
+
+lm12 <- summary(lm(cube.root(mean_hvchange_env$hvchange_both)~mean_hvchange_env$rii))
+lm12$coefficients[2,1];lm12$coefficients[2,4];lm12$adj.r.squared;
+
+fig3.2 <- ggplot(mean_hvchange_env,aes(x=rii,y=cube.root(hvchange_env))) + 
+  geom_point(aes(group=group),col=cols3[3], size=2, alpha=0.6, shape=17)+
+  geom_errorbar(aes(ymin = cube.root(hvchange_env) - cube.root(se_env), ymax = cube.root(hvchange_env) + cube.root(se_env), x = rii), 
+                width = 0,  size = 0.5, inherit.aes = FALSE, alpha=0.6, col=cols3[3]) + 
+  geom_smooth(method="lm",size=0.5, col="grey",alpha=0.2) +
+  ylab("")+xlab("Species competitiveness")+ 
+  geom_text(y=17,x = -0.5,label=paste0("Slope = ",round(lm11$coefficients[2,1],2)))+
+  geom_text(y=15,x = -0.5,label=expression(~italic(R^2)~"= 0.87,"~italic(P)~"< 0.05"))+
+  scale_colour_manual(values=cols3) + scale_fill_manual(values=cols3)+theme_Publication(base_size=12)+ylim(c(-3,20))+
+  theme(legend.position = "top")
+ 
+# Figure 3
+fig3+fig3.2
+
+```
+
+
+## Figure 4. Mean changes in intraspecific trait variability of root, stem and leaf traits from competition-free to competition.
+```{r,fig.height=4, fig.width=5}
+mean.varimpchanges.pdata$trait.name <- c("Chlorophyll content","leaf mass per area","leaf dry matter content","leaf toughness","leaf thickness","stem specific density","stem moisture content","specific root length","specific root area","root tissue density")
+mean.varimpchanges.pdata$trait.name <- factor(mean.varimpchanges.pdata$trait.name,levels =  c("Chlorophyll content","leaf mass per area","leaf dry matter content","leaf toughness","leaf thickness","stem specific density","stem moisture content","specific root length","specific root area","root tissue density"))
+fig4 <- ggplot(mean.varimpchanges.pdata) + 
+  geom_point(aes(x = trait.name, y = cube.root(change)),size = 1,alpha=0.7) +
+  geom_errorbar(aes(ymin = cube.root(change)-change_se, ymax = cube.root(change)+change_se, x = trait.name), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7) +
+  labs(y = 'Changes in intraspecific trait variability of target traits', x = 'Trait')+
+  geom_hline(yintercept=0, linetype="dashed")+ ylim(c(-0.5,1.5))+
+  coord_flip()+
+  theme_Publication(base_size=9)+theme(legend.position = "none")
+
+# Figure 4
+fig4
+```
+
+# Supporting tables and figures
+## Tables
+### Table S1
+```{r}
+kableExtra::kable(allsplist_tableS1)%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+```
+
+### Table S4
+```{r}
+kableExtra::kable(tableS4)%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+```
+
+### Table S5
+```{r}
+kableExtra::kable(tableS5)%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+
+inf_hvs <- hv.box.data.2sp[hv.box.data.2sp$sp_group=="Inferior",]
+sup_hvs <- hv.box.data.2sp[hv.box.data.2sp$sp_group=="Superior",]
+pair_code <- unique(inf_hvs$pair_code)
+v1 <-c()
+p1 <- c()
+v2 <-c()
+p2 <- c()
+for(i in 1:8){
+  t1 <- wilcox.test(inf_hvs[inf_hvs$pair_code==pair_code[i],]$alone_hv,
+              sup_hvs[sup_hvs$pair_code==pair_code[i],]$alone_hv,
+              alternative = "greater")
+  v1 <-c(v1,t1$statistic)
+  p1 <- c(p1,t1$p.value)
+
+  t2 <- wilcox.test(inf_hvs[inf_hvs$pair_code==pair_code[i],]$inter_hv,
+              sup_hvs[sup_hvs$pair_code==pair_code[i],]$inter_hv,
+              alternative = "greater")
+  v2 <-c(v2,t2$statistic)
+  p2 <- c(p2,t2$p.value)
+}
+
+
+
+## test
+inf_sup <- hv.box.data.2sp[hv.box.data.2sp$Nrep==1,]
+inf_sup <- inf_sup[order(inf_sup$pdname),]
+inf_sup$alone_hv <- as.numeric(tapply(hv.box.data.2sp$alone_hv,list(hv.box.data.2sp$pdname),mean))
+inf_sup$inter_hv <- as.numeric(tapply(hv.box.data.2sp$inter_hv,list(hv.box.data.2sp$pdname),mean))
+inf_sup$alone_hv_se <- as.numeric(tapply(hv.box.data.2sp$alone_hv,list(hv.box.data.2sp$pdname),se))
+inf_sup$inter_hv_se <- as.numeric(tapply(hv.box.data.2sp$inter_hv,list(hv.box.data.2sp$pdname),se))
+
+inf_sup1 <- inf_sup[order(inf_sup$pair_code),]
+#wilcox.test(inf_sup1[inf_sup1$sp_group=="Inferior",]$alone_hv, inf_sup1[inf_sup1$sp_group=="Superior",]$alone_hv,paired = T,alternative = "greater")
+#wilcox.test(inf_sup1[inf_sup1$sp_group=="Inferior",]$inter_hv, inf_sup1[inf_sup1$sp_group=="Superior",]$inter_hv,paired = T,alternative = "greater")
+inf_hv <- inf_sup[inf_sup$sp_group=="Inferior",]
+sup_hv <- inf_sup[inf_sup$sp_group=="Superior",]
+
+table_s21 <- data.frame(inf_hv=paste0(round(inf_hv[order(inf_hv$pair_code),]$alone_hv,2),"±",round(inf_hv[order(inf_hv$pair_code),]$alone_hv_se,2)),
+                       sup_hv=paste0(round(sup_hv[order(sup_hv$pair_code),]$alone_hv,2),"±",round(sup_hv[order(sup_hv$pair_code),]$alone_hv_se,2)),
+                       V=v1,
+                       P=p1)
+table_s22 <- data.frame(inf_hv=paste0(round(inf_hv[order(inf_hv$pair_code),]$inter_hv,2),"±",round(inf_hv[order(inf_hv$pair_code),]$inter_hv_se,2)),
+                       sup_hv=paste0(round(sup_hv[order(sup_hv$pair_code),]$inter_hv,2),"±",round(sup_hv[order(sup_hv$pair_code),]$inter_hv_se,2)),
+                       V=v2,
+                       P=p2)
+table_s12 <- rbind(table_s21, table_s22)
+
+
+kableExtra::kable(table_s12)%>%
+  kable_styling("striped",full_width=F,position="center",fixed_thead = T)
+```
+
+## Figures
+### Figure S1
+### Figure S2
+```{r,fig.height=10, fig.width=7.5}
+## Figure S4ab
+p.values1 <- sapply(split(hv.box.data.2sp, hv.box.data.2sp$pair_code), function(x){wilcox.test(cube.root(alone_hv)~sp_group, x)$p.value})
+labels1 <- symnum(p.values1, corr = FALSE, cutpoints = c(0,  .001,.01,.05, 1), symbols = c("***","**","*","n.s."))
+y.values1 <- sapply(split(hv.box.data.2sp, hv.box.data.2sp$pair_code), function(x){
+  max(sapply(split(x, x$sp_group), function(y){boxplot(cube.root(y$alone_hv), plot=F)$stats[5, ]}))
+  })+1
+
+p.values2 <- sapply(split(hv.box.data.2sp, hv.box.data.2sp$pair_code), function(x){wilcox.test(cube.root(inter_hv)~sp_group, x)$p.value})
+labels2 <- symnum(p.values2, corr = FALSE, cutpoints = c(0,  .001,.01,.05, 1), symbols = c("***","**","*","n.s."))
+y.values2 <- sapply(split(hv.box.data.2sp, hv.box.data.2sp$pair_code), function(x){
+  max(sapply(split(x, x$sp_group), function(y){boxplot(cube.root(y$inter_hv), plot=F)$stats[5, ]}))
+  })+1
+
+figs2_1 <- ggplot(hv.box.data.2sp,aes(x=pair_code,y=cube.root(alone_hv),fill=sp_group))+
+  #stat_boxplot(aes(x=pair_code,y=cube.root(alone_hv),group=interaction(pair_code,sp_group)),geom = "errorbar",position = position_dodge(0.5), width=0.2)+
+  geom_boxplot(aes(fill=sp_group,color=sp_group,group=interaction(pair_code,sp_group)),
+               position = position_dodge(0.5),width=0.49,lwd=0.2,outlier.size=0.4, outlier.alpha=0.5, alpha=0.7)+
+  geom_boxplot(aes(fill=sp_group,group=interaction(pair_code,sp_group)),
+               position  = position_dodge(0.5), width=0.49, lwd=0.2, outlier.colour = NA, alpha=0.7)+
+  xlab("Species pair code") + ylab(expression("Intraspecific trait variability ("~SD^7~", Cube-root)"))+ylim(c(0,12))+
+  geom_signif(y_position = y.values1, xmin = unique(hv.box.data.2sp$pair_code)-0.125, 
+              xmax = unique(hv.box.data.2sp$pair_code)+0.125, annotations = labels1, tip_length = 0.02)+
+  scale_fill_Publication.2sp()+theme_Publication(base_size=12)+  
+  theme(legend.position = c(0.8,0.9),legend.title = element_blank())
+
+figs2_2 <- ggplot(hv.box.data.2sp,aes(x=pair_code,y=cube.root(inter_hv),fill=sp_group))+
+  #stat_boxplot(aes(x=pair_code,y=cube.root(inter_hv),group=interaction(pair_code,sp_group)),geom = "errorbar",position = position_dodge(0.5), width=0.2)+
+  geom_boxplot(aes(fill=sp_group,color=sp_group,group=interaction(pair_code,sp_group)),
+               position = position_dodge(0.5),width=0.49,lwd=0.2,outlier.size=0.4,outlier.alpha=0.5,alpha=0.7)+
+   geom_boxplot(aes(fill=sp_group,group=interaction(pair_code,sp_group)),
+               position  = position_dodge(0.5), width=0.49, lwd=0.2, outlier.colour = NA, alpha=0.7)+
+  xlab("Species pair code") + ylab("")+ylim(c(0,12))+
+  geom_signif(y_position = y.values2, xmin = unique(hv.box.data.2sp$pair_code)-0.125, 
+              xmax = unique(hv.box.data.2sp$pair_code)+0.125, annotations = labels2, tip_length = 0.02)+
+  scale_fill_Publication.2sp()+theme_Publication(base_size=12)+  
+  theme(legend.position = "none",legend.title = element_blank())
+
+## Figure S4.  HV in 7sp-competition experiment 
+figs2_3 <- ggplot(hv.box.data.7sp.homo,aes(x=sp,y=cube.root(alone_hv),fill=sp))+
+  geom_boxplot(aes(fill=sp,colour=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.alpha = 0.5)+
+  geom_boxplot(aes(fill=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.color = NA)+
+  ylab(expression("Intraspecific trait variability("~SD^7~", Cube-root)"))+xlab("")+ylim(c(0,12))+
+  scale_fill_Publication.7sp.homo()+ 
+  theme_Publication(base_size=12, base_family=myfamily) +
+  theme(legend.position = c(0.8,0.9))+
+  theme(legend.position = "none")+scale_colour_Publication.7sp.homo()
+
+figs2_4 <-  ggplot(hv.box.data.7sp.homo,aes(x=sp,y=cube.root(inter_hv),fill=sp))+
+  geom_boxplot(aes(fill=sp,colour=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.alpha = 0.5)+
+  geom_boxplot(aes(fill=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.color = NA)+
+  ylab("")+xlab("")+ylim(c(0,12))+
+  scale_fill_Publication.7sp.homo()+
+  theme_Publication(base_size=12, base_family=myfamily) +
+  theme(legend.position = "none")+scale_colour_Publication.7sp.homo()
+
+figs2_5 <- ggplot(hv.box.data.7sp.heter,aes(x=sp,y=cube.root(alone_hv),fill=sp))+
+  geom_boxplot(aes(fill=sp,colour=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.alpha = 0.5)+
+  geom_boxplot(aes(fill=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.color = NA)+
+  ylab(expression("Intraspecific trait variability("~SD^7~", Cube-root)"))+xlab("Species")+
+  ylim(c(0,25))+ scale_fill_Publication.7sp.heter()+ theme_Publication(base_size=12, base_family=myfamily)  +
+  theme(legend.position = "none")+scale_colour_Publication.7sp.heter()
+
+figs2_6 <-  ggplot(hv.box.data.7sp.heter,aes(x=sp,y=cube.root(inter_hv),fill=sp))+
+  geom_boxplot(aes(fill=sp,colour=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.alpha = 0.5)+
+  geom_boxplot(aes(fill=sp),position = position_dodge(0.5),width=0.49,alpha = 0.9,outlier.color = NA)+
+  ylab("")+xlab("Species")+
+  ylim(c(0,25))+ scale_fill_Publication.7sp.heter()+ theme_Publication(base_size=12, base_family=myfamily)  +
+  theme(legend.position = "none")+scale_colour_Publication.7sp.heter()
+
+ggarrange(figs2_1,figs2_2,figs2_3,figs2_4,figs2_5,figs2_6, ncol = 2, nrow=3,labels=c("(a) Competition-free","(b) Competition","(c) Competition-free","(d) Competition","(e) Competition-free","(f) Competition"), hjust = c(-0.4,-0.48,-0.4,-0.48,-0.4,-0.48),font.label = list(size = 13, color = "black", face = "bold"))
+```
+
+### Figure S4
+```{r, echo=F,tidy=T, warning=F,fig.height=3.5, fig.width=3.5}
+## 2sp_homo
+limit1 <- list(c(-3,3),c(-2,3),c(-3,2))
+limit2 <- list(c(-1,3.5),c(-2,3),c(-1.5,2))
+limit3 <- list(c(-1,3),c(-4,4.5),c(-3,2))
+limit4 <- list(c(-5,1),c(-4,2),c(-2,3))
+limit5 <- list(c(-5,0),c(-2,3),c(-2,3))
+limit6 <- list(c(-3,5),c(-6,3),c(-2,3))
+limit7 <- list(c(-3,1),c(-4,4),c(-2,1))
+limit8 <- list(c(-3,4),c(-2,4),c(-2,2))
+limit.list <- list(limit1,limit2,limit3,limit4,limit5,limit6,limit7,limit8)
+trait1 <- c("PC1","PC2","PC3")
+cols2_2 <- c("#eb9f9f","#9DC3C1")
+
+for(i in 1:8){
+  pair <- sppairs[i, ]
+  hvlist1 <- hypervolume_join(alone.hvp.2sp[[pair$intra_sp1]],alone.hvp.2sp[[pair$intra_sp2]])
+  plot.HypervolumeList(hvlist1,names=trait1,color=cols2_2,show.legend = F, show.random = T, show.data = T,show.centroid = T,limits = limit.list[[i]],cex.names=1.5,cex.legend =2,point.alpha.min=0.05)
+  #text(0.1,0.4,paste0("",pair_code[i]),font=2)
+  #legend("bottomleft",pch=c(20,20),legend=c("Inferior", "Superior"),col=cols2, bty = "n")
+  hvlist2 <- hypervolume_join(inter.hvp.2sp[[pair$inter_sp1]],inter.hvp.2sp[[pair$inter_sp2]])
+  plot.HypervolumeList(hvlist2,names=trait1,color=cols2_2,show.legend = F,show.random =T,show.data = T,show.centroid = T,limits = limit.list[[i]],cex.names=1.5,cex.legend =2,point.alpha.min=0.05)
+}
+
+### 7sp_homo
+par(family=myfamily)
+for(i in 1:7){
+  hvlist1 <- hypervolume_join(alone.hvp.7sp.homo[[i]])
+  plot.HypervolumeList(hvlist1,names=trait1,show.legend = F,show.random = T,show.data = T,show.centroid = T,colors = cols7[i],limits = list(c(-5,6.5),c(-6.5,5),c(-6,6)),cex.names=1.5,cex.legend =2,point.alpha.min=0.05)
+  #legend("bottomleft",pch=c(20,20),legend=sps[i],col= spcols[i], bty = "n")
+  
+  hvlist2 <- hypervolume_join(inter.hvp.7sp.homo[[i]])
+  plot.HypervolumeList(hvlist2,names=trait1,show.legend = F,show.random = T,show.data = T,show.centroid = T,colors = cols7[i],limits = list(c(-5,6.5),c(-6.5,5),c(-6,6)),cex.names=1.5,cex.legend =2,point.alpha.min=0.05)
+  #legend("bottomleft",pch=c(20,20),legend=sps[i],col= spcols[i], bty = "n")
+}
+
+### 7sp_heter
+par(family=myfamily)
+for(i in 1:7){
+  hvlist1 <- hypervolume_join(alone.hvp.7sp.heter[[i]])
+  plot.HypervolumeList(hvlist1,names=trait1,show.legend = F,show.random = T,show.data = T,show.centroid = T,colors = cols7_2[i],limits =list(c(-6,6.5),c(-6.5,5),c(-6,8)),cex.names=1.5,cex.legend =2,point.alpha.min=0.05)
+  #legend("bottomleft",pch=c(20,20),legend=sps[i],col= spcols[i], bty = "n")
+  
+  hvlist2 <- hypervolume_join(inter.hvp.7sp.heter[[i]])
+  plot.HypervolumeList(hvlist2,names=trait1,show.legend = F,show.random = T,show.data = T,show.centroid = T,colors = cols7_2[i],limits = list(c(-6,6.5),c(-6.5,5),c(-6,8)),cex.names=1.5,cex.legend =2,point.alpha.min=0.05)
+  #legend("bottomleft",pch=c(20,20),legend=sps[i],col= spcols[i], bty = "n")
+}
+
+```
+
+### Figure S5
+```{r,fig.height=7, fig.width=7}
+load("02_output_results/HV_RII_envs9.RData")
+Nrep <- 999
+# Reshape data for visualization
+rnames <- paste0(paste0(rep(sps, each = 2), c("_hv", "_rii")), rep(1, each = length(sps) * 2))  # Column names
+alone.hvrii <- matrix(unlist(alone.hv), nrow = length(sps) * 2 * 9, dimnames = list(rep(rnames, 9), 1:Nrep))
+inter.hvrii <- matrix(unlist(inter.hv), nrow = length(sps) * 2 * 9, dimnames = list(rep(rnames, 9), 1:Nrep))
+
+alone.hv <- alone.hvrii[seq(1, nrow(alone.hvrii), 2), ]
+alone.rii <- alone.hvrii[seq(2, nrow(alone.hvrii), 2), ]
+
+inter.hv <- inter.hvrii[seq(1, nrow(inter.hvrii), 2), ]
+inter.rii <- inter.hvrii[seq(2, nrow(inter.hvrii), 2), ]
+
+hv_rii9 <- data.frame(Nenv = factor(rep(1:9, each = length(sps))),
+                      sp = factor(sps, levels = sps),
+                      alone_hv = apply(alone.hv, 1, mean, na.rm = TRUE),
+                      inter_hv = apply(inter.hv, 1, mean, na.rm = TRUE),
+                      alone_hv_se = apply(alone.hv, 1, se),
+                      inter_hv_se = apply(inter.hv, 1, se),
+                      alone_hv_sec = apply(cube.root(alone.hv), 1, se),
+                      inter_hv_sec = apply(cube.root(inter.hv), 1, se),
+                      inter_rii = apply(inter.rii, 1, mean, na.rm = TRUE),
+                      inter_hvchange = apply(inter.hv - alone.hv, 1, mean, na.rm = TRUE),
+                      inter_hvchange_se = apply(inter.hv - alone.hv, 1, se),
+                      inter_hvchange_sec = cube.root(apply((inter.hv - alone.hv), 1, se)),
+                      inter_hvrechange = apply((inter.hv - alone.hv) / alone.hv, 1, mean, na.rm = TRUE),
+                      inter_hvrechange_se = apply((inter.hv - alone.hv) / alone.hv, 1, se),
+                      inter_hvrechange_sec = apply(cube.root((inter.hv - alone.hv) / alone.hv), 1, se))
+
+## Mixed effects model
+# Load necessary libraries
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+
+# Transform hypervolume values using cube root
+hv_rii9$alone_hv_cube <- cube.root(hv_rii9$alone_hv)
+hv_rii9$inter_hv_cube <- cube.root(hv_rii9$inter_hv)
+
+# Fit mixed effects model for alone_hv_cube
+fit.1 <- lmer(alone_hv_cube ~ inter_rii + (1|Nenv) + (1|sp), data = hv_rii9, REML = FALSE)
+summary(fit.1)
+tab_model(fit.1)
+
+# Fit mixed effects model for inter_hv_cube
+fit.2 <- lmer(inter_hv_cube ~ inter_rii + (1|Nenv) + (1|sp), data = hv_rii9, REML = FALSE)
+summary(fit.2)
+fixef(fit.2)
+
+# View estimated fixed effects
+ranef(fit.2)
+coef(fit.2)
+
+# ANOVA
+anova(fit.2)
+
+# Tabular summary of model
+tab_model(fit.2)
+
+# Plot diagnostic plot for the mixed effects model
+plot(fit.2, which = 1)
+
+# Create new data for prediction, ranging from -1.336 to 2.255
+new_rii1 <- data.frame(inter_rii = seq(min(hv_rii9$inter_rii, na.rm = TRUE), max(hv_rii9$inter_rii, na.rm = TRUE), length = 1000))
+pred_R1 <- predict(fit.1, newdata = new_rii1, re.form = ~0)
+ci_line1 <- bootMer(fit.1, FUN = function(.) predict(., newdata = new_rii1, re.form = ~0), nsim = 1000)
+ci_R1 <- apply(ci_line1$t, 2, function(x) x[order(x)][c(25, 975)])
+lb_R1 <- ci_R1[1,]
+ub_R1 <- ci_R1[2,]
+
+new_rii1$pred_R <- pred_R1
+new_rii1$lb_R <- lb_R1
+new_rii1$ub_R <- ub_R1
+
+# Create new data for prediction
+new_rii <- data.frame(inter_rii = seq(min(hv_rii9$inter_rii, na.rm = TRUE), max(hv_rii9$inter_rii, na.rm = TRUE), length = 1000))
+pred_R <- predict(fit.2, newdata = new_rii, re.form = ~0)
+ci_line <- bootMer(fit.2, FUN = function(.) predict(., newdata = new_rii, re.form = ~0), nsim = 1000)
+ci_R <- apply(ci_line$t, 2, function(x) x[order(x)][c(25, 975)])
+lb_R <- ci_R[1,]
+ub_R <- ci_R[2,]
+
+new_rii$pred_R <- pred_R
+new_rii$lb_R <- lb_R
+new_rii$ub_R <- ub_R
+
+# Plot
+figS5_1 <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = alone_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "white") + 
+  geom_errorbar(aes(x = inter_rii, y = alone_hv_cube, ymin = alone_hv_cube - cube.root(alone_hv_se), ymax = alone_hv_cube + cube.root(alone_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(new_rii1, mapping = aes(x = inter_rii, y = pred_R), method = "loess", se = FALSE, col = "black", size = 0.6, linetype = "dashed", alpha = 0.7) +
+  geom_smooth(new_rii1, mapping = aes(x = inter_rii, y = lb_R), method = "loess", se = FALSE, col = "black", size = 0.6, linetype = "dashed", alpha = 0.7) +
+  geom_smooth(new_rii1, mapping = aes(x = inter_rii, y = ub_R), method = "loess", se = FALSE, col = "black", size = 0.6, linetype = "dashed", alpha = 0.7) +
+  scale_color_simpsons() +
+  labs(x = "Species competitiveness", y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+figS5_1_top <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = alone_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "white") + 
+  geom_errorbar(aes(x = inter_rii, y = alone_hv_cube, ymin = alone_hv_cube - cube.root(alone_hv_se), ymax = alone_hv_cube + cube.root(alone_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(aes(x = inter_rii, y = cube.root(alone_hv), group = Nenv, col = Nenv), method = "lm", size = 0.5, alpha = 0.1, se = FALSE) +  
+  scale_color_simpsons() +
+  labs(x = "Species competitiveness", y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+figS5_2 <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = inter_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "#6F80BE") + 
+  geom_errorbar(aes(x = inter_rii, y = inter_hv_cube, ymin = inter_hv_cube - cube.root(inter_hv_se), ymax = inter_hv_cube + cube.root(inter_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(new_rii, mapping = aes(x = inter_rii, y = pred_R), method = "loess", se = FALSE, col = "black", size = 0.6, alpha = 0.7) +
+  geom_smooth(new_rii, mapping = aes(x = inter_rii, y = lb_R), method = "loess", se = FALSE, col = "black", linetype = "dashed", size = 0.6, alpha = 0.7) +
+  geom_smooth(new_rii, mapping = aes(x = inter_rii, y = ub_R), method = "loess", se = FALSE, col = "black", linetype = "dashed", size = 0.6, alpha = 0.7) +
+  scale_color_simpsons() +
+  labs(x = "Species competitiveness", y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+figS5_2_top <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = inter_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "#6F80BE") + 
+  geom_errorbar(aes(x = inter_rii, y = inter_hv_cube, ymin = inter_hv_cube - cube.root(inter_hv_se), ymax = inter_hv_cube + cube.root(inter_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(aes(x = inter_rii, y = cube.root(inter_hv), group = Nenv, col = Nenv), method = "lm", size = 0.5, alpha = 0.1, se = FALSE) +
+  scale_color_simpsons() +
+  labs(x = expression("Mean" ~ italic(RII)), y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+
+load("02_output_results/HV_RII_envs9_PCA3.RData")
+# Reshape data for visualization
+rnames <- paste0(paste0(rep(sps, each = 2), c("_hv", "_rii")), rep(1, each = length(sps) * 2))  # Column names
+alone.hvrii <- matrix(unlist(alone.hv), nrow = length(sps) * 2 * 9, dimnames = list(rep(rnames, 9), 1:Nrep))
+inter.hvrii <- matrix(unlist(inter.hv), nrow = length(sps) * 2 * 9, dimnames = list(rep(rnames, 9), 1:Nrep))
+
+alone.hv <- alone.hvrii[seq(1, nrow(alone.hvrii), 2), ]
+alone.rii <- alone.hvrii[seq(2, nrow(alone.hvrii), 2), ]
+
+inter.hv <- inter.hvrii[seq(1, nrow(inter.hvrii), 2), ]
+inter.rii <- inter.hvrii[seq(2, nrow(inter.hvrii), 2), ]
+
+hv_rii9 <- data.frame(Nenv = factor(rep(1:9, each = length(sps))),
+                      sp = factor(sps, levels = sps),
+                      alone_hv = apply(alone.hv, 1, mean, na.rm = TRUE),
+                      inter_hv = apply(inter.hv, 1, mean, na.rm = TRUE),
+                      alone_hv_se = apply(alone.hv, 1, se),
+                      inter_hv_se = apply(inter.hv, 1, se),
+                      alone_hv_sec = apply(cube.root(alone.hv), 1, se),
+                      inter_hv_sec = apply(cube.root(inter.hv), 1, se),
+                      inter_rii = apply(inter.rii, 1, mean, na.rm = TRUE),
+                      inter_hvchange = apply(inter.hv - alone.hv, 1, mean, na.rm = TRUE),
+                      inter_hvchange_se = apply(inter.hv - alone.hv, 1, se),
+                      inter_hvchange_sec = cube.root(apply((inter.hv - alone.hv), 1, se)),
+                      inter_hvrechange = apply((inter.hv - alone.hv) / alone.hv, 1, mean, na.rm = TRUE),
+                      inter_hvrechange_se = apply((inter.hv - alone.hv) / alone.hv, 1, se),
+                      inter_hvrechange_sec = apply(cube.root((inter.hv - alone.hv) / alone.hv), 1, se))
+
+## Mixed effects model
+# Load necessary libraries
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+
+# Transform hypervolume values using cube root
+hv_rii9$alone_hv_cube <- cube.root(hv_rii9$alone_hv)
+hv_rii9$inter_hv_cube <- cube.root(hv_rii9$inter_hv)
+
+# Fit mixed effects model for alone_hv_cube
+fit.1 <- lmer(alone_hv_cube ~ inter_rii + (1|Nenv) + (1|sp), data = hv_rii9, REML = FALSE)
+summary(fit.1)
+tab_model(fit.1)
+
+# Fit mixed effects model for inter_hv_cube
+fit.2 <- lmer(inter_hv_cube ~ inter_rii + (1|Nenv) + (1|sp), data = hv_rii9, REML = FALSE)
+summary(fit.2)
+fixef(fit.2)
+
+# View estimated fixed effects
+ranef(fit.2)
+coef(fit.2)
+
+# ANOVA
+anova(fit.2)
+
+# Tabular summary of model
+tab_model(fit.2)
+
+# Plot diagnostic plot for the mixed effects model
+plot(fit.2, which = 1)
+
+# Create new data for prediction, ranging from -1.336 to 2.255
+new_rii1 <- data.frame(inter_rii = seq(min(hv_rii9$inter_rii, na.rm = TRUE), max(hv_rii9$inter_rii, na.rm = TRUE), length = 1000))
+pred_R1 <- predict(fit.1, newdata = new_rii1, re.form = ~0)
+ci_line1 <- bootMer(fit.1, FUN = function(.) predict(., newdata = new_rii1, re.form = ~0), nsim = 1000)
+ci_R1 <- apply(ci_line1$t, 2, function(x) x[order(x)][c(25, 975)])
+lb_R1 <- ci_R1[1,]
+ub_R1 <- ci_R1[2,]
+
+new_rii1$pred_R <- pred_R1
+new_rii1$lb_R <- lb_R1
+new_rii1$ub_R <- ub_R1
+
+# Create new data for prediction
+new_rii <- data.frame(inter_rii = seq(min(hv_rii9$inter_rii, na.rm = TRUE), max(hv_rii9$inter_rii, na.rm = TRUE), length = 1000))
+pred_R <- predict(fit.2, newdata = new_rii, re.form = ~0)
+ci_line <- bootMer(fit.2, FUN = function(.) predict(., newdata = new_rii, re.form = ~0), nsim = 1000)
+ci_R <- apply(ci_line$t, 2, function(x) x[order(x)][c(25, 975)])
+lb_R <- ci_R[1,]
+ub_R <- ci_R[2,]
+
+new_rii$pred_R <- pred_R
+new_rii$lb_R <- lb_R
+new_rii$ub_R <- ub_R
+
+
+# Plot
+figS5_3 <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = alone_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "white") + 
+  geom_errorbar(aes(x = inter_rii, y = alone_hv_cube, ymin = alone_hv_cube - cube.root(alone_hv_se), ymax = alone_hv_cube + cube.root(alone_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(new_rii1, mapping = aes(x = inter_rii, y = pred_R), method = "loess", se = FALSE, col = "black", size = 0.6, linetype = "dashed", alpha = 0.7) +
+  geom_smooth(new_rii1, mapping = aes(x = inter_rii, y = lb_R), method = "loess", se = FALSE, col = "black", size = 0.6, linetype = "dashed", alpha = 0.7) +
+  geom_smooth(new_rii1, mapping = aes(x = inter_rii, y = ub_R), method = "loess", se = FALSE, col = "black", size = 0.6, linetype = "dashed", alpha = 0.7) +
+  scale_color_simpsons() +
+  labs(x = "Species competitiveness", y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+figS5_3_top <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = alone_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "white") + 
+  geom_errorbar(aes(x = inter_rii, y = alone_hv_cube, ymin = alone_hv_cube - cube.root(alone_hv_se), ymax = alone_hv_cube + cube.root(alone_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(aes(x = inter_rii, y = cube.root(alone_hv), group = Nenv, col = Nenv), method = "lm", size = 0.5, alpha = 0.1, se = FALSE) +  
+  scale_color_simpsons() +
+  labs(x = "Species competitiveness", y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+figS5_4 <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = inter_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "#6F80BE") + 
+  geom_errorbar(aes(x = inter_rii, y = inter_hv_cube, ymin = inter_hv_cube - cube.root(inter_hv_se), ymax = inter_hv_cube + cube.root(inter_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(new_rii, mapping = aes(x = inter_rii, y = pred_R), method = "loess", se = FALSE, col = "black", size = 0.6, alpha = 0.7) +
+  geom_smooth(new_rii, mapping = aes(x = inter_rii, y = lb_R), method = "loess", se = FALSE, col = "black", linetype = "dashed", size = 0.6, alpha = 0.7) +
+  geom_smooth(new_rii, mapping = aes(x = inter_rii, y = ub_R), method = "loess", se = FALSE, col = "black", linetype = "dashed", size = 0.6, alpha = 0.7) +
+  scale_color_simpsons() +
+  labs(x = "Species competitiveness", y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+figS5_4_top <- ggplot(hv_rii9) + 
+  geom_point(aes(x = inter_rii, y = inter_hv_cube, group = Nenv, col = Nenv), size = 2, shape = 22, alpha = 0.7, fill = "#6F80BE") + 
+  geom_errorbar(aes(x = inter_rii, y = inter_hv_cube, ymin = inter_hv_cube - cube.root(inter_hv_se), ymax = inter_hv_cube + cube.root(inter_hv_se), col = Nenv), width = 0, size = 0.6, inherit.aes = FALSE, alpha = 0.7) + 
+  geom_smooth(aes(x = inter_rii, y = cube.root(inter_hv), group = Nenv, col = Nenv), method = "lm", size = 0.5, alpha = 0.1, se = FALSE) +
+  scale_color_simpsons() +
+  labs(x = expression("Mean" ~ italic(RII)), y = "") +
+  theme_Publication(base_size = 12) + 
+  ylim(c(-1, 20))
+
+
+ggarrange(figS5_1, figS5_2, figS5_3, figS5_4, ncol = 2, nrow = 2, 
+          labels = c("(a) Competition-free", "(b) Competition", "(c) Competition-free", "(d) Competition"), 
+          font.label = list(size = 13, color = "black", face = "bold", family = "sans"))
+
+ggarrange(figS5_1_top, figS5_2_top, figS5_3_top, figS5_4_top, ncol = 2, nrow = 2, 
+          labels = c("(a) Competition-free", "(b) Competition", "(c) Competition-free", "(d) Competition"), 
+          font.label = list(size = 13, color = "black", face = "bold", family = "sans"))
+
+```
+
+### Figure S6
+```{r,fig.height=6, fig.width=9}
+# ITV based on only evergreen species for Figure S6
+mean.hv.box.data.2sp1 <- mean.hv.box.data.2sp1[mean.hv.box.data.2sp1$pair_code %in% c(2,3,6),]
+inf_hv1 <-mean.hv.box.data.2sp1[mean.hv.box.data.2sp1$sp_group=="Inferior",]
+inf_hv1 <- inf_hv1[order(inf_hv1$pair_code),]
+sup_hv1 <- mean.hv.box.data.2sp1[mean.hv.box.data.2sp1$sp_group=="Superior",]
+sup_hv1 <- sup_hv1[order(sup_hv1$pair_code),]
+
+wilcox.test(inf_hv1[inf_hv1$sp_group=="Inferior",]$alone_hv,sup_hv1[sup_hv1$sp_group=="Superior",]$alone_hv,paired = T, alternative = "greater")
+wilcox.test(inf_hv1[inf_hv1$sp_group=="Inferior",]$inter_hv,sup_hv1[sup_hv1$sp_group=="Superior",]$inter_hv,paired = T, alternative = "greater")
+
+inf_hv <-mean.hv.box.data.2sp1[mean.hv.box.data.2sp1$sp_group=="Inferior",]
+inf_hv <- inf_hv[order(inf_hv$pair_code),]
+sup_hv <- mean.hv.box.data.2sp1[mean.hv.box.data.2sp1$sp_group=="Superior",]
+sup_hv <- sup_hv[order(sup_hv$pair_code),]
+
+mean(inf_hv$alone_hv-sup_hv$alone_hv)
+mean(inf_hv$inter_hv-sup_hv$inter_hv)
+mean.hv.7sp.homo1 <- mean.hv.7sp.homo[!mean.hv.7sp.homo$sp %in% c("HA","QC"),]
+mean.hv.7sp.heter1 <- mean.hv.7sp.heter[!mean.hv.7sp.heter$sp %in% c("HA","QC"),]
+
+lm3 <- summary(lm(cube.root(mean.hv.7sp.homo1$alone_hv)~mean.hv.7sp.homo1$inter_rii))
+lm4 <- summary(lm(cube.root(mean.hv.7sp.homo1$inter_hv)~mean.hv.7sp.homo1$inter_rii))
+lm5 <- summary(lm(cube.root(mean.hv.7sp.heter1$alone_hv)~mean.hv.7sp.heter1$inter_rii))
+lm6 <- summary(lm(cube.root(mean.hv.7sp.heter1$inter_hv)~mean.hv.7sp.heter1$inter_rii))
+
+fig2_1 <-ggplot(mean.hv.box.data.2sp1,aes(x=sp_group,y=cube.root(alone_hv)))+
+  geom_line(aes(group=pair_code), color="grey",alpha=0.7) +
+  geom_point(colour="grey",shape=1,size = 3) + 
+  geom_segment(data=mean.hv.2sp,aes(x=1,xend=2,y=cube.root(alone_hv[1]),yend=cube.root(alone_hv[2])),
+               color=cols3[1],size=1,linetype="dashed")+
+  geom_point(data=mean.hv.2sp,aes(x=sp_group,y=cube.root(alone_hv)),col=cols3[1],shape=1,size = 3.5,alpha=0.7) + 
+  geom_errorbar(data=mean.hv.2sp,aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                                     x = sp_group, group=sp_group), col=cols3[1], width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7)  + 
+  xlab("") + ylab("Intraspecific trait variability (Cube-root)")+
+  geom_signif(y_position = 7, xmin = 1, xmax = 2, annotations = "NS", tip_length = 0.12)+
+  scale_fill_Publication.2sp()+  
+  scale_colour_Publication.2sp()+
+  theme_Publication(base_size=12)+
+  geom_text(y=12,x = 1.5,label=expression(~italic(P)~"= 0.625"))+
+  theme(legend.position = "none",legend.title = element_blank())+
+   ylim(c(-1,20))
+
+fig2_2 <-ggplot(mean.hv.box.data.2sp1,aes(x=sp_group,y=cube.root(inter_hv),fill=sp_group))+
+  geom_line(aes(group=pair_code), color="grey") +
+  geom_point(colour="grey",size = 3,alpha=0.7,shape=16) + 
+  geom_segment(data=mean.hv.2sp,aes(x=1,xend=2,y=cube.root(inter_hv[1]),yend=cube.root(inter_hv[2])), color=cols3[1],size=1,linetype="dashed")+
+  geom_point(data=mean.hv.2sp,aes(x=sp_group,y=cube.root(inter_hv)),col=cols3[1],size = 3.5,alpha=0.7) + 
+  geom_errorbar(data=mean.hv.2sp,aes(ymin = cube.root((inter_hv))-cube.root(inter_hv_se), ymax = cube.root((inter_hv))+cube.root(inter_hv_se), 
+                                     x = sp_group, group=sp_group), col=cols3[1],width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7)  + 
+  xlab("Species competitiveness") + ylab("Intraspecific trait variability (Cube-root)")+
+  geom_signif(y_position = 7, xmin = 1, xmax = 2, annotations = "NS", tip_length = 0.1)+
+  scale_fill_Publication.2sp()+  
+  scale_colour_Publication.2sp()+
+  theme_Publication(base_size=12)+
+  geom_text(y=12,x = 1.5,label=expression(~italic(P)~"= 0.125"))+
+  theme(legend.position = "none",legend.title = element_blank())+
+   ylim(c(-1,20))
+
+fig2_3 <- ggplot(mean.hv.7sp.homo1,aes(x = inter_rii, y = cube.root(alone_hv))) + 
+  geom_point(size = 3,shape=0,col="#6F80BE",shape=0,alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE, alpha=0.7, col="#6F80BE") + 
+  geom_smooth(method="lm",col="#6F80BE",fill="#6F80BE",size=1,linetype="dashed",alpha=0.3) +  
+ geom_text(y=17,x = -0.5,label=paste0("Slope = ",round(lm3$coefficients[2,1],2)))+
+ geom_text(y=15,x = -0.5,label=expression(~italic(R^2)~"= -0.267,"~italic(P)~"= 0.718"))+
+  labs(x ="", y ="" )+
+  theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+   ylim(c(-1,20))
+
+fig2_4 <- ggplot(mean.hv.7sp.homo1,aes(x = inter_rii, y = cube.root(inter_hv))) + 
+  geom_point(size = 3,col="#6F80BE",shape=15,alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(inter_hv)-cube.root(inter_hv_se), ymax = cube.root(inter_hv)+cube.root(inter_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#6F80BE") + 
+  geom_smooth(method="lm",col="#6F80BE",fill="#6F80BE",size=1, linetype="dashed", alpha=0.3)  +  
+  geom_text(y=17,x = -0.5,label=paste0("Slope = ",round(lm4$coefficients[2,1],2)))+
+ geom_text(y=15,x = -0.5,label=expression(~italic(R^2)~"= 0.29,"~italic(P)~"= 0.201"))+
+  labs(x ="Species competitiveness", y ="" )+theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+   ylim(c(-1,20))
+
+fig2_5 <- ggplot(mean.hv.7sp.heter1,aes(x = inter_rii, y = cube.root(alone_hv))) + 
+   geom_point(size = 3,shape=2,col="#CC99CC",shape=2,alpha=0.7)+ 
+   geom_errorbar(aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), 
+                     ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                     x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#CC99CC")  + 
+   geom_smooth(method="lm",col="#CC99CC",fill="#CC99CC",size=1,alpha=0.3) +  
+  geom_text(y=17,x = -0.6,label=paste0("Slope = ",round(lm5$coefficients[2,1],2)))+
+   geom_text(y=15,x = -0.6,label=expression(~italic(R^2)~"= 0.76,"~italic(P)~"= 0.035"))+
+   labs(x ="", y ="" )+theme_Publication(base_size=12)+
+   theme(legend.position = "none")+
+    ylim(c(-1,20))
+
+fig2_6 <- ggplot(mean.hv.7sp.heter1,aes(x = inter_rii, y = cube.root(inter_hv))) +
+  geom_point(size = 3,col="#CC99CC",shape=17,alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(inter_hv)-cube.root(inter_hv_se), 
+                    ymax = cube.root(inter_hv)+cube.root(inter_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#CC99CC") + 
+  geom_smooth(method="lm",col="#CC99CC",fill="#CC99CC",size=1,alpha=0.3) +  
+  geom_text(y=17,x = -0.6,label=paste0("Slope = ",round(lm6$coefficients[2,1],2)))+
+  geom_text(y=15,x = -0.6,label=expression(~italic(R^2)~"= 0.79,"~italic(P)~"= 0.028"))+
+  labs(x ="Species competitiveness", y ="" )+theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+   ylim(c(-1,20))
+
+## Figure S6 ITV of evergreen species
+ggarrange(fig2_1,fig2_3,fig2_5,fig2_2,fig2_4,fig2_6, ncol = 3, nrow=2,labels=c("(a) ","(b) ","(c) ","(d)","(e)","(f)"),font.label = list(size = 13, color = "black", face = "bold",family="sans"))
+
+```
+
+### Figure S7
+```{r,fig.height=8, fig.width=7}
+figS7_1 <- ggplot(varimp_data[varimp_data$comp=="Competition-free",],aes(x=rii,y=(varimp))) + 
+  geom_point(aes(col=trait,shape=group),alpha=0.7)+
+  ylab("")+xlab(expression("Mean"~italic(RII)))+ 
+  geom_smooth(method="lm",size=0.8,col="#696969",linetype="dashed",alpha=0.3) +
+  stat_cor(label.y=3,label.x = -0.7,family=myfamily, aes(label = paste(..rr.label.., ..p.label.., sep = "~','~"))) + 
+  stat_regline_equation(label.y=3.5,label.x = -0.7,family=myfamily) +
+  scale_linetype_manual(values =alone_varimp_lm$linetype)+
+  scale_colour_simpsons()+ylim(c(0,4))+
+  scale_shape_manual(values = c(1,0,2))+
+  theme_Publication(base_size=12)
+
+figS7_2 <- ggplot(varimp_data[varimp_data$comp=="Competition",],aes(x=rii,y=(varimp))) + 
+  geom_point(aes(col=trait,shape=group),alpha=0.7)+
+  ylab("")+xlab(expression("Mean"~italic(RII)))+ 
+  geom_smooth(method="lm",size=0.8,col="#696969",alpha=0.3) +
+  stat_cor(label.y=3,label.x = -0.7,family=myfamily, aes(label = paste(..rr.label.., ..p.label.., sep = "~','~"))) + 
+  stat_regline_equation(label.y=3.5,label.x = -0.7,family=myfamily) +
+  scale_linetype_manual(values =inter_varimp_lm$linetype)+
+  scale_colour_simpsons()+ylim(c(0,4))+
+  scale_shape_manual(values = c(16,15,17))+
+  theme_Publication(base_size=12)#+facet_grid(trait~.)
+
+## 变化量
+figS7_3 <- ggplot(inter_varimp_data,aes(x=rii,y=(varimp_change))) + 
+  geom_point(aes(col=trait,shape=group),alpha=0.7)+
+  ylab("")+xlab(expression("Mean"~italic(RII)))+ 
+  geom_smooth(method="lm",size=0.8,col="#696969",alpha=0.3) +
+  stat_cor(label.y=3,label.x = -0.7,family=myfamily, aes(label = paste(..rr.label.., ..p.label.., sep = "~','~"))) + 
+  stat_regline_equation(label.y=3.5,label.x = -0.7,family=myfamily) +
+  scale_linetype_manual(values =inter_varimp_change_lm$linetype)+
+  scale_colour_simpsons()+ylim(c(-1,4))+
+  scale_shape_manual(values = c(16,15,17))+
+  theme_Publication(base_size=12)#+facet_grid(trait~.)
+
+figS7_4 <- ggplot(heter_varimpchange,aes(x=rii,y=(varimpchange))) + 
+  geom_point(aes(col=trait,shape=group),alpha=0.7)+
+  ylab("")+xlab(expression("Mean"~italic(RII)))+ 
+  geom_smooth(method="lm",size=0.8,col="#696969",alpha=0.3) +
+  stat_cor(label.y=3,label.x = -0.7,family=myfamily, aes(label = paste(..rr.label.., ..p.label.., sep = "~','~"))) + 
+  stat_regline_equation(label.y=3.5,label.x = -0.7,family=myfamily) +
+  scale_linetype_manual(values =inter_varimp_change_lm$linetype)+
+  scale_colour_simpsons()+ylim(c(-1,4))+
+  scale_shape_manual(values = c(17))+
+  theme_Publication(base_size=12)
+
+ggarrange(figS7_1,figS7_2, figS7_3,figS7_4,ncol = 2, nrow=2,labels=c("(a) Competition-free","(b) Competition", "(c) ","(d) "),font.label = list(size = 13, color = "black", face = "bold",family="sans"))
+```
+
+### Figure S8
+### Figure S9
+```{r}
+# Create density plot for SSD
+figs9_ad <- ggplot(sp2_ss_lh, aes(x = SSD)) +
+  geom_density(aes(fill = sp, col = sp), size = 0.3, alpha = 0.5) + 
+  facet_grid(comp_type ~ ., scales = "free") +
+  theme_classic() + 
+  ylab("Species") + 
+  xlab("SSD") +
+  scale_color_manual(values = c("#76B7B2", "#EE7785")) +  
+  scale_fill_manual(values = c("#76B7B2", "#EE7785")) + 
+  theme_Publication(base_size = 12) +
+  xlim(c(0.1, 0.9)) + 
+  ylim(c(0, 10))
+
+# Create density plot for RTD
+figs9_be <- ggplot(sp7_do_qc[sp7_do_qc$Nenv == 8, ], aes(x = RTD)) +
+  geom_density(aes(fill = sp, col = sp), size = 0.3, alpha = 0.5) + 
+  facet_grid(Compete ~ ., scales = "free") +
+  theme_classic() + 
+  ylab("Species") + 
+  xlab("RTD") +
+  scale_color_manual(values = c("#EE7785", "#76B7B2")) +  
+  scale_fill_manual(values = c("#EE7785", "#76B7B2")) + 
+  theme_Publication(base_size = 12) +
+  xlim(c(0.002, 0.012)) + 
+  ylim(c(0, 1000))
+
+# Create density plot for LTO
+figs9_cf <- ggplot(sp7_do_qc[sp7_do_qc$Nenv == 1, ], aes(x = LTO)) +
+  geom_density(aes(fill = sp, col = sp), size = 0.3, alpha = 0.5) + 
+  facet_grid(Compete ~ ., scales = "free") +
+  theme_classic() + 
+  ylab("Species") + 
+  xlab("LTO") +
+  scale_color_manual(values = c("#EE7785", "#76B7B2")) +  
+  scale_fill_manual(values = c("#EE7785", "#76B7B2")) + 
+  theme_Publication(base_size = 12) +
+  xlim(c(70, 330)) + 
+  ylim(c(0, 0.07))
+
+# Combine plots
+figs9_ad + figs9_be + figs9_cf
+
+```
+
+### Figure S10
+```{r,fig.height=4, fig.width=5}
+figS10 <- ggplot(mean_hvchange_env,aes(x=rii,y=cube.root(hvchange_both))) + 
+  geom_point(aes(group=group), size=2, alpha=0.6, col=cols3[3])+
+  geom_errorbar(aes(ymin = cube.root(hvchange_both) - cube.root(se_both), ymax = cube.root(hvchange_both) + cube.root(se_both), x = rii), 
+                width = 0,  size = 0.5, inherit.aes = FALSE, alpha=0.6, col=cols3[3]) + 
+  geom_smooth(col=cols3[3],fill=cols3[3],method="lm",size=0.5, alpha=0.2) +
+  geom_text(y=17,x = -0.5,label=paste0("Slope = ",round(lm12$coefficients[2,1],2)))+
+  geom_text(y=15,x = -0.5,label=expression(~italic(R^2)~"= 0.70,"~italic(P)~"= 0.001"))+
+  ylab("")+xlab("Species competitiveness")+ 
+  scale_colour_manual(values=cols3) + scale_fill_manual(values=cols3)+theme_Publication(base_size=12)+ylim(c(-3,20))
+ 
+# Figure S10
+figS10
+
+```
+
+### Figure S11
+### Figure 12
+
+### Figure S13
+```{r, warning=F,fig.height=7.5, fig.width=7.5}
+fig.S2a <- ggplot(rii.env.7sp.homo, aes(x=sp,y=RII,fill=sp))+
+  geom_bar(stat="identity",position=position_dodge(0.7),width=0.5,alpha=0.9)+
+  geom_errorbar(aes(ymin = rii_min, ymax = rii_max), size = 0.3, width = 0.25, position = position_dodge(0.7)) +
+  xlab("Species")+ylab("Mean RII")+ggtitle("(a) Mutli_homogeneous environment")+
+  scale_fill_Publication.7sp.homo()+ theme_Publication(base_size=12, base_family=myfamily) +theme(legend.position = "none") +
+  theme(plot.title = element_text(face = "bold",size = 12, hjust = -0.05))
+
+fig.S2b <- ggplot(rii.env.7sp.heter, aes(x=sp,y=RII,fill=sp))+
+  geom_bar(stat="identity",position=position_dodge(0.7),width=0.5,alpha = 0.9)+
+  geom_errorbar(aes(ymin = rii_min, ymax = rii_max), size = 0.3, width = 0.25, position = position_dodge(0.7)) +
+  theme_classic()+xlab("Species")+ylab("")+
+  theme(legend.position = c(0.84,0.13))+theme(axis.text.x = element_text(face="italic"))+
+  ggtitle("(b) Mutli_Heterogeneous environment")+ scale_fill_Publication.7sp.heter()+ theme_Publication(base_size=12, base_family=myfamily) +theme(legend.position = "none") +
+  theme(plot.title = element_text(face = "bold",size = 12, hjust = -0.05))
+
+fig.S2c <- ggplot(inter.riida.7sp.heter, aes(x=nenv,y=RII,fill=sp,group=sp))+ 
+  geom_bar(stat="identity",position=position_dodge(0.7),width=0.5,alpha = 0.9)+
+  geom_errorbar(aes(ymin = rii_min, ymax = rii_max),size = 0.3, width = 0.25, position = position_dodge(0.7)) +
+  theme_bw()+xlab("Enviorment Unit")+ylab("Mean RII under nine enviorment unit")+ggtitle("(c) Mutli_heterogeneous")+
+  theme(legend.position = "none")+ scale_fill_Publication.7sp.heter()+ theme_Publication(base_size=12, base_family=myfamily)  +
+  theme(plot.title = element_text(face = "bold",size = 12, hjust = -0.05))
+
+(fig.S2a|fig.S2b)/fig.S2c
+```
+
+### Figure 14
+### Figure 15
+
+### Figure S3. 
+```{r,fig.height=6, fig.width=9}
+# Load data for 2 species homogeneous competition
+load(file = "02_output_results/output_allresults_2sp_homo_PCA3.RData")
+trait.2sp <- colnames(inf_alone_varimp)
+species.2sp <- species
+scale_fill_Publication.2sp <- scale_fill_Publication
+scale_colour_Publication.2sp <- scale_colour_Publication
+f.dir.name.2sp <- f.dir.name
+dir.name.2sp <- dir.name
+inter.rii.2sp <- inter.riit
+tda.2sp.homo <- data
+hv.box.data.2sp <- hv.box.data
+hvchange.box.data.2sp <- hvchange.box.data
+alone.hvp.2sp <- alone.hvp
+inter.hvp.2sp <- inter.hvp
+alone.varimp.2sp <- alone.varimp
+inter.varimp.2sp <- inter.varimp
+
+
+# Load data for 7 species homogeneous competition
+load(file = "02_output_results/output_allresults_7sp_homo_PCA3.RData")
+trait.7sp.homo <- trait
+scale_fill_Publication.7sp.homo <- scale_fill_Publication
+scale_colour_Publication.7sp.homo <- scale_colour_Publication
+f.dir.name.7sp.homo <- f.dir.name
+dir.name.7sp.homo <- dir.name
+rii.env.7sp.homo <- rii.env1
+hv.box.data.7sp.homo <- hv.box.data
+hv_riis.7sp.homo <- hv_riis1
+alone.hvp.7sp.homo <- alone.hvp1
+inter.hvp.7sp.homo <- inter.hvp1
+alone.varimp.7sp.homo <- alone.varimp1
+inter.varimp.7sp.homo <- inter.varimp1
+
+# Load data for 7 species heterogeneous competition
+load(file = "02_output_results/output_allresults_7sp_heter_PCA3.RData")
+trait.7sp.heter <- trait
+scale_fill_Publication.7sp.heter <- scale_fill_Publication
+scale_colour_Publication.7sp.heter <- scale_colour_Publication
+f.dir.name.7sp.heter <- f.dir.name
+dir.name.7sp.heter <- dir.name
+rii.env.7sp.heter <- rii.env1
+inter.riida.7sp.heter <- inter.riida1
+hv.box.data.7sp.heter <- hv.box.data
+hv_riis.7sp.heter <- hv_riis
+alone.hvp.7sp.heter <- alone.hvp
+inter.hvp.7sp.heter <- inter.hvp
+alone.varimp.7sp.heter <- alone.varimp1
+inter.varimp.7sp.heter <- inter.varimp1
+
+# Create directories for saving figures and tables
+dir.name <- paste0("03_final_figures_tables_pca_final_nc")
+dir.create(dir.name)
+f.dir.name <- paste0("03_final_figures_tables_pca_final_nc/Figures")
+dir.create(f.dir.name)
+
+############################################################################################
+### Calculating the mean ITV based on the species level
+### Phase I: Pair_homogeneous
+
+# Filtering data for single repetitions
+mean.hv.box.data.2sp <- hv.box.data.2sp[hv.box.data.2sp$Nrep == 1,]
+
+# Sorting data by species name
+mean.hv.box.data.2sp <- mean.hv.box.data.2sp[order(mean.hv.box.data.2sp$pdname),]
+
+# Calculating mean alone and interaction home values per species
+mean.hv.box.data.2sp$alone_hv <- tapply(hv.box.data.2sp$alone_hv, list(hv.box.data.2sp$pdname), mean)
+mean.hv.box.data.2sp$inter_hv <- tapply(hv.box.data.2sp$inter_hv, list(hv.box.data.2sp$pdname), mean)
+
+# Calculating standard error for mean alone and interaction home values per species
+mean.hv.box.data.2sp$alone_hv_se <- tapply(hv.box.data.2sp$alone_hv, list(hv.box.data.2sp$pdname), se)
+mean.hv.box.data.2sp$inter_hv_se <- tapply(hv.box.data.2sp$inter_hv, list(hv.box.data.2sp$pdname), se)
+
+# Converting pair code to character type
+mean.hv.box.data.2sp$pair_code <- as.character(mean.hv.box.data.2sp$pair_code)
+
+# Calculating total mean values for all pairs
+mean.hv.2sp <- mean.hv.box.data.2sp[mean.hv.box.data.2sp$pair_code == 1,]
+mean.hv.2sp$pdname <- "all"
+mean.hv.2sp$pair_code <- "all"
+mean.hv.2sp$alone_hv <- as.numeric(tapply(mean.hv.box.data.2sp$alone_hv, list(mean.hv.box.data.2sp$sp_group), mean))
+mean.hv.2sp$inter_hv <- as.numeric(tapply(mean.hv.box.data.2sp$inter_hv, list(mean.hv.box.data.2sp$sp_group), mean))
+mean.hv.2sp$alone_hv_se <- as.numeric(tapply(cube.root(mean.hv.box.data.2sp$alone_hv), list(mean.hv.box.data.2sp$sp_group), se))
+mean.hv.2sp$inter_hv_se <- as.numeric(tapply(cube.root(mean.hv.box.data.2sp$inter_hv), list(mean.hv.box.data.2sp$sp_group), se))
+mean.hv.box.data.2sp1 <- rbind(mean.hv.box.data.2sp, mean.hv.2sp)
+
+### Phase II: Mutli_homogeneous
+
+# Selecting relevant data for homogeneous multi-species analysis
+mean.hv.7sp.homo <- hv.box.data.7sp.homo[c(1:4,6,5,7),]
+
+# Calculating mean alone and interaction home values per species
+mean.hv.7sp.homo$alone_hv <- tapply(hv.box.data.7sp.homo$alone_hv, list(hv.box.data.7sp.homo$sp), mean)
+mean.hv.7sp.homo$inter_hv <- tapply(hv.box.data.7sp.homo$inter_hv, list(hv.box.data.7sp.homo$sp), mean)
+
+# Extracting environmental RII values
+mean.hv.7sp.homo$inter_rii <- rii.env.7sp.homo$RII[c(1:4,6,5,7)]
+
+# Calculating standard error for mean alone and interaction home values per species
+mean.hv.7sp.homo$alone_hv_se <- tapply(hv.box.data.7sp.homo$alone_hv, list(hv.box.data.7sp.homo$sp), se)
+mean.hv.7sp.homo$inter_hv_se <- tapply(hv.box.data.7sp.homo$inter_hv, list(hv.box.data.7sp.homo$sp), se)
+mean.hv.7sp.homo$inter_rii_se <- tapply(hv.box.data.7sp.homo$inter_rii, list(hv.box.data.7sp.homo$sp), se)
+
+# Setting species as factor with specified levels
+mean.hv.7sp.homo$sp <- factor(mean.hv.7sp.homo$sp, levels = c("DO","LG","CS","CG","HA","SS","QC"))
+
+### Phase II: Mutli_heterogeneous
+
+# Selecting relevant data for heterogeneous multi-species analysis
+mean.hv.7sp.heter <- hv.box.data.7sp.heter[1:7,]
+
+# Calculating mean alone and interaction home values per species
+mean.hv.7sp.heter$alone_hv <- tapply(hv.box.data.7sp.heter$alone_hv, list(hv.box.data.7sp.heter$sp), mean)
+mean.hv.7sp.heter$inter_hv <- tapply(hv.box.data.7sp.heter$inter_hv, list(hv.box.data.7sp.heter$sp), mean)
+
+# Extracting environmental RII values
+mean.hv.7sp.heter$inter_rii <- rii.env.7sp.heter$RII
+
+# Calculating standard error for mean alone and interaction home values per species
+mean.hv.7sp.heter$alone_hv_se <- tapply(hv.box.data.7sp.heter$alone_hv, list(hv.box.data.7sp.heter$sp), se)
+mean.hv.7sp.heter$inter_hv_se <- tapply(hv.box.data.7sp.heter$inter_hv, list(hv.box.data.7sp.heter$sp), se)
+mean.hv.7sp.heter$inter_rii_se <- tapply(hv.box.data.7sp.heter$inter_rii, list(hv.box.data.7sp.heter$sp), se)
+
+# Setting species as factor with specified levels
+mean.hv.7sp.heter$sp <- factor(mean.hv.7sp.heter$sp, levels = c("DO","LG","CS","CG","SS","HA","QC"))
+
+### Long data to wide data for legend in figure 2
+
+# Copying data for homogeneous pair analysis
+mean.hv.2sp.homo <- mean.hv.7sp.homo
+mean.hv.2sp.homo$group <- "Phase I: Pair_homogeneous"
+
+# Adding group labels for multi-species analyses
+mean.hv.7sp.homo$group <- "Phase II: Mutli_homogeneous"
+mean.hv.7sp.heter$group <- "Phase II: Mutli_heterogeneous"
+
+# Combining all data into a single dataframe
+mean.hv <- rbind(mean.hv.2sp.homo, mean.hv.7sp.homo, mean.hv.7sp.heter)
+
+# Renaming columns for better clarity
+colnames(mean.hv)[2:3] <- c("Competition-free","Competition")
+
+# Converting data from wide to long format
+mean.hv.long <- gather(mean.hv, Comp, HV, c("Competition-free","Competition"))
+mean.hv.long1 <- gather(mean.hv, Comp, SE, c("alone_hv_se","inter_hv_se"))
+mean.hv.long$SE <- mean.hv.long1$SE
+
+# Setting factors with specified levels
+mean.hv.long$group <- factor(mean.hv.long$group, level=c("Phase I: Pair_homogeneous","Phase II: Mutli_homogeneous","Phase II: Mutli_heterogeneous"))
+mean.hv.long$Comp <- factor(mean.hv.long$Comp, level=c("Competition-free","Competition"))
+
+
+
+inf_hv <- mean.hv.box.data.2sp[mean.hv.box.data.2sp$sp_group=="Inferior",]
+inf_hv <- inf_hv[order(inf_hv$pair_code),]
+sup_hv <- mean.hv.box.data.2sp[mean.hv.box.data.2sp$sp_group=="Superior",]
+sup_hv <- sup_hv[order(sup_hv$pair_code),]
+
+wilcox.test(inf_hv[inf_hv$sp_group=="Inferior",]$alone_hv, sup_hv[sup_hv$sp_group=="Superior",]$alone_hv)
+wilcox.test(inf_hv[inf_hv$sp_group=="Inferior",]$inter_hv, sup_hv[sup_hv$sp_group=="Superior",]$inter_hv)
+
+mean(inf_hv$alone_hv-sup_hv$alone_hv)
+mean(inf_hv$inter_hv-sup_hv$inter_hv)
+lm3 <- summary(lm(cube.root(mean.hv.7sp.homo$alone_hv)~mean.hv.7sp.homo$inter_rii))
+lm4 <- summary(lm(cube.root(mean.hv.7sp.homo$inter_hv)~mean.hv.7sp.homo$inter_rii))
+lm5 <- summary(lm(cube.root(mean.hv.7sp.heter$alone_hv)~mean.hv.7sp.heter$inter_rii))
+lm6 <- summary(lm(cube.root(mean.hv.7sp.heter$inter_hv)~mean.hv.7sp.heter$inter_rii))
+
+fig2_1 <-ggplot(mean.hv.box.data.2sp,aes(x=sp_group,y=cube.root(alone_hv)))+
+  geom_line(aes(group=pair_code), color="grey",alpha=0.7) +
+  geom_point(colour="grey",shape=1,size = 3) + 
+  geom_segment(data=mean.hv.2sp,aes(x=1,xend=2,y=cube.root(alone_hv[1]),yend=cube.root(alone_hv[2])),
+               color=cols3[1],size=1,linetype="dashed")+
+  geom_point(data=mean.hv.2sp,aes(x=sp_group,y=cube.root(alone_hv)),col=cols3[1],shape=1,size = 3.5,alpha=0.7) + 
+  geom_errorbar(data=mean.hv.2sp,aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                                     x = sp_group, group=sp_group), col=cols3[1], width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7)  + 
+  xlab("") + ylab("Intraspecific trait variability (Cube-root)")+
+  geom_signif(y_position = 4, xmin = 1, xmax = 2, annotations = "NS", tip_length = 0.12)+
+  scale_fill_Publication.2sp()+  
+  scale_colour_Publication.2sp()+
+  theme_Publication(base_size=12)+
+  geom_text(y=7,x = 1.5,label=expression(~italic(P)~"= 0.242"))+
+  theme(legend.position = "none",legend.title = element_blank())+
+  ylim(c(1,8))
+
+fig2_2 <-ggplot(mean.hv.box.data.2sp,aes(x=sp_group,y=cube.root(inter_hv),fill=sp_group))+
+  geom_line(aes(group=pair_code), color="grey") +
+  geom_point(colour="grey",size = 3,alpha=0.7,shape=16) + 
+  geom_segment(data=mean.hv.2sp,aes(x=1,xend=2,y=cube.root(inter_hv[1]),yend=cube.root(inter_hv[2])), color=cols3[1],size=1,linetype="dashed")+
+  geom_point(data=mean.hv.2sp,aes(x=sp_group,y=cube.root(inter_hv)),col=cols3[1],size = 3.5,alpha=0.7) + 
+  geom_errorbar(data=mean.hv.2sp,aes(ymin = cube.root((inter_hv))-cube.root(inter_hv_se), ymax = cube.root((inter_hv))+cube.root(inter_hv_se), 
+                                     x = sp_group, group=sp_group), col=cols3[1],width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7)  + 
+  xlab("Species competitiveness") + ylab("Intraspecific trait variability (Cube-root)")+
+  geom_signif(y_position = 4, xmin = 1, xmax = 2, annotations = "·", tip_length = 0.1)+
+  scale_fill_Publication.2sp()+  
+  scale_colour_Publication.2sp()+
+  theme_Publication(base_size=12)+
+  geom_text(y=7,x = 1.5,label=expression(~italic(P)~"= 0.08"))+
+  theme(legend.position = "none",legend.title = element_blank())+
+  ylim(c(1,8))
+
+fig2_3 <- ggplot(mean.hv.7sp.homo,aes(x = inter_rii, y = cube.root(alone_hv))) + 
+  geom_point(size = 3,shape=1,col="#6F80BE",alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE, alpha=0.7, col="#6F80BE") + 
+  geom_smooth(method="lm",col="#6F80BE",fill="#6F80BE",size=1,linetype="dashed",alpha=0.3) +  
+  geom_text(y=7.5,x = -0.5,label=paste0("Slope = ",round(lm3$coefficients[2,1],2)))+
+  geom_text(y=6.5,x = -0.5,label=expression(~italic(R^2)~"= -0.16,"~italic(P)~"= 0.725"))+
+  labs(x ="", y ="" )+
+  theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+  ylim(c(1,8))
+
+fig2_4 <- ggplot(mean.hv.7sp.homo,aes(x = inter_rii, y = cube.root(inter_hv))) + 
+  geom_point(size = 3,col="#6F80BE",shape=16,alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(inter_hv)-cube.root(inter_hv_se), ymax = cube.root(inter_hv)+cube.root(inter_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#6F80BE") + 
+  geom_smooth(method="lm",col="#6F80BE",fill="#6F80BE",size=1, alpha=0.3)  +  
+  geom_text(y=7.5,x = -0.5,label=paste0("Slope = ",round(lm4$coefficients[2,1],2)))+
+  geom_text(y=6.5,x = -0.5,label=expression(~italic(R^2)~"= 0.79,"~italic(P)~"= 0.005"))+
+  labs(x ="Species competitiveness", y ="" )+theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+  ylim(c(1,8))
+
+
+
+fig2_5 <- ggplot(mean.hv.7sp.heter,aes(x = inter_rii, y = cube.root(alone_hv))) + 
+   geom_point(size = 3,shape=1,col="#CC99CC",alpha=0.7)+ 
+   geom_errorbar(aes(ymin = cube.root(alone_hv)-cube.root(alone_hv_se), 
+                     ymax = cube.root(alone_hv)+cube.root(alone_hv_se), 
+                     x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#CC99CC")  + 
+   geom_smooth(method="lm",col="#CC99CC",fill="#CC99CC",size=1,alpha=0.3,linetype="dashed") +  
+   geom_text(y=7.5,x = -0.45,label=paste0("Slope = ",round(lm5$coefficients[2,1],2)))+
+   geom_text(y=6.5,x = -0.45,label=expression(~italic(R^2)~"= 0.34,"~italic(P)~"= 0.1"))+
+   labs(x ="", y ="" )+theme_Publication(base_size=12)+
+   theme(legend.position = "none")+
+   ylim(c(1,8))
+
+fig2_6 <- ggplot(mean.hv.7sp.heter,aes(x = inter_rii, y = cube.root(inter_hv))) +
+  geom_point(size = 3,col="#CC99CC",shape=16,alpha=0.7) + 
+  geom_errorbar(aes(ymin = cube.root(inter_hv)-cube.root(inter_hv_se), 
+                    ymax = cube.root(inter_hv)+cube.root(inter_hv_se), 
+                    x = inter_rii), width = 0,  size = 0.6, inherit.aes = FALSE,alpha=0.7,col="#CC99CC") + 
+  geom_smooth(method="lm",col="#CC99CC",fill="#CC99CC",size=1,alpha=0.3) +  
+  geom_text(y=7.5,x = -0.45,label=paste0("Slope = ",round(lm6$coefficients[2,1],2)))+
+  geom_text(y=6.5,x = -0.45,label=expression(~italic(R^2)~"= 0.73,"~italic(P)~"= 0.009"))+
+  labs(x ="Species competitiveness", y ="" )+theme_Publication(base_size=12)+
+  theme(legend.position = "none")+
+  ylim(c(1,8))
+
+ggarrange(fig2_1,fig2_3,fig2_5,fig2_2,fig2_4,fig2_6, ncol = 3, nrow=2,labels=c("(a) ","(b) ","(c) ","(d)","(e)","(f)"),font.label = list(size = 13, color = "black", face = "bold",family="sans"))
+
+#### Table S11
+table_S11<- data.frame(lm=c("Mul_homo","Mul_homo","Mul_hete","Mul_hete"),
+                     slope=round(c(lm3$coefficients[2,1],lm4$coefficients[2,1],
+                             lm5$coefficients[2,1],lm6$coefficients[2,1]),2),
+                     SE=round(c(lm3$coefficients[2,2],lm4$coefficients[2,2],
+                             lm5$coefficients[2,2],lm6$coefficients[2,2]),2),
+                     Tvalue=round(c(lm3$coefficients[2,3],lm4$coefficients[2,3],
+                             lm5$coefficients[2,3],lm6$coefficients[2,3]),2),
+                     Pvalue=round(c(lm3$coefficients[2,4],lm4$coefficients[2,4],
+                             lm5$coefficients[2,4],lm6$coefficients[2,4]),2),
+                     Adjusted_R2=round(c(lm3$adj.r.squared,lm4$adj.r.squared,
+                             lm5$adj.r.squared,lm6$adj.r.squared),2))
+
+
+## Mixed Effects Model for Table S1
+# Load necessary libraries
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+
+# Subset data for homogeneous environment
+mean.hv.7sp.homo.alone <- mean.hv.7sp.homo[, c(1, 2, 4)]
+mean.hv.7sp.homo.inter <- mean.hv.7sp.homo[, c(1, 3, 4)]
+mean.hv.7sp.homo.alone$comp_type <- FALSE
+mean.hv.7sp.homo.inter$comp_type <- TRUE
+colnames(mean.hv.7sp.homo.alone)[c(2, 3)] <- c("ITV", "RII")
+colnames(mean.hv.7sp.homo.inter)[c(2, 3)] <- c("ITV", "RII")
+mean.7sp.homo <- rbind(mean.hv.7sp.homo.alone, mean.hv.7sp.homo.inter)
+mean.7sp.homo$ITV <- cube.root(mean.7sp.homo$ITV)
+
+# Subset data for heterogeneous environment
+mean.hv.7sp.heter.alone <- mean.hv.7sp.heter[, c(1, 2, 4)]
+mean.hv.7sp.heter.inter <- mean.hv.7sp.heter[, c(1, 3, 4)]
+mean.hv.7sp.heter.alone$comp_type <- FALSE
+mean.hv.7sp.heter.inter$comp_type <- TRUE
+colnames(mean.hv.7sp.heter.alone)[c(2, 3)] <- c("ITV", "RII")
+colnames(mean.hv.7sp.heter.inter)[c(2, 3)] <- c("ITV", "RII")
+mean.7sp.heter <- rbind(mean.hv.7sp.heter.alone, mean.hv.7sp.heter.inter)
+mean.7sp.heter$ITV <- cube.root(mean.7sp.heter$ITV)
+
+# Fit mixed effects model for heterogeneous environment
+fit.5 <- lmer(ITV ~ comp_type * RII - 1 + (1|sp), data = mean.7sp.heter)
+summary(fit.5)
+tab_model(fit.5)
+
+# Fit mixed effects model for homogeneous environment
+fit.6 <- lmer(ITV ~ comp_type * RII - 1 + (1|sp), data = mean.7sp.homo)
+summary(fit.6)
+tab_model(fit.6)
+
+```
+
+

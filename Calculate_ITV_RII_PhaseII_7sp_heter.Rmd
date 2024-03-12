@@ -1,0 +1,597 @@
+---
+title: "Calculation of RII and ITV in mutltiple species competition in a heterogenneous environment"
+author:
+  - Jing Yang
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+# Library Packages
+```{r setup, warning=F, message=F, echo=F}
+knitr::opts_chunk$set(echo = F, eval = F)
+library(lmerTest)
+library(lme4)
+library(multcomp)
+library(flextable)
+library(xtable)
+library(tidyr)
+library(ggplot2)
+#library(showtext)
+#library(ggbiplot)
+library(FD)
+library(patchwork)
+library(hypervolume)
+library(parallel)
+library(ggpubr)
+library(RColorBrewer)
+library(ggpattern)
+library(agricolae)
+library(ggsci)
+
+# Function: cube root of data
+cube.root <- function(data) {
+    cube.data <- (abs(data))^(1/3) * sign(data)
+    return(cube.data)
+}
+
+# function
+se <- function(x){
+  se=sd(x,na.rm=T)/sqrt(length(x[!is.na(x)]))
+  return(se)
+}
+
+# Core function
+CV4 <- function(trait_sample) {
+  trait_sample <- trait_sample[!is.na(trait_sample)]
+  if(length(trait_sample)>1){
+  
+    N <- length(trait_sample)
+    # calcualte CV^2
+    y_bar <- mean(trait_sample)
+    s2_hat <- var(trait_sample)
+    cv_2 <- s2_hat/y_bar^2
+    cv_1 <- sqrt(cv_2)
+    gamma_1 <- sum(((trait_sample - y_bar)/s2_hat^0.5)^3)/N
+    gamma_2 <- sum(((trait_sample - y_bar)/s2_hat^0.5)^4)/N
+    bias2 <- cv_1^3/N - cv_1/4/N - cv_1^2 * gamma_1/2/N - cv_1 * gamma_2/8/N
+    cv4 <- cv_1 - bias2
+  }else{cv4=NA}
+  return(cv4)
+}
+
+# calculate mean of ITV for a given sample size(N) based on a trait data
+Sample_CV <- function(data, N) {
+    if (N == "all") {
+        cv4.mean <- CV4(data)
+    } else {
+        cv <- replicate(5, CV4(sample(data, N)))
+        cv4.mean <- mean(cv)
+    }
+    return(cv4.mean)
+}
+```
+
+# load data
+```{r, tidy=T, echo=F, warning=F}
+# Read the raw data file
+tda <- read.csv("01_raw_data/phaseII_multispecies_heterogeneous_raw_data.csv", header = TRUE)
+
+# Sort species and set levels for factors
+sps <- sort(unique(tda$sp))[c(3, 5, 2, 1, 7, 4, 6)]
+tda$Nenv <- factor(tda$Nenv, levels = 1:9)
+tda$Compete <- factor(tda$Compete, levels = c("alone", "inter"))
+tda$sp <- factor(tda$sp, levels = sps)
+sp_abbr <- c("DO","LG","CS","CG","SS","HA","QC")
+
+# Calculate Relative Interaction Index (RII) to measure competition intensity
+# Set the biomass of dead individuals to 0.01 to consider competition exclusion
+# Calculate RII, lnRR, and NIntC for each row in the dataset
+alone.tda <- tda[tda$Compete == "alone", ]
+alone.bm <- tapply(alone.tda$BM, list(alone.tda$Nenv, alone.tda$sp), mean, na.rm = TRUE)
+mean_alobm <- data.frame(nenv = 1:9,
+                         sp = factor(rep(sps, each = 9), levels = sps),
+                         mean_bm = as.numeric(alone.bm))
+
+tda$RII <- NA
+tda$lnRR <- NA
+tda$NIntC <- NA
+for (i in 1:nrow(tda)) {
+  ti <- tda[i,]
+  if (!ti$Compete == "alone" & !ti$memo == "S") {
+    ti_alone <- mean_alobm[mean_alobm$nenv == ti$Nenv & mean_alobm$sp == ti$sp, ]$mean_bm
+    tda[i, ]$RII <- (ti$BM - ti_alone) / (ti$BM + ti_alone)
+    tda[i, ]$lnRR <- log((ti_alone) / (ti$BM))
+    tda[i, ]$NIntC <- 2 * (ti$BM - ti_alone) / ((ti$BM + ti_alone) + abs(ti$BM - ti_alone))
+  }
+}
+
+# Select necessary columns
+trait <- sort(c("SSD", "LTO", "LDMC", "LMA", "Chl", "SMC", "LTh"))
+rtrait <- sort(c(trait, "SRL", "RTD", "SRA"))
+trait <- rtrait[-c(3, 4, 7)]  # Remove unnecessary traits
+needcols <- c("Nenv", "Compete", "sp", "BM", "memo", "RII", "lnRR", "NIntC", trait)
+
+# Set RII, lnRR, and NIntC values for alone competition to 0
+tda[tda$Compete == "alone", "RII"] <- 0 
+tda[tda$Compete == "alone", "lnRR"] <- 0 
+tda[tda$Compete == "alone", "NIntC"] <- 0 
+
+# Subset the dataset and remove rows with missing values
+tda1 <- tda[, colnames(tda) %in% needcols]
+
+# Set the directory name for output
+dir.name <- paste0("02_output_results/Exp3_7sp_heter")
+dir.create(dir.name)
+
+# Write trait names to a text file
+write.table(trait, file = paste0(dir.name, "/trait.name.txt"))
+```
+
+# Data analyses
+
+## Estimating competition intensity (RII)
+```{r, tidy=T, echo=F, warning=F}
+# Subset data for the "inter" competition treatment
+inter.tda <- tda[tda$Compete == "inter", ]
+# Calculate mean RII for each species
+inter.rii <- tapply(inter.tda$RII, list(inter.tda$sp), mean, na.rm = TRUE)
+# Calculate standard error of mean RII for each species
+inter.riise <- tapply(inter.tda$RII, list(inter.tda$sp), se)
+
+# Create a data frame for mean RII and standard error
+inter.riida <- data.frame(
+  sp = factor(sps, levels = sps),
+  comp = "inter",
+  RII = round(as.numeric(inter.rii), 2),
+  se = round(as.numeric(inter.riise), 2)
+)
+
+# Calculate lower and upper bounds for RII
+inter.riida$rii_min <- inter.riida$RII - inter.riida$se
+inter.riida[inter.riida$RII > 0, ]$rii_min <- inter.riida[inter.riida$RII > 0, ]$RII
+inter.riida$rii_max <- inter.riida$RII
+inter.riida[inter.riida$RII > 0, ]$rii_max <- inter.riida[inter.riida$RII > 0, ]$RII + inter.riida[inter.riida$RII > 0, ]$se
+inter.riida$sp <- factor(inter.riida$sp, levels = sps)
+
+# Subset data for the "inter" competition treatment in the first dataset
+inter.tda1 <- tda1[tda1$Compete == "inter", ]
+
+# Calculate mean RII for each species and environmental condition
+inter.rii1 <- tapply(inter.tda1$RII, list(inter.tda1$Nenv, inter.tda1$sp), mean, na.rm = TRUE)
+
+# Calculate standard error of mean RII for each species and environmental condition
+inter.riise1 <- tapply(inter.tda1$RII, list(inter.tda1$Nenv, inter.tda1$sp), se)
+
+# Create a data frame for mean RII and standard error across different environmental conditions
+inter.riida1 <- data.frame(
+  nenv = factor(1:9),
+  sp = factor(rep(sps, each = 9)),
+  comp = "inter",
+  RII = round(as.numeric(inter.rii1), 2),
+  se = round(as.numeric(inter.riise1), 2)
+)
+
+# Calculate lower and upper bounds for RII
+inter.riida1$rii_min <- inter.riida1$RII - inter.riida1$se
+inter.riida1[inter.riida1$RII > 0, ]$rii_min <- inter.riida1[inter.riida1$RII > 0, ]$RII
+inter.riida1$rii_max <- inter.riida1$RII
+inter.riida1[inter.riida1$RII > 0, ]$rii_max <- inter.riida1[inter.riida1$RII > 0, ]$RII + inter.riida1[inter.riida1$RII > 0, ]$se
+inter.riida1$sp <- factor(inter.riida1$sp, levels = sps)
+
+# Display mean RII and standard error in a table
+kableExtra::kable(inter.riida)
+
+# Prepare data for visualization
+rii.env1 <- inter.riida
+rii.env1$sp <- sp_abbr
+rii.env1$sp <- factor(rii.env1$sp, levels = sp_abbr)
+
+# Shorten species names for visualization
+inter.riida1$sp <- as.character(inter.riida1$sp)
+for (i in 1:length(sps)) {
+  inter.riida1[inter.riida1$sp == sps[i], ]$sp <- sp_abbr[i]
+}
+inter.riida1$sp <- factor(inter.riida1$sp, levels = sp_abbr)
+```
+
+## Trait data transformation
+```{r, tidy=T, echo=F, warning=F}
+tda1 <- na.omit(tda[, colnames(tda) %in% needcols])
+
+# Min-max transformation for calculating coefficient of variation (CV)
+# Copy the necessary columns from the dataset
+c.data <- tda1[, colnames(tda1) %in% needcols]
+
+# Loop through each trait and perform min-max transformation
+for (i in 1:length(trait)) {
+    traiti <- tda1[, colnames(tda1) == trait[i]]
+    c.data[, colnames(c.data) == trait[i]] <- (traiti - min(traiti, na.rm = TRUE)) / (max(traiti, na.rm = TRUE) - min(traiti, na.rm = TRUE))
+}
+
+# Copy the transformed data for further analysis
+t.data <- c.data
+
+# Scaling and centering raw trait data (Z-scores) for calculating hypervolume
+hv.data <- tda1[, colnames(tda1) %in% needcols]
+hv.data[, colnames(hv.data) %in% trait] <- scale(hv.data[, colnames(hv.data) %in% trait])
+
+# Separate data for different competition treatments
+alone.hdata <- hv.data[hv.data$Compete == "alone", ]
+inter.hdata <- hv.data[hv.data$Compete == "inter", ]
+```
+
+
+
+## Calculating intraspecific trait variability (ITV)
+
+### ITV based on 7-dimensional trait hypervolume
+```{r, tidy=T, echo=F}
+# Core function only returns the hypervolume value and the sample mean RII
+# Hypervolume_value function calculates the hypervolume and sample mean RII for a given sample size
+Hypervolume_value <- function(ni, data, trait, sample_size, quantile) {
+    if (length(ni) > 2) {
+        data <- data[ni, ]
+        if (sample_size == "all") {
+            sample_data <- data[, colnames(data) %in% trait]
+            sample_rii <- mean(data$RII, na.rm = TRUE)
+        } else {
+            ind_num <- length(data[, 1])
+            sample_num <- sample(1:ind_num, sample_size)
+            sample_data <- data[sample_num, colnames(data) %in% trait]
+            sample_rii <- mean(data[sample_num, ]$RII, na.rm = TRUE)
+        }
+        bandwidth <- estimate_bandwidth(data = sample_data)
+        hypervolume <- hypervolume_gaussian(data = sample_data, name = unique(sample_data$pdname),
+                                            kde.bandwidth = bandwidth, quantile.requested = quantile)
+        hv <- hypervolume@Volume
+    } else {
+        hv <- NA
+        sample_rii <- NA
+    }
+    return(c(hv = hv, rii = sample_rii))
+}
+
+# Sim_Hypervolume function simulates hypervolume for multiple replicates
+Sim_Hypervolume <- function(n, data, trait, sample_size, quantile, Hypervolume_value, nenvs) {
+    library(hypervolume)
+    sample_nenvs <- sample(1:9, nenvs)
+    data <- data[data$Nenv %in% sample_nenvs, ]
+    hvs <- tapply(1:nrow(data), list(data$sp), Hypervolume_value, data, trait, sample_size, quantile)
+    return(hvs)
+}
+
+quantile <- 0.95
+sample_size <- 15
+Nrep <- 2
+#clnum <- detectCores() - 1
+cl <- makeCluster(getOption("cl.cores", 2))
+
+# Load previously saved data if available, otherwise compute and save new results
+if (file.exists(file = paste0(dir.name, "/HV_RII.RData"))) {
+    load(paste0(dir.name, "/HV_RII.RData"))
+} else {
+    set.seed(1)
+    Sys.time()
+    alone.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, alone.hdata, trait1, sample_size, quantile, Hypervolume_value)
+    Sys.time()
+    inter.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, inter.hdata, trait1, sample_size, quantile, Hypervolume_value)
+    save(trait, alone.hv, inter.hv, file = paste0(dir.name, "/HV_RII.RData"))
+}
+
+# Organize results into matrices and extract relevant data
+rnames <- paste0(paste0(rep(sps, each = 2), c("_hv", "_rii")))  # 列名
+alone.hvrii <- matrix(unlist(alone.hv), nrow = length(sps) * 2, dimnames = list(rnames, 1:Nrep))
+inter.hvrii <- matrix(unlist(inter.hv), nrow = length(sps) * 2, dimnames = list(rnames, 1:Nrep))
+
+alone.hv <- alone.hvrii[seq(1, nrow(alone.hvrii), 2), ]
+alone.rii <- alone.hvrii[seq(2, nrow(alone.hvrii), 2), ]
+inter.hv <- inter.hvrii[seq(1, nrow(inter.hvrii), 2), ]
+inter.rii <- inter.hvrii[seq(2, nrow(inter.hvrii), 2), ]
+
+hv_rii <- data.frame(
+    sp = factor(sps, levels = sps),
+    alone_hv = apply(alone.hv, 1, mean, na.rm = TRUE),
+    inter_hv = apply(inter.hv, 1, mean, na.rm = TRUE),
+    alone_hv_se = apply(alone.hv, 1, se),
+    inter_hv_se = apply(inter.hv, 1, se),
+    alone_hv_sec = apply(cube.root(alone.hv), 1, se),
+    inter_hv_sec = apply(cube.root(inter.hv), 1, se),
+    inter_rii = apply(inter.rii, 1, mean, na.rm = TRUE),
+    inter_hvchange = apply(inter.hv - alone.hv, 1, mean, na.rm = TRUE),
+    inter_hvchange_se = apply(inter.hv - alone.hv, 1, se),
+    inter_hvchange_sec = cube.root(apply((inter.hv - alone.hv), 1, se)),
+    inter_hvrechange = apply((inter.hv - alone.hv) / alone.hv, 1, mean, na.rm = TRUE),
+    inter_hvrechange_se = apply((inter.hv - alone.hv) / alone.hv, 1, se),
+    inter_hvrechange_sec = apply(cube.root((inter.hv - alone.hv) / alone.hv), 1, se)
+)
+
+# Compute the mean hypervolume for the alone treatment across replicates
+mean.alone.hv <- apply(alone.hv, 1, mean, na.rm = TRUE)
+
+# Initialize an empty dataframe to store results
+hv_riis <- data.frame()
+
+# Loop over each replicate to calculate additional metrics and store results
+for(i in 1:Nrep) {
+  # Compute the change in hypervolume compared to the alone treatment
+  inter.hvchange <- inter.hv[, i] - mean.alone.hv
+  # Compute the relative change in hypervolume compared to the alone treatment
+  inter.hvrechange <- (inter.hv[, i] - mean.alone.hv) / mean.alone.hv
+  
+  # Create a temporary dataframe to store results for the current replicate
+  tmp <- data.frame(
+    sp = factor(sps, levels = sps),
+    inter_hv = inter.hv[, i],
+    inter_hvchange = inter.hvchange,
+    inter_hvrechange = inter.hvrechange,
+    inter_rii = inter.rii[, i]
+  )
+  
+  # Append the temporary dataframe to the main dataframe
+  hv_riis <- rbind(hv_riis, tmp)
+}
+
+# Data preparation for boxplot
+hv.box.data <- data.frame(
+  sp = rep(sps, Nrep),
+  alone_hv = as.numeric(alone.hv),
+  inter_hv = as.numeric(inter.hv),
+  inter_rii = as.numeric(inter.rii)
+)
+hv.box.data$sp <- factor(hv.box.data$sp, levels = sps)
+
+# Convert species abbreviations to full names for visualization
+hv_riis$sp <- as.character(hv_riis$sp)
+for(i in 1:length(sps)) {
+  hv_riis[hv_riis$sp == sps[i], ]$sp <- sp_abbr[i]
+}
+hv_riis$sp <- factor(hv_riis$sp, levels = sp_abbr)
+
+# Convert species abbreviations to full names for visualization in boxplot data
+unique(hv.box.data$sp)
+sp_abbr <- c("DO", "LG", "CS", "CG", "SS", "HA", "QC")
+hv.box.data$sp <- as.character(hv.box.data$sp)
+for(i in 1:length(sps)) {
+  hv.box.data[hv.box.data$sp == sps[i], ]$sp <- sp_abbr[i]
+}
+hv.box.data$sp <- factor(hv.box.data$sp, levels = sp_abbr)
+```
+
+### Hypervolume Visualisation
+```{r, tidy=T, echo=F}
+# Perform Principal Component Analysis (PCA) on the trait data
+# Select only the columns corresponding to the traits of interest
+trait.data <- hv.data[, colnames(hv.data) %in% trait,]
+
+# Perform PCA with correlation matrix
+trait.stand.pr <- princomp(trait.data, cor = TRUE)
+
+# Get summary including loadings of principal components
+pr <- summary(trait.stand.pr, loadings = TRUE)
+pr
+
+# Extract the scores of the principal components
+hv.data$PC1 <- pr$scores[, 1]
+hv.data$PC2 <- pr$scores[, 2]
+hv.data$PC3 <- pr$scores[, 3]
+
+# Define traits of interest as the principal components
+trait1 <- c("PC1", "PC2", "PC3")
+
+# Filter data for alone and inter treatments
+alone.hdata <- hv.data[hv.data$Compete == "alone", ]
+inter.hdata <- hv.data[hv.data$Compete == "inter", ]
+
+# Function to compute hypervolume
+Hyperv <- function(ni, data, trait, quantile) {
+  data <- data[ni, ]
+  sample_data <- data[, colnames(data) %in% trait]
+  bandwidth <- estimate_bandwidth(data = sample_data)
+  hv <- hypervolume_gaussian(data = sample_data, name = unique(sample_data$sp),
+                             kde.bandwidth = bandwidth, quantile.requested = quantile)
+  return(hv)
+}
+
+# Traits for hypervolume calculation
+trait1 <- c("PC1", "PC2", "PC3")
+
+# Check if previously saved data exists
+if (file.exists(file = paste0(dir.name, "/hv_pointsplot_pc13.RData"))) {
+  load(paste0(dir.name, "/hv_pointsplot_pc13.RData"))
+} else {
+  # Compute hypervolume for alone and inter treatments
+  alone.hvp <- tapply(1:nrow(alone.hdata), list(alone.hdata$sp), Hyperv, alone.hdata, trait1, 0.95)
+  inter.hvp <- tapply(1:nrow(inter.hdata), list(inter.hdata$sp), Hyperv, inter.hdata, trait1, 0.95)
+  # Save computed hypervolume data
+  save(alone.hvp, inter.hvp, file = paste0(dir.name, "/hv_pointsplot_pc13.RData"))
+}
+
+```
+
+### ITV based on individual trait by Bao's CV
+```{r, tidy=T, echo=F}
+# Set the number of replications and sample size
+nrep <- 999
+sample_size <- 15
+
+# Check if previously saved data exists
+if (file.exists(file = paste0(dir.name, "/CV4.RData"))) {
+    load(paste0(dir.name, "/CV4.RData")) # Load existing data
+} else {
+    cv <- data.frame() # Initialize empty data frame for coefficient of variation (CV)
+    for (i in 1:length(sps)) { # Iterate over species
+        spi <- c.data[c.data$sp == sps[i],] # Subset data for the current species
+        for (t in 1:length(trait)) { # Iterate over traits
+            c <- replicate(nrep, tapply(spi[, trait[t]], list(spi$Compete), Sample_CV, sample_size)) # Compute CV for alone and inter treatments
+            inter.cc <- c[2,] - c[1,] # Compute difference in CV between inter and alone treatments
+            inter.ccr <- inter.cc / c[1,] # Compute relative change in CV between inter and alone treatments
+
+            # Create a temporary data frame for CV results
+            tmp <- data.frame(sp = sps[i],
+                              trait = trait[t],
+                              Compete = c("alone", "inter"),
+                              mean_cv = apply(c, 1, mean, na.rm = TRUE),
+                              cv_se = apply(c, 1, se),
+                              cv_change = c(0, mean(inter.cc, na.rm = TRUE)),
+                              cvchange_se = c(0, se(inter.cc)),
+                              cvchange_sec = c(0, se(cube.root(inter.cc))),
+                              cv_rechange = c(0, mean(inter.ccr, na.rm = TRUE)),
+                              cvrechange_se = c(0, se(inter.ccr)),
+                              cvrechange_sec = c(0, se(cube.root(inter.ccr))))
+            cv <- rbind(cv, tmp) # Bind temporary data to the main CV data frame
+        }
+    }
+    save(cv, file = paste0(dir.name, "/CV4.RData")) # Save computed CV data
+}
+
+# Convert categorical variables to factors
+cv$sp <- factor(cv$sp, levels = sps)
+cv$trait <- factor(cv$trait, levels = trait)
+alone.cv <- cv[cv$Compete == "alone", ]
+inter.cv <- cv[cv$Compete == "inter", ]
+
+# Reshape data for visualization using tidyverse
+library(tidyverse)
+alone_cv1 <- alone.cv[, c("sp", "trait", "mean_cv")]
+alone_cv1 <- pivot_wider(alone_cv1, id_cols = "sp", names_from = "trait", values_from = "mean_cv")
+
+inter_cv1 <- inter.cv[, c("sp", "trait", "mean_cv")]
+inter_cv1 <- pivot_wider(inter_cv1, id_cols = "sp", names_from = "trait", values_from = "mean_cv")
+
+# Compute changes in CV for visualization
+inter_cvchange1 <- inter_cv1
+inter_cvchange1[, -1] <- inter_cv1[, -1] - alone_cv1[, -1]
+apply(inter_cvchange1[, -1], 1, mean) # Apply function to compute mean change in CV across traits
+sort(apply(inter_cvchange1[, -1], 2, mean)) # Apply function to compute mean change in CV across species
+
+# Convert data frames to matrices for further analysis
+alone.varimp1 <- as.matrix(alone_cv1[, -1])
+inter.varimp1 <- as.matrix(inter_cv1[, -1])
+
+```
+
+
+
+# save results for 7-dimensional hypervolume (ITV) and RII
+```{r, tidy=T, echo=F}
+save(trait, sps, sp_abbr, cols7_2, rii.env1, inter.riida1,
+     hv.box.data, hv_riis,  alone.hvp,  inter.hvp, 
+     alone.varimp1, inter.varimp1, 
+     se, cube.root, scale_fill_Publication, 
+     scale_colour_Publication, f.dir.name, dir.name, file = "02_output_results/output_allresults_7sp_heter.RData")
+```
+
+# Calculating hypervolume based on reduced-dimensional hypervolume (PC1, PC2, PC3)
+```{r, tidy=T, echo=F}
+trait <- c("PC1", "PC2", "PC3")
+quantile <- 0.95
+sample_size <- 20
+Nrep <- 999
+#clnum <- detectCores() - 1
+cl <- makeCluster(getOption("cl.cores", 60))
+
+# Load previously saved data if available, otherwise compute and save new results
+if (file.exists(file = paste0(dir.name, "/HV_RII_PCA3.RData"))) {
+    load(paste0(dir.name, "/HV_RII_PCA3.RData"))
+} else {
+    set.seed(1)
+    Sys.time()
+    alone.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, alone.hdata, trait1, sample_size, quantile, Hypervolume_value)
+    Sys.time()
+    inter.hv <- parLapply(cl, 1:Nrep, Sim_Hypervolume, inter.hdata, trait1, sample_size, quantile, Hypervolume_value)
+    save(trait, alone.hv, inter.hv, file = paste0(dir.name, "/HV_RII_PCA3.RData"))
+}
+
+# Organize results into matrices and extract relevant data
+rnames <- paste0(paste0(rep(sps, each = 2), c("_hv", "_rii")))  # 列名
+alone.hvrii <- matrix(unlist(alone.hv), nrow = length(sps) * 2, dimnames = list(rnames, 1:Nrep))
+inter.hvrii <- matrix(unlist(inter.hv), nrow = length(sps) * 2, dimnames = list(rnames, 1:Nrep))
+
+alone.hv <- alone.hvrii[seq(1, nrow(alone.hvrii), 2), ]
+alone.rii <- alone.hvrii[seq(2, nrow(alone.hvrii), 2), ]
+inter.hv <- inter.hvrii[seq(1, nrow(inter.hvrii), 2), ]
+inter.rii <- inter.hvrii[seq(2, nrow(inter.hvrii), 2), ]
+
+hv_rii <- data.frame(
+    sp = factor(sps, levels = sps),
+    alone_hv = apply(alone.hv, 1, mean, na.rm = TRUE),
+    inter_hv = apply(inter.hv, 1, mean, na.rm = TRUE),
+    alone_hv_se = apply(alone.hv, 1, se),
+    inter_hv_se = apply(inter.hv, 1, se),
+    alone_hv_sec = apply(cube.root(alone.hv), 1, se),
+    inter_hv_sec = apply(cube.root(inter.hv), 1, se),
+    inter_rii = apply(inter.rii, 1, mean, na.rm = TRUE),
+    inter_hvchange = apply(inter.hv - alone.hv, 1, mean, na.rm = TRUE),
+    inter_hvchange_se = apply(inter.hv - alone.hv, 1, se),
+    inter_hvchange_sec = cube.root(apply((inter.hv - alone.hv), 1, se)),
+    inter_hvrechange = apply((inter.hv - alone.hv) / alone.hv, 1, mean, na.rm = TRUE),
+    inter_hvrechange_se = apply((inter.hv - alone.hv) / alone.hv, 1, se),
+    inter_hvrechange_sec = apply(cube.root((inter.hv - alone.hv) / alone.hv), 1, se)
+)
+
+# Compute the mean hypervolume for the alone treatment across replicates
+mean.alone.hv <- apply(alone.hv, 1, mean, na.rm = TRUE)
+
+# Initialize an empty dataframe to store results
+hv_riis <- data.frame()
+
+# Loop over each replicate to calculate additional metrics and store results
+for(i in 1:Nrep) {
+  # Compute the change in hypervolume compared to the alone treatment
+  inter.hvchange <- inter.hv[, i] - mean.alone.hv
+  # Compute the relative change in hypervolume compared to the alone treatment
+  inter.hvrechange <- (inter.hv[, i] - mean.alone.hv) / mean.alone.hv
+  
+  # Create a temporary dataframe to store results for the current replicate
+  tmp <- data.frame(
+    sp = factor(sps, levels = sps),
+    inter_hv = inter.hv[, i],
+    inter_hvchange = inter.hvchange,
+    inter_hvrechange = inter.hvrechange,
+    inter_rii = inter.rii[, i]
+  )
+  
+  # Append the temporary dataframe to the main dataframe
+  hv_riis <- rbind(hv_riis, tmp)
+}
+
+# Data preparation for boxplot
+hv.box.data <- data.frame(
+  sp = rep(sps, Nrep),
+  alone_hv = as.numeric(alone.hv),
+  inter_hv = as.numeric(inter.hv),
+  inter_rii = as.numeric(inter.rii)
+)
+hv.box.data$sp <- factor(hv.box.data$sp, levels = sps)
+
+# Convert species abbreviations to full names for visualization
+hv_riis$sp <- as.character(hv_riis$sp)
+for(i in 1:length(sps)) {
+  hv_riis[hv_riis$sp == sps[i], ]$sp <- sp_abbr[i]
+}
+hv_riis$sp <- factor(hv_riis$sp, levels = sp_abbr)
+
+# Convert species abbreviations to full names for visualization in boxplot data
+unique(hv.box.data$sp)
+sp_abbr <- c("DO", "LG", "CS", "CG", "SS", "HA", "QC")
+hv.box.data$sp <- as.character(hv.box.data$sp)
+for(i in 1:length(sps)) {
+  hv.box.data[hv.box.data$sp == sps[i], ]$sp <- sp_abbr[i]
+}
+hv.box.data$sp <- factor(hv.box.data$sp, levels = sp_abbr)
+```
+
+
+# save results for reduced-dimensional hypervolume (ITV) and RII
+```{r, tidy=T, echo=F}
+save(trait, sps, sp_abbr, cols7_2, rii.env1, inter.riida1,
+     hv.box.data, hv_riis,  alone.hvp,  inter.hvp, 
+     alone.varimp1, inter.varimp1, 
+     se, cube.root, scale_fill_Publication, 
+     scale_colour_Publication, f.dir.name, dir.name, file = "02_output_results/output_allresults_7sp_heter_PCA3.RData")
+```
